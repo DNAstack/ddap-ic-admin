@@ -104,10 +104,10 @@
       "clientId": "b1aed96d-6367-4313-87a1-65eda4962a76",
       "redirectUris": [
         "http://localhost:8085/api",
-        "https://ddap-frontend.staging.dnastack.com/api",
-        "https://ddap-frontend.prod.dnastack.com/api",
-        "https://ddap-frontend-candidate.staging.dnastack.com",
-        "https://ddap-frontend-candidate.prod.dnastack.com"
+        "https://ddap-ic-admin.staging.dnastack.com/api",
+        "https://ddap-ic-admin.prod.dnastack.com/api",
+        "https://ddap-ic-admin-candidate.staging.dnastack.com",
+        "https://ddap-ic-admin-candidate.prod.dnastack.com"
       ],
       "ui": {
         "description": "DDAP Developer environment",
@@ -125,10 +125,10 @@
       "clientId": "b6bf058f-7904-4b98-8982-d5a7a3a38052",
       "redirectUris": [
         "http://localhost:8085/api",
-        "https://ddap-frontend.staging.dnastack.com/api",
-        "https://ddap-frontend.prod.dnastack.com/api",
-        "https://ddap-frontend-candidate.staging.dnastack.com",
-        "https://ddap-frontend-candidate.prod.dnastack.com"
+        "https://ddap-ic-admin.staging.dnastack.com/api",
+        "https://ddap-ic-admin.prod.dnastack.com/api",
+        "https://ddap-ic-admin-candidate.staging.dnastack.com",
+        "https://ddap-ic-admin-candidate.prod.dnastack.com"
       ],
       "ui": {
         "description": "DDAP Developer environment",
