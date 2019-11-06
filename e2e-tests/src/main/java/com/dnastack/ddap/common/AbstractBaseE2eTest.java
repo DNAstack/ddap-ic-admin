@@ -6,9 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.protobuf.Message;
-import com.google.protobuf.util.JsonFormat;
-import dam.v1.DamService;
 import io.restassured.RestAssured;
 import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
@@ -127,14 +124,6 @@ public abstract class AbstractBaseE2eTest {
         return val;
     }
 
-    protected static void validateProtoBuf(String resourceJsonString, Message.Builder builder) {
-        try {
-            JsonFormat.parser().merge(resourceJsonString, builder);
-        } catch(Exception e) {
-            throw new IllegalStateException("Failed to parse proto", e);
-        }
-    }
-
     @Data
     static class IcConfig {
         @JsonAnySetter
@@ -183,33 +172,6 @@ public abstract class AbstractBaseE2eTest {
                        response.getStatusLine().getStatusCode(),
                        allOf(greaterThanOrEqualTo(200), lessThan(300)));
         }
-    }
-
-    protected static void setupRealmConfig(TestingPersona persona, String config, String damId, String realmName) throws IOException {
-        DamService.DamConfig.Builder damConfigBuilder = DamService.DamConfig.newBuilder();
-        validateProtoBuf(config, damConfigBuilder);
-
-        final String modificationPayload = format("{ \"item\": %s }", config);
-        /*
-         Use the master realm because some tests break the ability to reset realms in future runs.
-         In particular, tests that reset the IC config can change the 'ga4gh_dam` client ID which needs
-         to be a particular value (configured in master) for passport tokens to have a validatable audience
-         */
-        final CookieStore cookieStore = loginStrategy.performPersonaLogin(persona.getId(), "master");
-
-        final HttpClient httpclient = HttpClientBuilder.create().setDefaultCookieStore(cookieStore).build();
-        HttpPut request = new HttpPut(format("%s/dam/%s/v1alpha/%s/config", DDAP_BASE_URL, damId, realmName));
-        addDdapBasicAuthHeader(request);
-        request.setEntity(new StringEntity(modificationPayload));
-
-        System.out.printf("Sending setup realm request to URI [%s]\n", request.getURI());
-
-        final HttpResponse response = httpclient.execute(request);
-        String responseBody = EntityUtils.toString(response.getEntity());
-
-        assertThat(format("Unable to set realm config. Response:\n%s\nConfig:\n%s", responseBody, config),
-                   response.getStatusLine().getStatusCode(),
-                   allOf(greaterThanOrEqualTo(200), lessThan(300)));
     }
 
     protected static String loadTemplate(String resourcePath) {

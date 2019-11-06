@@ -2,8 +2,6 @@ package com.dnastack.ddap.server;
 
 import com.dnastack.ddap.common.AbstractBaseE2eTest;
 import com.dnastack.ddap.common.TestingPersona;
-import dam.v1.DamService;
-import ic.v1.IcService;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -1,28 +1,21 @@
 package com.dnastack.ddap.frontend;
 
 import com.dnastack.ddap.common.TestingPersona;
-import com.dnastack.ddap.common.fragments.NavBar;
 import com.dnastack.ddap.common.page.AdminDdapPage;
-import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.ICLoginPage;
-import com.dnastack.ddap.common.util.DdapBy;
-import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
 
 import static com.dnastack.ddap.common.TestingPersona.ADMINISTRATOR;
 import static com.dnastack.ddap.common.TestingPersona.USER_WITHOUT_ACCESS;
-import static com.dnastack.ddap.common.fragments.NavBar.*;
+import static com.dnastack.ddap.common.fragments.NavBar.icIdentityProvidersLink;
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("Duplicates")
 public class NavbarE2eTest extends AbstractFrontendE2eTest {

@@ -5,8 +5,6 @@ import com.dnastack.ddap.common.TestingPersona;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import dam.v1.DamService;
-import ic.v1.IcService;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -16,7 +14,6 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.Map;
 
-import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.not;

@@ -3,10 +3,6 @@ package com.dnastack.ddap.server;
 import com.dnastack.ddap.common.AbstractBaseE2eTest;
 import com.dnastack.ddap.common.TestingPersona;
 import com.dnastack.ddap.common.util.JwtTestUtil;
-import dam.v1.DamService;
-import ic.v1.IcService;
-import io.restassured.RestAssured;
-import io.restassured.specification.RequestSpecification;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assume;
@@ -16,11 +12,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import static com.dnastack.ddap.common.TestingPersona.USER_WITHOUT_ACCESS;
 import static com.dnastack.ddap.common.TestingPersona.USER_WITH_ACCESS;
-//import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;

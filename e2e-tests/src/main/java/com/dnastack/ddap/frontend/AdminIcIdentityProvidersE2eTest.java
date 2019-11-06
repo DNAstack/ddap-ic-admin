@@ -1,17 +1,10 @@
 package com.dnastack.ddap.frontend;
 
-import com.dnastack.ddap.common.util.DdapBy;
-import com.dnastack.ddap.common.page.AdminDdapPage;
 import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.AdminManagePage;
-import com.dnastack.ddap.common.page.ICLoginPage;
-import com.dnastack.ddap.common.TestingPersona;
-import org.junit.BeforeClass;
+import com.dnastack.ddap.common.util.DdapBy;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static com.dnastack.ddap.common.TestingPersona.ADMINISTRATOR;
 import static com.dnastack.ddap.common.fragments.NavBar.icIdentityProvidersLink;
 
 @SuppressWarnings("Duplicates")
