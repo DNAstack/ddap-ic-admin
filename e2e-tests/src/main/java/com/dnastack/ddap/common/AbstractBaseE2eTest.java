@@ -53,17 +53,10 @@ public abstract class AbstractBaseE2eTest {
     public static final String DDAP_BASE_URL = requiredEnv("E2E_BASE_URI");
     public static final String DDAP_TEST_REALM_NAME_PREFIX = requiredEnv("E2E_TEST_REALM");
     public static final String CLIENT_ID = requiredEnv("E2E_CLIENT_ID");
-    public static final String TEST_PROJECT = requiredEnv("E2E_TEST_PROJECT");
-    public static final String TEST_BUCKET = requiredEnv("E2E_TEST_BUCKET");
-    public static final String NAMESPACE =  requiredEnv("E2E_TEST_NAMESPACE");
-    public static final String TRUSTED_SOURCE =  optionalEnv("E2E_TRUSTED_SOURCE", "https://ddap.test.source.dnastack.com");
     public static final String PASSPORT_ISSUER = requiredEnv("E2E_PASSPORT_ISSUER");
-    public static final String TEST_WHITELIST_VALUE = optionalEnv("E2E_TEST_WHITELIST_VALUE", stripTrailingSlash(DDAP_BASE_URL).replaceFirst("-candidate\\.", "."));
     public static final String IC_BASE_URL = requiredEnv("E2E_IC_BASE_URL");
     // Current size limit on realm names in DAM
     public static final int REALM_NAME_LIMIT = 40;
-    public static final String SERVICE_ACCOUNT_PROJECT = requiredEnv("E2E_SERVICE_ACCOUNT_PROJECT");
-
 
     public static final String PERSONA_LOGIN_STRATEGY = "PersonaLoginStrategy";
     public static final String WALLET_LOGIN_STRATEGY = "WalletLoginStrategy";
@@ -232,13 +225,7 @@ public abstract class AbstractBaseE2eTest {
         return resourceTemplate
                 .replace("$$E2E_BASE_URI$$", stripTrailingSlash(DDAP_BASE_URL))
                 .replace("$$E2E_CLIENT_ID$$", CLIENT_ID)
-                .replace("$$E2E_SERVICE_ACCOUNT_PROJECT$$", SERVICE_ACCOUNT_PROJECT)
-                .replace("$$E2E_PASSPORT_ISSUER$$", PASSPORT_ISSUER)
-                .replace("$$E2E_TEST_BUCKET$$", TEST_BUCKET)
-                .replace("$$E2E_TEST_PROJECT$$",TEST_PROJECT)
-                .replace("$$E2E_TEST_NAMESPACE$$", NAMESPACE)
-                .replace("$$E2E_TRUSTED_SOURCE$$", TRUSTED_SOURCE)
-                .replace("$$E2E_TEST_WHITELIST_VALUE$$", TEST_WHITELIST_VALUE);
+                .replace("$$E2E_PASSPORT_ISSUER$$", PASSPORT_ISSUER);
     }
 
     private static String stripTrailingSlash(String url) {
