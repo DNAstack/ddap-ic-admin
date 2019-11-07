@@ -1,7 +1,9 @@
 package com.dnastack.ddap.common.fragments;
 
+import com.dnastack.ddap.common.page.AdminListPage;
+import com.dnastack.ddap.common.page.AdminOptionPage;
+import com.dnastack.ddap.common.page.ICLoginPage;
 import com.dnastack.ddap.common.util.DdapBy;
-import com.dnastack.ddap.common.page.*;
 import lombok.Value;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -13,8 +15,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
-import static java.lang.String.format;
 
 public class NavBar {
 
@@ -56,19 +56,10 @@ public class NavBar {
 
     public NavBar(WebDriver driver) {
         this.driver = driver;
-
-        // We might not be on an admin page. Only assert basic navbar links
-        assertNonAdminNavBar();
     }
 
     public void assertAdminNavBar() {
         Stream.of(icPanelSelectorLink().getSelector())
-              .forEach(this.driver::findElement);
-    }
-
-    public void assertNonAdminNavBar() {
-        Stream.of(damIdentityLink())
-              .map(NavLink::getSelector)
               .forEach(this.driver::findElement);
     }
 
