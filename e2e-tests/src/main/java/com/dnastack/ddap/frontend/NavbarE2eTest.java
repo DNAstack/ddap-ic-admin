@@ -38,8 +38,6 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
         ddapPage.getNavBar().logOut();
         ddapPage = doBrowserLogin(REALM, USER_WITHOUT_ACCESS, AdminDdapPage::new);
 
-        ddapPage.getNavBar()
-                .assertNonAdminNavBar();
         assertThat(ddapPage.getNavBar().existsInNavBar(icIdentityProvidersLink()), is(false));
     }
 
