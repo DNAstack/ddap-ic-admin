@@ -112,14 +112,17 @@ public class WalletLoginStrategy implements LoginStrategy {
         final Set<String> cookieNames = new HashSet<>(Arrays.asList("dam_token", "ic_token", "refresh_token"));
 
         // Need to navigate to site before setting cookie
-        driver.get(getUrlWithBasicCredentials(URI.create(DDAP_BASE_URL).resolve(format("/%s/data", realmName)).toString(), DDAP_USERNAME, DDAP_PASSWORD));
+        driver.get(getUrlWithBasicCredentials(URI.create(DDAP_BASE_URL).resolve(format("/%s", realmName)).toString(), DDAP_USERNAME, DDAP_PASSWORD));
         cookieStore.getCookies()
                    .stream()
                    .filter(c -> cookieNames.contains(c.getName()))
                    .forEach(cookie -> {
                        driver.manage().deleteCookieNamed(cookie.getName());
                        System.out.printf("Adding cookie to selenium: Cookie(name=%s, domain=%s, path=%s, expiry=%s, secure=%b", cookie.getName(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
-                       final Cookie browserCookie = new Cookie(cookie.getName(), cookie.getValue(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
+                       // From the WebDriver docs:
+                       // If the cookie's domain name is left blank, it is assumed that the cookie
+                       // is meant for the domain of the current document.
+                       final Cookie browserCookie = new Cookie(cookie.getName(), cookie.getValue(), "", cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
                        driver.manage().addCookie(browserCookie);
                    });
         driver.navigate().refresh();
