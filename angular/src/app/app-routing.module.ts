@@ -5,8 +5,7 @@ import { defaultRealm } from 'ddap-common-lib';
 import { LayoutComponent } from './layout/layout.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: `/${defaultRealm}/identity` },
-  { path: ':realmId', pathMatch: 'full', redirectTo: '/:realmId/identity' },
+  { path: '', pathMatch: 'full', redirectTo: `/${defaultRealm}` },
   {
     path: ':realmId',
     component: LayoutComponent,
