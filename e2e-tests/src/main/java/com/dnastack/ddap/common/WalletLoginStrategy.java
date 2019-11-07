@@ -120,10 +120,7 @@ public class WalletLoginStrategy implements LoginStrategy {
                        driver.manage().deleteCookieNamed(cookie.getName());
                        System.out.printf("Adding cookie to selenium: Cookie(name=%s, domain=%s, path=%s, expiry=%s, secure=%b" + System.lineSeparator(),
                            cookie.getName(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
-                       // From the WebDriver docs:
-                       // If the cookie's domain name is left blank, it is assumed that the cookie
-                       // is meant for the domain of the current document.
-                       final Cookie browserCookie = new Cookie(cookie.getName(), cookie.getValue(), "", cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
+                       final Cookie browserCookie = new Cookie(cookie.getName(), cookie.getValue(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
                        driver.manage().addCookie(browserCookie);
                    });
         driver.navigate().refresh();
