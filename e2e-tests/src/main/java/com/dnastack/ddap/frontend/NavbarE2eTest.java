@@ -51,6 +51,7 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
         assertThat(driver.manage().getCookieNamed("refresh_token"), notNullValue());
 
         ICLoginPage icLoginPage = ddapPage.getNavBar().logOut();
+        ddapPage.waitForInflightRequests();
         assertThat(icLoginPage.getRealm(), is(REALM));
 
         // check if cookies are not present on landing page without logging in

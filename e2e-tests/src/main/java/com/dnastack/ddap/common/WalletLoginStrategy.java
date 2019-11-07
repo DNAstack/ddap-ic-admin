@@ -118,7 +118,8 @@ public class WalletLoginStrategy implements LoginStrategy {
                    .filter(c -> cookieNames.contains(c.getName()))
                    .forEach(cookie -> {
                        driver.manage().deleteCookieNamed(cookie.getName());
-                       System.out.printf("Adding cookie to selenium: Cookie(name=%s, domain=%s, path=%s, expiry=%s, secure=%b", cookie.getName(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
+                       System.out.printf("Adding cookie to selenium: Cookie(name=%s, domain=%s, path=%s, expiry=%s, secure=%b" + System.lineSeparator(),
+                           cookie.getName(), cookie.getDomain(), cookie.getPath(), cookie.getExpiryDate(), cookie.isSecure());
                        // From the WebDriver docs:
                        // If the cookie's domain name is left blank, it is assumed that the cookie
                        // is meant for the domain of the current document.
