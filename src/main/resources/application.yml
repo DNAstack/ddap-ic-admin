@@ -6,11 +6,6 @@ server:
   # If both are specified (not recommended) SERVER_PORT will take precedence.
   port: ${PORT:8085}
 
-dams:
-  1:
-    base-url: http://localhost:3000/
-    client-id: local-dam-client-id
-    client-secret: local-dam-client-secret
 idp:
   base-url: http://localhost:3001/
   client-id: local-dam-client-id

@@ -36,7 +36,7 @@ export class LayoutComponent implements OnInit {
         this.profile = account.profile;
       });
 
-    this.determineAdminAccessForDamAndIc();
+    this.determineAdminAccessForIc();
 
     this.activatedRoute.root.firstChild.params.subscribe((params) => {
       this.realm = params.realmId;
@@ -65,7 +65,7 @@ export class LayoutComponent implements OnInit {
       });
   }
 
-  private determineAdminAccessForDamAndIc() {
+  private determineAdminAccessForIc() {
     this.identityService.getIcUserAccess()
       .subscribe((icAccess: UserAccess) => {
         this.isIcAdmin = icAccess.isAdmin;

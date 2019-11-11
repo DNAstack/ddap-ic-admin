@@ -62,9 +62,9 @@
 
     <div *ngIf="profile"
          class="accordion-wrapper">
-      <mat-accordion [multi]="false">
-        <mat-expansion-panel *ngIf="isIcAdmin"
-                             [expanded]="isActivePanel('identity-concentrator')"
+      <mat-accordion [multi]="false"
+                     *ngIf="isIcAdmin">
+        <mat-expansion-panel [expanded]="isActivePanel('identity-concentrator')"
                              data-se="nav-ic-panel">
           <mat-expansion-panel-header>
             <mat-panel-title>

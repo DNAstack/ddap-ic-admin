@@ -34,7 +34,7 @@ public class NavBar {
         }
     }
 
-    public static NavLink damIdentityLink() {
+    public static NavLink myIdentityLink() {
         return new NavLink("My Identity", DdapBy.se("nav-identity"), null);
     }
 

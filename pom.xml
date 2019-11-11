@@ -411,7 +411,7 @@
                                     <resources>
                                         <resource>
                                             <directory>
-                                                ${project.basedir}/${angular.project.location}/dist/ddapfrontend/
+                                                ${project.basedir}/${angular.project.location}/dist/ddap-ic-admin/
                                             </directory>
                                         </resource>
                                     </resources>
