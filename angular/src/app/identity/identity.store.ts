@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from 'ddap-common-lib';
-import { Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
 import { Account } from './account.model';

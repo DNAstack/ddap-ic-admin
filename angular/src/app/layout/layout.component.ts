@@ -8,6 +8,7 @@ import { IdentityService } from '../identity/identity.service';
 import { IdentityStore } from '../identity/identity.store';
 import { Profile } from '../identity/profile.model';
 import { UserAccess } from '../identity/user-access.model';
+import { Identity } from "../identity/identity.model";
 
 const refreshRepeatTimeoutInMs = 600000;
 
@@ -30,8 +31,12 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.identityStore.getIdentity()
-      .subscribe(({ account, sandbox }) => {
+    this.identityStore.state$
+      .subscribe((identity: Identity) => {
+        if (!identity) {
+          return;
+        }
+        const { sandbox, account } = identity;
         this.isSandbox = sandbox;
         this.profile = account.profile;
       });
@@ -56,6 +61,10 @@ export class LayoutComponent implements OnInit {
       return panelId === icPanelId && childRoute.routeConfig.path === icPanelId;
     }
     return false;
+  }
+
+  isChildPage() {
+    return !!this.activatedRoute.firstChild;
   }
 
   logout() {

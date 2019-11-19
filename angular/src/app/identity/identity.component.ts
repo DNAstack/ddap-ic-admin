@@ -36,7 +36,7 @@ export class IdentityComponent implements OnInit {
       this.realm = params.realmId;
     });
 
-    this.identityStore.identity
+    this.identityStore.state$
       .subscribe((identity: Identity) => {
         this.identity = identity;
         if (this.hasLinkScope()) {
