@@ -53,16 +53,6 @@ export class LayoutComponent implements OnInit {
       .subscribe();
   }
 
-  isActivePanel(panelId: string): boolean {
-    const adminRoute = this.activatedRoute.firstChild;
-    if (adminRoute) {
-      const childRoute = adminRoute.firstChild;
-      const icPanelId = 'identity-concentrator';
-      return panelId === icPanelId && childRoute.routeConfig.path === icPanelId;
-    }
-    return false;
-  }
-
   isChildPage() {
     return !!this.activatedRoute.firstChild;
   }
