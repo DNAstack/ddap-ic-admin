@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { defaultRealm } from 'ddap-common-lib';
+import { defaultRealm, RealmGuard } from "ddap-common-lib";
 
 import { LayoutComponent } from './layout/layout.component';
 
@@ -9,6 +9,7 @@ const routes: Routes = [
   {
     path: ':realmId',
     component: LayoutComponent,
+    canActivate: [RealmGuard],
     children: [
       {
         path: 'identity',
