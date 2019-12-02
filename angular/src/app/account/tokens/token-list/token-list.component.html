@@ -1,0 +1,10 @@
+<ddaplib-header icon="clients" label="Sessions">
+</ddaplib-header>
+
+<ddaplib-main>
+  <mat-list>
+    <mat-list-item *ngFor="let token of tokens$ | async">
+      {{ token }}
+    </mat-list-item>
+  </mat-list>
+</ddaplib-main>

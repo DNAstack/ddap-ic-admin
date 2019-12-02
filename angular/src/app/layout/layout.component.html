@@ -51,13 +51,20 @@
         </mat-list-item>
       </a>
 
-      <mat-list-item *ngIf="profile"
-                     [routerLink]="['identity']"
-                     [routerLinkActive]="['active-nav-link']"
-                     data-se="nav-identity">
-        <mat-icon class="icon icon-identity"></mat-icon>
-        <h4 mat-line>My Identity</h4>
-      </mat-list-item>
+      <ng-container *ngIf="profile">
+        <mat-list-item [routerLink]="['identity']"
+                       [routerLinkActive]="['active-nav-link']"
+                       data-se="nav-identity">
+          <mat-icon class="icon icon-identity"></mat-icon>
+          <h4 mat-line>My Identity</h4>
+        </mat-list-item>
+        <mat-list-item [routerLink]="['account', 'sessions']"
+                       [routerLinkActive]="['active-nav-link']"
+                       data-se="nav-identity">
+          <mat-icon class="icon icon-clients"></mat-icon>
+          <h4 mat-line>Sessions</h4>
+        </mat-list-item>
+      </ng-container>
     </mat-nav-list>
 
     <div *ngIf="profile"
