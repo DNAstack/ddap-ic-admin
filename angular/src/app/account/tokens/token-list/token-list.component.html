@@ -2,9 +2,9 @@
 </ddaplib-header>
 
 <ddaplib-main>
-  <mat-list>
-    <mat-list-item *ngFor="let token of tokens$ | async">
+  <div>
+    <p *ngFor="let token of tokens$ | async">
       {{ token }}
-    </mat-list-item>
-  </mat-list>
+    </p>
+  </div>
 </ddaplib-main>
