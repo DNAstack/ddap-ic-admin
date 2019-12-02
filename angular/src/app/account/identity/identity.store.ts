@@ -3,9 +3,11 @@ import { Store } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
-import { Account } from './account.model';
 import { Identity } from './identity.model';
 import { IdentityService } from './identity.service';
+import { ic } from "../../shared/proto/ic-service";
+import Account = ic.v1.Account;
+import ConnectedAccount = ic.v1.ConnectedAccount;
 
 @Injectable({
   providedIn: 'root',
@@ -21,9 +23,9 @@ export class IdentityStore extends Store<Identity> {
     return this.state$
       .pipe(
         pluck('account'),
-        map((account: any) => {
+        map((account: Account) => {
           const username = account.profile.username;
-          const primaryAccount = account.connectedAccounts.find((connectedAccount: Account) => {
+          const primaryAccount: any = account.connectedAccounts.find((connectedAccount: ConnectedAccount) => {
             return connectedAccount.profile.username === username;
           });
           return primaryAccount.loginHint;

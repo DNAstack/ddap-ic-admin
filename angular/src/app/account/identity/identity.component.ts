@@ -4,12 +4,13 @@ import _get from 'lodash.get';
 import { Subscription } from 'rxjs';
 
 import { AccountLink } from './account-link.model';
-import { Account } from './account.model';
 import { Identity } from './identity.model';
 import { IdentityService } from './identity.service';
 import { IdentityStore } from './identity.store';
 import { identityProviderMetadataExists, identityProviders } from './providers.constants';
 import { VisaPassportService } from "ddap-common-lib";
+import { ic } from "../../shared/proto/ic-service";
+import IConnectedAccount = ic.v1.IConnectedAccount;
 
 @Component({
   templateUrl: './identity.component.html',
@@ -50,7 +51,7 @@ export class IdentityComponent implements OnInit {
       .subscribe();
   }
 
-  hasExpiringClaims(account: Account): boolean {
+  hasExpiringClaims(account: IConnectedAccount): boolean {
     if (!account || !account.passport) {
       return false;
     }
@@ -60,11 +61,11 @@ export class IdentityComponent implements OnInit {
     });
   }
 
-  getProvider(account: Account) {
+  getProvider(account: IConnectedAccount) {
     return _get(account, 'identityProvider.ui.label', account.provider);
   }
 
-  getPicture(account: any) {
+  getPicture(account: IConnectedAccount) {
     const username = _get(account, 'profile.username', account.provider);
     return _get(account, 'profile.picture', this.getDefaultProviderPicture(username));
   }
@@ -77,7 +78,7 @@ export class IdentityComponent implements OnInit {
     return scopes.includes('link');
   }
 
-  unlinkConnectedAccount(account: Account): void {
+  unlinkConnectedAccount(account: IConnectedAccount): void {
     this.identityService.unlinkConnectedAccount(account);
   }
 
@@ -88,12 +89,12 @@ export class IdentityComponent implements OnInit {
       });
   }
 
-  refreshClaims(account: Account): void {
+  refreshClaims(account: any): void {
     window.location.href = `${this.getLoginUrl()}&loginHint=${account.loginHint}`;
   }
 
   private getLoginUrl(): string {
-    const loginUrlSuffix = `login?scope=link+openid+account_admin+ga4gh_passport_v1+identities&redirectUri=/${this.realm}/identity`;
+    const loginUrlSuffix = `login?scope=link+openid+account_admin+ga4gh_passport_v1+identities&redirectUri=/${this.realm}/account/identity`;
     return `/api/v1alpha/${this.realm}/identity/${loginUrlSuffix}`;
   }
 

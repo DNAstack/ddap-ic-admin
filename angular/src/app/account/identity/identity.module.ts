@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { DdapVisaPassportModule } from 'ddap-common-lib';
 
-import { SharedModule } from '../shared/shared.module';
-
 import { IdentityRoutingModule } from './identity-routing.module';
 import { IdentityComponent } from './identity.component';
+import { AccountSharedModule } from "../shared/shared.module";
 
 @NgModule({
   declarations: [
     IdentityComponent,
   ],
   imports: [
-    SharedModule,
+    AccountSharedModule,
     IdentityRoutingModule,
     DdapVisaPassportModule,
   ],

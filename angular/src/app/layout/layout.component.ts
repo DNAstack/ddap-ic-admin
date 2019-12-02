@@ -4,11 +4,13 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
 
-import { IdentityService } from '../identity/identity.service';
-import { IdentityStore } from '../identity/identity.store';
-import { Profile } from '../identity/profile.model';
-import { UserAccess } from '../identity/user-access.model';
-import { Identity } from "../identity/identity.model";
+import { IdentityService } from '../account/identity/identity.service';
+import { IdentityStore } from '../account/identity/identity.store';
+import { UserAccess } from '../account/shared/auth/user-access.model';
+import { Identity } from "../account/identity/identity.model";
+import { AuthService } from "../account/shared/auth/auth.service";
+import { ic } from "../shared/proto/ic-service";
+import IAccountProfile = ic.v1.IAccountProfile;
 
 const refreshRepeatTimeoutInMs = 600000;
 
@@ -19,7 +21,7 @@ const refreshRepeatTimeoutInMs = 600000;
 export class LayoutComponent implements OnInit {
 
   isSandbox = false;
-  profile: Profile = null;
+  profile: IAccountProfile = null;
   isIcAdmin = false;
   realm: string;
   loginPath: string;
@@ -27,7 +29,8 @@ export class LayoutComponent implements OnInit {
   constructor(public loader: LoadingBarService,
               private activatedRoute: ActivatedRoute,
               private identityService: IdentityService,
-              private identityStore: IdentityStore) {
+              private identityStore: IdentityStore,
+              private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -65,7 +68,7 @@ export class LayoutComponent implements OnInit {
   }
 
   private determineAdminAccessForIc() {
-    this.identityService.getIcUserAccess()
+    this.authService.getIcUserAccess()
       .subscribe((icAccess: UserAccess) => {
         this.isIcAdmin = icAccess.isAdmin;
       });

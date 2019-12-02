@@ -5,6 +5,11 @@ export const routes: Routes = [
   { path: '',
     children: [
       {
+        path: 'identity',
+        loadChildren: () => import('./identity/identity.module')
+          .then(mod => mod.IdentityModule),
+      },
+      {
         path: 'sessions',
         loadChildren: () => import('./tokens/tokens.module')
           .then(mod => mod.TokensModule),

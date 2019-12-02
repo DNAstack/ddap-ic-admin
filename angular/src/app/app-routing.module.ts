@@ -12,11 +12,6 @@ const routes: Routes = [
     canActivate: [RealmGuard],
     children: [
       {
-        path: 'identity',
-        loadChildren: () => import('./identity/identity.module')
-          .then(mod => mod.IdentityModule),
-      },
-      {
         path: 'account',
         loadChildren: () => import('./account/account.module')
           .then(mod => mod.AccountModule),

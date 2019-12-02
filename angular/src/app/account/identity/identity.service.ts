@@ -6,12 +6,12 @@ import _get from 'lodash.get';
 import { Observable } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 import { AccountLink } from './account-link.model';
-import { Account } from './account.model';
 import { Identity } from './identity.model';
-import { UserAccess } from './user-access.model';
+import { ic } from "../../shared/proto/ic-service";
+import IConnectedAccount = ic.v1.IConnectedAccount;
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +21,6 @@ export class IdentityService {
   constructor(private http: HttpClient,
               private errorHandler: ErrorHandlerService,
               private activatedRoute: ActivatedRoute) {
-  }
-
-  getIcUserAccess(params = {}): Observable<UserAccess> {
-    return this.http.get<UserAccess>(`${environment.ddapApiUrl}/${realmIdPlaceholder}/identity/access`, {params});
   }
 
   getIdentity(params = {}): Observable<Identity> {
@@ -54,7 +50,7 @@ export class IdentityService {
       );
   }
 
-  unlinkConnectedAccount(account: Account) {
+  unlinkConnectedAccount(account: IConnectedAccount) {
     const subjectName = account.properties.subject;
     return this.http.delete<any>(`${environment.ddapApiUrl}/${realmIdPlaceholder}/identity/link/${subjectName}`)
       .subscribe(() => window.location.reload());
@@ -78,4 +74,5 @@ export class IdentityService {
         };
       });
   }
+
 }
