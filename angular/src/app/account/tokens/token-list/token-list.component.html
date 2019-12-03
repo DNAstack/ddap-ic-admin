@@ -2,9 +2,29 @@
 </ddaplib-header>
 
 <ddaplib-main>
-  <div>
-    <p *ngFor="let token of tokens$ | async">
-      {{ token }}
-    </p>
-  </div>
+  <ng-container *ngIf="(tokens$ | async) as tokensResponse">
+    <mat-accordion class="ddap-connected-accounts">
+      <h2>Active Tokens</h2>
+      <mat-expansion-panel *ngFor="let token of tokensResponse.tokens">
+        <mat-expansion-panel-header collapsedHeight="5rem"
+                                    expandedHeight="5rem">
+          <mat-panel-title>{{ token.name }}</mat-panel-title>
+          <mat-panel-description>{{ token.metadata.client_desc }}</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <json-editor [options]="{ mode: 'view', mainMenuBar: false, navigationBar: false, statusBar: false }"
+                     [data]="token">
+        </json-editor>
+
+        <mat-action-row>
+          <button mat-button
+                  color="warn"
+                  class="uppercase"
+                  (click)="revokeToken(token)">
+            Revoke Token
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
 </ddaplib-main>

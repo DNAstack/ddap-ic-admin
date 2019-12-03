@@ -5,6 +5,7 @@ import { TokensService } from "../tokens.service";
 import { Observable } from "rxjs";
 import { tokens } from "../../../shared/proto/token-service";
 import ListTokensResponse = tokens.v1.ListTokensResponse;
+import IToken = tokens.v1.IToken;
 
 @Component({
   selector: 'ddap-token-list',
@@ -21,6 +22,10 @@ export class TokenListComponent implements OnInit {
 
   ngOnInit() {
     this.tokens$ = this.tokenService.getTokens({ pageSize: 20 });
+  }
+
+  revokeToken(token: IToken) {
+    console.log(token);
   }
 
 }
