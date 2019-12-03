@@ -3,7 +3,7 @@
 
 <ddaplib-main>
   <ng-container *ngIf="(tokens$ | async) as tokensResponse">
-    <mat-accordion class="ddap-connected-accounts">
+    <mat-accordion>
       <h2>Active Tokens</h2>
       <mat-expansion-panel *ngFor="let token of tokensResponse.tokens">
         <mat-expansion-panel-header collapsedHeight="5rem"
@@ -20,6 +20,7 @@
           <button mat-button
                   color="warn"
                   class="uppercase"
+                  data-se="btn-revoke-token"
                   (click)="revokeToken(token)">
             Revoke Token
           </button>

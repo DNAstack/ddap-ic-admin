@@ -6,10 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import tokens.v1.TokenService;
 
@@ -37,16 +34,29 @@ public class TokenController {
                                                        @RequestParam(required = false) String parent,
                                                        @RequestParam(required = false) Integer pageSize,
                                                        @RequestParam(required = false) String pageToken) {
-        Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.DAM, CookieKind.REFRESH));
+        Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC));
 
-        TokenService.ListTokensRequest tokensRequest = TokenService.ListTokensRequest.newBuilder()
+        TokenService.ListTokensRequest listRequest = TokenService.ListTokensRequest.newBuilder()
             .setParent(parent != null ? parent : "")
             .setPageSize(pageSize != null ? pageSize : 20)
             .setPageToken(pageToken != null ? pageToken : "")
             .build();
-        Mono<TokenService.ListTokensResponse> tokensMono = tokenClient.getTokens(tokens.get(CookieKind.IC), tokensRequest);
+        Mono<TokenService.ListTokensResponse> tokensMono = tokenClient.getTokens(tokens.get(CookieKind.IC), listRequest);
 
         return tokensMono.flatMap(t -> Mono.just(ResponseEntity.ok().body(t)));
+    }
+
+    @DeleteMapping(value = "/{tokenId}")
+    public Mono<? extends ResponseEntity<?>> revokeToken(ServerHttpRequest request,
+                                                       @PathVariable String tokenId) {
+        Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC));
+
+        TokenService.DeleteTokenRequest deleteRequest = TokenService.DeleteTokenRequest.newBuilder()
+            .setName(tokenId)
+            .build();
+        Mono<Object> tokensMono = tokenClient.revokeToken(tokens.get(CookieKind.IC), deleteRequest);
+
+        return tokensMono.flatMap(t -> Mono.just(ResponseEntity.noContent().build()));
     }
 
 }

@@ -18,4 +18,8 @@ export class TokensService {
     return this.http.get<any>(`${environment.ddapApiUrl}/tokens`, { params });
   }
 
+  revokeToken(tokenId: string): Observable<null> {
+    return this.http.delete<any>(`${environment.ddapApiUrl}/tokens/${tokenId}`);
+  }
+
 }

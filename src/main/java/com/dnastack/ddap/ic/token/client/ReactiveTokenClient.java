@@ -47,4 +47,21 @@ public class ReactiveTokenClient {
             .flatMap(json -> ProtobufDeserializer.fromJson(json, TokenService.ListTokensResponse.getDefaultInstance()));
     }
 
+    public Mono<Object> revokeToken(String icToken, TokenService.DeleteTokenRequest request) {
+        final UriTemplate template = new UriTemplate("/tokens/{tokenName}" +
+            "?client_id={clientId}" +
+            "&client_secret={clientSecret}");
+        final Map<String, Object> variables = new HashMap<>();
+        variables.put("clientId", idpProperties.getClientId());
+        variables.put("clientSecret", idpProperties.getClientSecret());
+        variables.put("tokenName", request.getName());
+
+        return WebClientFactory.getWebClient()
+            .delete()
+            .uri(idpProperties.getBaseUrl().resolve(template.expand(variables)))
+            .header(AUTHORIZATION, "Bearer " + icToken)
+            .retrieve()
+            .bodyToMono(Object.class);
+    }
+
 }
