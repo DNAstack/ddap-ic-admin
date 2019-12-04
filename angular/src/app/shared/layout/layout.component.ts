@@ -56,7 +56,15 @@ export class LayoutComponent implements OnInit {
       .subscribe();
   }
 
-  isChildPage() {
+  isUsersRouteActive(): boolean {
+    const adminRoute = this.activatedRoute.firstChild;
+    if (adminRoute && adminRoute.routeConfig.path === 'admin') {
+      return adminRoute.firstChild.routeConfig.path === 'users';
+    }
+    return false;
+  }
+
+  isChildPage(): boolean {
     return !!this.activatedRoute.firstChild;
   }
 

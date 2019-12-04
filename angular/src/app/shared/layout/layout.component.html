@@ -71,7 +71,7 @@
          class="accordion-wrapper">
       <mat-accordion [multi]="false"
                      *ngIf="isIcAdmin">
-        <mat-expansion-panel [expanded]="false"
+        <mat-expansion-panel [expanded]="isUsersRouteActive()"
                              [disabled]="false"
                              [hideToggle]="false"
                              data-se="nav-user-panel">
