@@ -3,6 +3,21 @@
 
 <ddaplib-main>
   <ng-container *ngIf="(users$ | async) as usersResponse">
+
+    <mat-form-field>
+      <input matInput
+             placeholder="Search"
+             [formControl]="query"
+             data-se="inp-search">
+    </mat-form-field>
+    <button mat-button
+            color="primary"
+            class="uppercase"
+            data-se="btn-search"
+            (click)="refreshUsers()">
+      Search
+    </button>
+
     <mat-accordion>
       <mat-expansion-panel *ngFor="let user of usersResponse['Resources']">
         <mat-expansion-panel-header collapsedHeight="5rem"

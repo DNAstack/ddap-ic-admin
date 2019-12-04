@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from '@angular/router';
 
 import { TokensService } from "../tokens.service";
 import { BehaviorSubject, Observable } from "rxjs";
@@ -19,8 +18,7 @@ export class TokenListComponent implements OnInit {
 
   private readonly refreshTokens$ = new BehaviorSubject<ListTokensResponse>(undefined);
 
-  constructor(protected route: ActivatedRoute,
-              private tokenService: TokensService) {
+  constructor(private tokenService: TokensService) {
   }
 
   ngOnInit() {

@@ -1,9 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { UsersService } from "../../../shared/users/users.service";
 import { scim } from "../../../shared/proto/user-service";
 import IListUsersResponse = scim.v2.IListUsersResponse;
 import IUser = scim.v2.IUser;
+import { switchMap } from "rxjs/operators";
+import { FormControl } from "@angular/forms";
 
 
 @Component({
@@ -13,13 +15,25 @@ import IUser = scim.v2.IUser;
 })
 export class UserListComponent implements OnInit {
 
+  query: FormControl = new FormControl('');
   users$: Observable<IListUsersResponse>;
+
+  private readonly refreshUsers$ = new BehaviorSubject<any>(undefined);
 
   constructor(private userService: UsersService) {
   }
 
   ngOnInit() {
-    this.users$ = this.userService.getUsers();
+    this.users$ = this.refreshUsers$.pipe(
+      switchMap((params) => this.userService.getUsers(params))
+    );
+  }
+
+  refreshUsers() {
+    const query = this.query.value;
+    this.refreshUsers$.next({
+      filter: `id co "${query}" Or name.formatted co "${query}" Or name.givenName co "${query}" Or name.familyName co "${query}"`
+    })
   }
 
 }
