@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormArray, FormGroup } from "@angular/forms";
 import { PersonalInfoFormBuilder } from "./personal-info-form-builder.service";
+import { PatchUserInfo } from "../patch-user-info.model";
 
 @Component({
   selector: 'ddap-personal-info-form',
@@ -24,6 +25,12 @@ export class PersonalInfoFormComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.personalInfoFormBuilder.buildForm(this.user);
+  }
+
+  getModel(): PatchUserInfo {
+    const { name } = this.form.value;
+    // TODO: map to patch model
+    return null;
   }
 
 }

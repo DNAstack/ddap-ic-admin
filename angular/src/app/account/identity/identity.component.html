@@ -11,6 +11,16 @@
   <ng-template #personalInfo>
     <ddap-personal-info-form [user]="userInfo">
     </ddap-personal-info-form>
+
+    <div class="flex align-horizontal--end">
+      <button mat-raised-button
+              color="primary"
+              class="uppercase"
+              data-se="btn-save-personal-info"
+              (click)="updatePersonalInfo()">
+        Update Personal Information
+      </button>
+    </div>
   </ng-template>
 
   <mat-accordion class="ddap-connected-accounts">
@@ -71,7 +81,7 @@
         <mat-icon class="icon icon-warning"></mat-icon>
         <span>To connect accounts, click the button below to authorize account administration</span>
       </p>
-      <button mat-raised-button
+      <button mat-stroked-button
               color="primary"
               class="uppercase"
               data-se="btn-relogin"

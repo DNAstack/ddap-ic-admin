@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from '@angular/router';
 import _get from 'lodash.get';
 import { Subscription } from 'rxjs';
@@ -12,12 +12,16 @@ import { VisaPassportService } from "ddap-common-lib";
 import { ic } from "../../shared/proto/ic-service";
 import IConnectedAccount = ic.v1.IConnectedAccount;
 import { PersonalInfoService } from "../shared/personal-info/personal-info.service";
+import { PersonalInfoFormComponent } from "../shared/personal-info/personal-info-form/personal-info-form.component";
 
 @Component({
   templateUrl: './identity.component.html',
   styleUrls: ['./identity.component.scss'],
 })
 export class IdentityComponent implements OnInit {
+
+  @ViewChild(PersonalInfoFormComponent, { static: false })
+  personalInfoForm: PersonalInfoFormComponent;
 
   identity: Identity;
   availableAccounts: AccountLink[];
@@ -40,7 +44,7 @@ export class IdentityComponent implements OnInit {
       this.realm = params.realmId;
     });
 
-    this.personalInfoService.getUserInformation()
+    this.personalInfoService.getLoggedInUserInformation()
       .subscribe((userInfo) => {
         console.log(userInfo);
         this.userInfo = userInfo;
@@ -100,6 +104,11 @@ export class IdentityComponent implements OnInit {
 
   refreshClaims(account: any): void {
     window.location.href = `${this.getLoginUrl()}&loginHint=${account.loginHint}`;
+  }
+
+  updatePersonalInfo(): void {
+    const userInfo = this.personalInfoForm.getModel();
+    this.personalInfoService.patchLoggedInUserInformation(userInfo);
   }
 
   private getLoginUrl(): string {

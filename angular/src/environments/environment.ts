@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   ddapApiUrl: 'http://localhost:8086/api/v1alpha',
+  idpBaseUrl: 'http://localhost:8086/identity',
   idpApiUrl: 'http://localhost:8086/identity/v1alpha',
 };
 
