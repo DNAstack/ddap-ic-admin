@@ -6,9 +6,9 @@ set -x
 COMMON_PROTO_FILE=../shared/protos/proto/common/v1/common.proto
 SRC_IC_PROTO_FILE=../shared/protos/ic_service.proto
 OUT_IC_FILE=ic-service
-SRC_TOKENS_PROTO_FILE=../shared/protos/tokens.proto
+SRC_TOKENS_PROTO_FILE=../shared/protos/token_service.proto
 OUT_TOKENS_FILE=token-service
-SRC_USERS_PROTO_FILE=../shared/protos/users.proto
+SRC_USERS_PROTO_FILE=../shared/protos/user_service.proto
 OUT_USERS_FILE=user-service
 TMP_DIR="./tmp"
 TMP_PROTO_FILE=${TMP_DIR}/temporary.proto
