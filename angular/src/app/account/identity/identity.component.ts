@@ -15,6 +15,7 @@ import { PersonalInfoFormComponent } from "../../shared/users/personal-info-form
 import { UsersService } from "../../shared/users/users.service";
 import { scim } from "../../shared/proto/user-service";
 import IUser = scim.v2.IUser;
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   templateUrl: './identity.component.html',
@@ -37,7 +38,8 @@ export class IdentityComponent implements OnInit {
               private identityService: IdentityService,
               private identityStore: IdentityStore,
               private visaPassportService: VisaPassportService,
-              private usersService: UsersService) {
+              private usersService: UsersService,
+              private snackBar: MatSnackBar) {
 
   }
 
@@ -48,7 +50,6 @@ export class IdentityComponent implements OnInit {
 
     this.usersService.getLoggedInUser()
       .subscribe((userInfo: IUser) => {
-        console.log(userInfo);
         this.userInfo = userInfo;
       });
 
@@ -109,8 +110,15 @@ export class IdentityComponent implements OnInit {
   }
 
   updatePersonalInfo(): void {
-    const userInfo = this.personalInfoForm.getModel();
-    this.usersService.patchLoggedInUser(userInfo);
+    const change = this.personalInfoForm.getModel();
+    this.usersService.patchLoggedInUser(change)
+      .subscribe(() => this.openSnackBar("Successfully update personal information"));
+  }
+
+  private openSnackBar(message) {
+    this.snackBar.open(message, null, {
+      duration: 3000,
+    });
   }
 
   private getLoginUrl(): string {

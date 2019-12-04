@@ -1,28 +1,17 @@
 import _uniq from 'lodash.uniq';
 
-export function objectToArray(dto) {
-  const bar = Object
-    .keys(dto)
-    .map((key) => {
-      return {
-        name: key,
-        value: dto[key],
-      };
-    });
-
-  return bar;
-}
-
 export function flatten<T>(arrayOfArrays: T[][]): T[] {
   return arrayOfArrays.reduce((accumulator, currentVal) => accumulator.concat(...currentVal), []);
 }
 
-export function unique<T>(arrayOfArrays: T[][]): T[] {
-  return _uniq(flatten(arrayOfArrays));
+// From: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+export function flatDeep(arr, d = 1) {
+  return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
+               : arr.slice();
 }
 
-export function isEmptyObject(obj: object): boolean {
-  return (obj && (Object.keys(obj).length === 0));
+export function unique<T>(arrayOfArrays: T[][]): T[] {
+  return _uniq(flatten(arrayOfArrays));
 }
 
 /**
