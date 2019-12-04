@@ -56,7 +56,6 @@ export class PersonalInfoFormComponent implements Form, OnInit {
       .map((path) => {
         const newValue = _get(formValues, path);
         if (!newValue || newValue === '') {
-          console.log(newValue);
           return this.getPatchOperationModel(PathOperation.remove, path, '');
         }
         return this.getPatchOperationModel(PathOperation.replace, path, newValue);

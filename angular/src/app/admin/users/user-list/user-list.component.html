@@ -4,7 +4,7 @@
 <ddaplib-main>
   <ng-container *ngIf="(users$ | async) as usersResponse">
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let user of usersResponse.resources">
+      <mat-expansion-panel *ngFor="let user of usersResponse['Resources']">
         <mat-expansion-panel-header collapsedHeight="5rem"
                                     expandedHeight="5rem">
           <mat-panel-title>{{ user.name.formatted }}</mat-panel-title>
