@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material/checkbox';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { DdapAdminModule, DdapFormModule } from "ddap-common-lib";

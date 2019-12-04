@@ -11,6 +11,7 @@ import { identityProviderMetadataExists, identityProviders } from './providers.c
 import { VisaPassportService } from "ddap-common-lib";
 import { ic } from "../../shared/proto/ic-service";
 import IConnectedAccount = ic.v1.IConnectedAccount;
+import { PersonalInfoService } from "../shared/personal-info/personal-info.service";
 
 @Component({
   templateUrl: './identity.component.html',
@@ -24,11 +25,13 @@ export class IdentityComponent implements OnInit {
 
   realm: string;
   displayScopeWarning = false;
+  userInfo: any;
 
   constructor(private activatedRoute: ActivatedRoute,
               private identityService: IdentityService,
               private identityStore: IdentityStore,
-              private visaPassportService: VisaPassportService) {
+              private visaPassportService: VisaPassportService,
+              private personalInfoService: PersonalInfoService) {
 
   }
 
@@ -36,6 +39,12 @@ export class IdentityComponent implements OnInit {
     this.activatedRoute.root.firstChild.params.subscribe((params) => {
       this.realm = params.realmId;
     });
+
+    this.personalInfoService.getUserInformation()
+      .subscribe((userInfo) => {
+        console.log(userInfo);
+        this.userInfo = userInfo;
+      });
 
     this.identityStore.state$
       .subscribe((identity: Identity) => {

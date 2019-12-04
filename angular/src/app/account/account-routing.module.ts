@@ -14,11 +14,6 @@ export const routes: Routes = [
         loadChildren: () => import('./tokens/tokens.module')
           .then(mod => mod.TokensModule),
       },
-      {
-        path: 'info',
-        loadChildren: () => import('./information/information.module')
-          .then(mod => mod.InformationModule),
-      },
     ]},
 ];
 

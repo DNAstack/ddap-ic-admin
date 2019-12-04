@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class InformationService {
+export class PersonalInfoService {
+
   constructor(private http: HttpClient,
               private errorHandler: ErrorHandlerService) {
   }
@@ -17,4 +18,5 @@ export class InformationService {
         this.errorHandler.notifyOnError(`Can't load User information.`)
       );
   }
+
 }
