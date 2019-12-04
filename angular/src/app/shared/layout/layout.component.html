@@ -50,22 +50,42 @@
           </div>
         </mat-list-item>
       </a>
-
-      <ng-container *ngIf="profile">
-        <mat-list-item [routerLink]="['account', 'identity']"
-                       [routerLinkActive]="['active-nav-link']"
-                       data-se="nav-identity">
-          <mat-icon class="icon icon-identity"></mat-icon>
-          <h4 mat-line>My Identity</h4>
-        </mat-list-item>
-        <mat-list-item [routerLink]="['account', 'sessions']"
-                       [routerLinkActive]="['active-nav-link']"
-                       data-se="nav-identity">
-          <mat-icon class="icon icon-clients"></mat-icon>
-          <h4 mat-line>Sessions</h4>
-        </mat-list-item>
-      </ng-container>
     </mat-nav-list>
+
+    <ng-container *ngIf="profile" class="accordian-wrapper">
+      <mat-accordion [multi]="false">
+        <mat-expansion-panel [expanded]="true"
+                             [disabled]="true"
+                             [hideToggle]="true"
+                             data-se="nav-account-management">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Account Managemenet
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list>
+            <mat-list-item [routerLink]="['account', 'info']"
+              [routerLinkActive]="['active-nav-link']"
+              data-se="nav-account-info">
+              <mat-icon class="icon icon-identity"></mat-icon>
+              <h4 mat-line>Account Information</h4>
+            </mat-list-item>
+            <mat-list-item [routerLink]="['account', 'identity']"
+              [routerLinkActive]="['active-nav-link']"
+              data-se="nav-identity">
+              <mat-icon class="icon icon-identity"></mat-icon>
+              <h4 mat-line>Linked Identities</h4>
+            </mat-list-item>
+            <mat-list-item [routerLink]="['account', 'sessions']"
+              [routerLinkActive]="['active-nav-link']"
+              data-se="nav-sessions">
+              <mat-icon class="icon icon-clients"></mat-icon>
+              <h4 mat-line>Sessions</h4>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </ng-container>
 
     <div *ngIf="profile"
          class="accordion-wrapper">

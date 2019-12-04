@@ -1,0 +1,29 @@
+<ddaplib-header label="Account Information"
+                [icon]="'identity'">
+</ddaplib-header>
+<ddaplib-main>
+  <mat-card>
+    <mat-card-content>
+      <mat-list>
+        <ng-container *ngFor="let accountDetail of accountInfo | keyvalue">
+          <mat-list-item *ngIf="canDisplayDetail(accountDetail.value)" class="item">
+            <div class="item-key">{{ accountDetail.key }}</div>
+            <div class="item-value">
+              {{ accountDetail.value }}
+            </div>
+          </mat-list-item>
+        </ng-container>
+        <mat-list-item class="item" *ngIf="accountInfo['emails'] && accountInfo['emails'].length > 0">
+          <div class="item-key">Emails</div>
+          <div class="item-value">
+            {{ transformEmails(accountInfo['emails']) }}
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button [routerLink]="['edit']" mat-button>Edit</button>
+    </mat-card-actions>
+  </mat-card>
+</ddaplib-main>
+
