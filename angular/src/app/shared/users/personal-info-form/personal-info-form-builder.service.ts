@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import _get from 'lodash.get';
-import { scim } from "../../proto/user-service";
 import IUser = scim.v2.IUser;
 import IAttribute = scim.v2.IAttribute;
+import { scim } from "../../proto/user-service";
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class PersonalInfoFormBuilder {
   constructor(private formBuilder: FormBuilder) {
   }
 
-  buildForm(user?: IUser): FormGroup {
+  buildForm(adminMode: boolean, user?: IUser): FormGroup {
     return this.formBuilder.group({
       name: this.formBuilder.group({
         formatted: [_get(user, 'name.formatted')],
@@ -21,7 +21,7 @@ export class PersonalInfoFormBuilder {
         givenName: [_get(user, 'name.givenName')],
         middleName: [_get(user, 'name.middleName')],
       }),
-      active: new FormControl({ value: _get(user, 'active'), disabled: true }),
+      active: new FormControl({ value: _get(user, 'active'), disabled: !adminMode }),
       emails: this.buildEmailsForm(_get(user, 'emails')),
     });
   }

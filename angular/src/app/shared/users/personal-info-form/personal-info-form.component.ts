@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormArray, FormGroup } from "@angular/forms";
 import { PersonalInfoFormBuilder } from "./personal-info-form-builder.service";
-import { scim } from "../../proto/user-service";
 import IPatch = scim.v2.IPatch;
 import { Form } from "ddap-common-lib";
+import { scim } from "../../proto/user-service";
 
 @Component({
   selector: 'ddap-personal-info-form',
@@ -18,6 +18,8 @@ export class PersonalInfoFormComponent implements Form, OnInit {
 
   @Input()
   user?: any;
+  @Input()
+  adminMode: boolean;
 
   form: FormGroup;
 
@@ -26,7 +28,7 @@ export class PersonalInfoFormComponent implements Form, OnInit {
   }
 
   ngOnInit() {
-    this.form = this.personalInfoFormBuilder.buildForm(this.user);
+    this.form = this.personalInfoFormBuilder.buildForm(this.adminMode, this.user);
   }
 
   getModel(): IPatch {
