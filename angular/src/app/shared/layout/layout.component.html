@@ -71,6 +71,30 @@
          class="accordion-wrapper">
       <mat-accordion [multi]="false"
                      *ngIf="isIcAdmin">
+        <mat-expansion-panel [expanded]="false"
+                             [disabled]="false"
+                             [hideToggle]="false"
+                             data-se="nav-user-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span>User Administration</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list>
+            <mat-list-item [routerLink]="['admin', 'users']"
+                           [routerLinkActive]="['active-nav-link']"
+                           data-se="nav-users">
+              <mat-icon class="icon icon-identities"></mat-icon>
+              <h4 mat-line>Users</h4>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div *ngIf="profile"
+         class="accordion-wrapper">
+      <mat-accordion [multi]="false"
+                     *ngIf="isIcAdmin">
         <mat-expansion-panel [expanded]="true"
                              [disabled]="true"
                              [hideToggle]="true"

@@ -11,8 +11,10 @@ import { identityProviderMetadataExists, identityProviders } from './providers.c
 import { VisaPassportService } from "ddap-common-lib";
 import { ic } from "../../shared/proto/ic-service";
 import IConnectedAccount = ic.v1.IConnectedAccount;
-import { PersonalInfoService } from "../shared/personal-info/personal-info.service";
-import { PersonalInfoFormComponent } from "../shared/personal-info/personal-info-form/personal-info-form.component";
+import { PersonalInfoFormComponent } from "../../shared/users/personal-info-form/personal-info-form.component";
+import { UsersService } from "../../shared/users/users.service";
+import { scim } from "../../shared/proto/user-service";
+import IUser = scim.v2.IUser;
 
 @Component({
   templateUrl: './identity.component.html',
@@ -29,13 +31,13 @@ export class IdentityComponent implements OnInit {
 
   realm: string;
   displayScopeWarning = false;
-  userInfo: any;
+  userInfo: IUser;
 
   constructor(private activatedRoute: ActivatedRoute,
               private identityService: IdentityService,
               private identityStore: IdentityStore,
               private visaPassportService: VisaPassportService,
-              private personalInfoService: PersonalInfoService) {
+              private usersService: UsersService) {
 
   }
 
@@ -44,8 +46,8 @@ export class IdentityComponent implements OnInit {
       this.realm = params.realmId;
     });
 
-    this.personalInfoService.getLoggedInUserInformation()
-      .subscribe((userInfo) => {
+    this.usersService.getLoggedInUser()
+      .subscribe((userInfo: IUser) => {
         console.log(userInfo);
         this.userInfo = userInfo;
       });
@@ -108,7 +110,7 @@ export class IdentityComponent implements OnInit {
 
   updatePersonalInfo(): void {
     const userInfo = this.personalInfoForm.getModel();
-    this.personalInfoService.patchLoggedInUserInformation(userInfo);
+    this.usersService.patchLoggedInUser(userInfo);
   }
 
   private getLoginUrl(): string {

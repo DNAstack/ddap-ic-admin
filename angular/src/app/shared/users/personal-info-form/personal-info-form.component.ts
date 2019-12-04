@@ -1,14 +1,16 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormArray, FormGroup } from "@angular/forms";
 import { PersonalInfoFormBuilder } from "./personal-info-form-builder.service";
-import { PatchUserInfo } from "../patch-user-info.model";
+import { scim } from "../../proto/user-service";
+import IPatch = scim.v2.IPatch;
+import { Form } from "ddap-common-lib";
 
 @Component({
   selector: 'ddap-personal-info-form',
   templateUrl: './personal-info-form.component.html',
   styleUrls: ['./personal-info-form.component.scss'],
 })
-export class PersonalInfoFormComponent implements OnInit {
+export class PersonalInfoFormComponent implements Form, OnInit {
 
   get emails() {
     return this.form.get('emails') as FormArray;
@@ -27,10 +29,18 @@ export class PersonalInfoFormComponent implements OnInit {
     this.form = this.personalInfoFormBuilder.buildForm(this.user);
   }
 
-  getModel(): PatchUserInfo {
+  getModel(): IPatch {
     const { name } = this.form.value;
     // TODO: map to patch model
     return null;
+  }
+
+  getAllForms(): FormGroup[] {
+    return [this.form];
+  }
+
+  isValid(): boolean {
+    return this.form.valid;
   }
 
 }

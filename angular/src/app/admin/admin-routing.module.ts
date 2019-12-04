@@ -7,6 +7,11 @@ export const routes: Routes = [
     loadChildren: () => import('./identity-concentrator/identity-concentrator.module')
       .then(mod => mod.IdentityConcentratorModule),
   },
+  {
+    path: 'users',
+    loadChildren: () => import('./users/users.module')
+      .then(mod => mod.UsersModule),
+  },
 ];
 
 @NgModule({

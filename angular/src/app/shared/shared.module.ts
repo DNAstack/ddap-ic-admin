@@ -18,10 +18,14 @@ import {
 } from './realm/realm-change-confirmation-dialog/realm-change-confirmation-dialog.component';
 import { RealmInputComponent } from './realm/realm-input/realm-input.component';
 import { LayoutComponent } from "./layout/layout.component";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { PersonalInfoFormComponent } from "./users/personal-info-form/personal-info-form.component";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
     LayoutComponent,
+    PersonalInfoFormComponent,
     RealmInputComponent,
     RealmChangeConfirmationDialogComponent,
   ],
@@ -31,6 +35,7 @@ import { LayoutComponent } from "./layout/layout.component";
     FormsModule,
     ReactiveFormsModule,
 
+    MatCheckboxModule,
     MatDialogModule,
     MatExpansionModule,
     MatFormFieldModule,
@@ -40,6 +45,7 @@ import { LayoutComponent } from "./layout/layout.component";
     MatProgressBarModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatTooltipModule,
 
     DdapLayoutModule,
   ],
@@ -52,6 +58,7 @@ import { LayoutComponent } from "./layout/layout.component";
     MatSnackBarModule,
 
     DdapLayoutModule,
+    PersonalInfoFormComponent,
     RealmInputComponent,
   ],
 })

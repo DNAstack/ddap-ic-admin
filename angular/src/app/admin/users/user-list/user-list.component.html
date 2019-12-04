@@ -1,0 +1,30 @@
+<ddaplib-header icon="identities" label="Users">
+</ddaplib-header>
+
+<ddaplib-main>
+  <ng-container *ngIf="(users$ | async) as usersResponse">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let user of usersResponse.resources">
+        <mat-expansion-panel-header collapsedHeight="5rem"
+                                    expandedHeight="5rem">
+          <mat-panel-title>{{ user.name.formatted }}</mat-panel-title>
+          <mat-panel-description>{{ user.id }}</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <json-editor [options]="{ mode: 'view', mainMenuBar: false, navigationBar: false, statusBar: false }"
+                     [data]="user">
+        </json-editor>
+
+        <mat-action-row>
+          <button mat-button
+                  color="primary"
+                  class="uppercase"
+                  data-se="btn-edit-user"
+                  [routerLink]="[user.id]">
+            Edit User
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+</ddaplib-main>
