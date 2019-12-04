@@ -3,10 +3,9 @@ import { FormArray, FormGroup } from "@angular/forms";
 import { PersonalInfoFormBuilder } from "./personal-info-form-builder.service";
 import _get from 'lodash.get';
 import IPatch = scim.v2.IPatch;
-import { Form } from "ddap-common-lib";
+import { Form, flatDeep } from "ddap-common-lib";
 import { scim } from "../../proto/user-service";
 import Patch = scim.v2.Patch;
-import { flatDeep } from "../../util";
 import IOperation = scim.v2.Patch.IOperation;
 import Operation = scim.v2.Patch.Operation;
 
