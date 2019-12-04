@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormArray, FormGroup } from "@angular/forms";
 import { PersonalInfoFormBuilder } from "./personal-info-form-builder.service";
-import _get from 'lodash.get';
-import IPatch = scim.v2.IPatch;
-import { Form, flatDeep } from "ddap-common-lib";
+import _get from "lodash.get";
+import _isEqual from "lodash.isequal";
+import { flatDeep, Form } from "ddap-common-lib";
 import { scim } from "../../proto/user-service";
+import { PathOperation } from "../path-operation.enum";
+import IPatch = scim.v2.IPatch;
 import Patch = scim.v2.Patch;
 import IOperation = scim.v2.Patch.IOperation;
 import Operation = scim.v2.Patch.Operation;
@@ -50,9 +52,13 @@ export class PersonalInfoFormComponent implements Form, OnInit {
       name: formValues.name
     });
     const operations: IOperation[] = pathsToFields
-      .filter((path) => _get(formValues, path))
+      .filter((path) => this.valueHasChanged(path, _get(formValues, path)))
       .map((path) => {
-        return this.getPatchOperationModel(path, _get(formValues, path));
+        const newValue = _get(formValues, path);
+        if (!newValue || newValue === '') {
+          return this.getPatchOperationModel(PathOperation.remove, path, newValue);
+        }
+        return this.getPatchOperationModel(PathOperation.replace, path, newValue);
       });
 
     return Patch.create({
@@ -61,9 +67,14 @@ export class PersonalInfoFormComponent implements Form, OnInit {
     });
   }
 
-  private getPatchOperationModel(path: string, value: string): IOperation {
+  private valueHasChanged(pathToValue, newValue) {
+    const previousValue = _get(this.user, pathToValue);
+    return !_isEqual(previousValue, newValue);
+  }
+
+  private getPatchOperationModel(operation: PathOperation, path: string, value: string): IOperation {
     return Operation.create({
-      op: "replace",
+      op: operation,
       path,
       value: `${value}`,
     });
