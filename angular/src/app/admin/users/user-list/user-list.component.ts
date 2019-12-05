@@ -29,11 +29,22 @@ export class UserListComponent implements OnInit {
     );
   }
 
+  resetQueryValue(searchInputVisible) {
+    if (!searchInputVisible) {
+      this.query.reset();
+      this.refreshUsers();
+    }
+  }
+
   refreshUsers() {
     const query = this.query.value;
-    this.refreshUsers$.next({
-      filter: `id co "${query}" Or name.formatted co "${query}" Or name.givenName co "${query}" Or name.familyName co "${query}"`
-    })
+    if (query && query != '') {
+      this.refreshUsers$.next({
+        filter: `id co "${query}" Or name.formatted co "${query}" Or name.givenName co "${query}" Or name.familyName co "${query}"`
+      })
+    } else {
+      this.refreshUsers$.next(undefined);
+    }
   }
 
 }

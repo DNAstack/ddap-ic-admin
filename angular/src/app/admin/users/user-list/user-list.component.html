@@ -1,23 +1,27 @@
-<ddaplib-header icon="identities" label="Users">
-</ddaplib-header>
-
-<ddaplib-main>
-  <ng-container *ngIf="(users$ | async) as usersResponse">
-
+<ddaplib-searchable-header icon="identities"
+                           label="Users"
+                           [isSearchPage]="false"
+                           [searchInputVisible]="false"
+                           (searchOpenChange)="resetQueryValue($event)">
+  <form class="flex vertical-center">
     <mat-form-field>
       <input matInput
-             placeholder="Search"
+             placeholder="Type search query..."
              [formControl]="query"
              data-se="inp-search">
     </mat-form-field>
-    <button mat-button
-            color="primary"
-            class="uppercase"
+    <button color="primary"
+            mat-icon-button
+            type="submit"
             data-se="btn-search"
             (click)="refreshUsers()">
-      Search
+      <mat-icon class="icon icon-search"></mat-icon>
     </button>
+  </form>
+</ddaplib-searchable-header>
 
+<ddaplib-main>
+  <ng-container *ngIf="(users$ | async) as usersResponse">
     <mat-accordion>
       <mat-expansion-panel *ngFor="let user of usersResponse['Resources']">
         <mat-expansion-panel-header collapsedHeight="5rem"
