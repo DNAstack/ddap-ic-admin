@@ -3,9 +3,9 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { UsersService } from "../../../shared/users/users.service";
 import { scim } from "../../../shared/proto/user-service";
 import IListUsersResponse = scim.v2.IListUsersResponse;
-import IUser = scim.v2.IUser;
 import { switchMap } from "rxjs/operators";
 import { FormControl } from "@angular/forms";
+import { PageEvent } from "@angular/material/paginator";
 
 
 @Component({
@@ -18,7 +18,8 @@ export class UserListComponent implements OnInit {
   query: FormControl = new FormControl('');
   users$: Observable<IListUsersResponse>;
 
-  private readonly refreshUsers$ = new BehaviorSubject<any>(undefined);
+  private readonly defaultPageSize = 25;
+  private readonly refreshUsers$ = new BehaviorSubject<any>({ count: this.defaultPageSize });
 
   constructor(private userService: UsersService) {
   }
@@ -38,13 +39,20 @@ export class UserListComponent implements OnInit {
 
   refreshUsers() {
     const query = this.query.value;
+    const params = this.refreshUsers$.getValue();
     if (query && query != '') {
-      this.refreshUsers$.next({
-        filter: `id co "${query}" Or name.formatted co "${query}" Or name.givenName co "${query}" Or name.familyName co "${query}"`
-      })
+      params.filter = `id co "${query}" Or name.formatted co "${query}" Or name.givenName co "${query}" Or name.familyName co "${query}"`;
+      this.refreshUsers$.next(params)
     } else {
-      this.refreshUsers$.next(undefined);
+      delete params.filter;
+      this.refreshUsers$.next(params);
     }
+  }
+
+  changePage(page: PageEvent) {
+    const params = this.refreshUsers$.getValue();
+    params.count = page.pageSize;
+    this.refreshUsers$.next(params);
   }
 
 }
