@@ -19,7 +19,7 @@ export class UserListComponent implements OnInit {
   users$: Observable<IListUsersResponse>;
 
   private readonly defaultPageSize = 25;
-  private readonly refreshUsers$ = new BehaviorSubject<any>({ count: this.defaultPageSize });
+  private readonly refreshUsers$ = new BehaviorSubject<any>({ startIndex: 1, count: this.defaultPageSize });
 
   constructor(private userService: UsersService) {
   }
@@ -51,8 +51,24 @@ export class UserListComponent implements OnInit {
 
   changePage(page: PageEvent) {
     const params = this.refreshUsers$.getValue();
+    params.startIndex = this.getStartIndexBasedOnPageChangeDirection(page, params.count, params.startIndex);
     params.count = page.pageSize;
     this.refreshUsers$.next(params);
+  }
+
+  private getStartIndexBasedOnPageChangeDirection(page: PageEvent, previousPageSize: number, previousStartIndex: number): number {
+    const { previousPageIndex, pageIndex, pageSize } = page;
+    // if page size has changed -> reset start index
+    if (previousPageSize !== pageSize) {
+      return 1;
+    }
+    if (previousPageIndex > pageIndex) {
+      return previousStartIndex - pageSize;
+    }
+    if (previousPageIndex < pageIndex) {
+      return previousStartIndex + pageSize;
+    }
+
   }
 
 }

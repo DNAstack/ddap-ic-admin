@@ -33,10 +33,3 @@ ddaplib-searchable-header {
     display: none;
   }
 }
-
-ddaplib-paginator {
-  // Hidden until working server pagination is in place
-  ::ng-deep button {
-    display: none;
-  }
-}

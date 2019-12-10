@@ -47,7 +47,7 @@
       <ddaplib-paginator color="primary"
                       [paginationType]="'unidirectional'"
                       [length]="usersResponse.totalResults"
-                      [pageSize]="usersResponse.itemsPerPage < defaultPageSize ? defaultPageSize : usersResponse.itemsPerPage"
+                      [pageSize]="usersResponse.itemsPerPage"
                       (pageChange)="changePage($event)">
       </ddaplib-paginator>
     </mat-accordion>
