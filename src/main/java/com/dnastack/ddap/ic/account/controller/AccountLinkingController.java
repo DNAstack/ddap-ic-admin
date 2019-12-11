@@ -1,18 +1,14 @@
 package com.dnastack.ddap.ic.account.controller;
 
-import com.dnastack.ddap.common.config.ProfileService;
 import com.dnastack.ddap.common.security.OAuthStateHandler;
 import com.dnastack.ddap.common.security.UserTokenCookiePackager;
 import com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieKind;
 import com.dnastack.ddap.common.util.http.UriUtil;
-import com.dnastack.ddap.ic.account.client.ReactiveIcAccountClient;
 import com.dnastack.ddap.ic.account.model.AccountLinkingType;
-import com.dnastack.ddap.ic.account.model.IdentityModel;
-import com.dnastack.ddap.ic.account.service.AccountLinkingService;
 import com.dnastack.ddap.ic.common.security.JwtUtil;
 import com.dnastack.ddap.ic.oauth.client.ReactiveOAuthClient;
 import com.dnastack.ddap.ic.oauth.model.TokenResponse;
-import ic.v1.IcService;
+import com.dnastack.ddap.ic.service.AccountLinkingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +22,6 @@ import reactor.core.publisher.Mono;
 import java.beans.PropertyEditorSupport;
 import java.net.URI;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import static java.lang.String.format;
@@ -35,29 +30,23 @@ import static org.springframework.http.HttpHeaders.SET_COOKIE;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1alpha/{realm}/identity")
-public class AccountController {
+public class AccountLinkingController {
 
     private static final String DEFAULT_SCOPES = "openid ga4gh_passport_v1 account_admin identities";
 
     private ReactiveOAuthClient oAuthClient;
-    private ReactiveIcAccountClient idpClient;
     private UserTokenCookiePackager cookiePackager;
     private OAuthStateHandler stateHandler;
-    private ProfileService profileService;
     private AccountLinkingService accountLinkingService;
 
     @Autowired
-    public AccountController(ReactiveOAuthClient oAuthClient,
-                             ReactiveIcAccountClient idpClient,
-                             UserTokenCookiePackager cookiePackager,
-                             OAuthStateHandler stateHandler,
-                             ProfileService profileService,
-                             AccountLinkingService accountLinkingService) {
+    public AccountLinkingController(ReactiveOAuthClient oAuthClient,
+                                    UserTokenCookiePackager cookiePackager,
+                                    OAuthStateHandler stateHandler,
+                                    AccountLinkingService accountLinkingService) {
         this.oAuthClient = oAuthClient;
-        this.idpClient = idpClient;
         this.cookiePackager = cookiePackager;
         this.stateHandler = stateHandler;
-        this.profileService = profileService;
         this.accountLinkingService = accountLinkingService;
     }
 
@@ -72,22 +61,6 @@ public class AccountController {
                 setValue(AccountLinkingType.valueOf(text.toUpperCase().replace('-', '_')));
             }
         });
-    }
-
-    @GetMapping
-    public Mono<? extends ResponseEntity<?>> getIdentity(ServerHttpRequest request, @PathVariable String realm) {
-        Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.DAM, CookieKind.REFRESH));
-
-        Mono<IcService.AccountResponse> accountMono = idpClient.getAccounts(realm, tokens);
-
-        return accountMono.map(account -> {
-            Optional<JwtUtil.JwtSubject> subject = JwtUtil.dangerousStopgapExtractSubject(tokens.get(CookieKind.IC));
-            return IdentityModel.builder()
-                    .account(account.getAccount())
-                    .scopes(subject.get().getScope())
-                    .sandbox(profileService.isSandboxProfileActive())
-                    .build();
-        }).flatMap(account -> Mono.just(ResponseEntity.ok().body(account)));
     }
 
     @DeleteMapping(value = "/link/{subjectName}", produces = MediaType.APPLICATION_JSON_VALUE)
