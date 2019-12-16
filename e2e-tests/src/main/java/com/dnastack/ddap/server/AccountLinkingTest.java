@@ -9,6 +9,8 @@ import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,9 +55,10 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
 
     @Test
     public void linkIcLoginExternalAccountShouldPassLinkScopeForAccountInIcToken() throws Exception {
+        TextEncryptor encryptor = Encryptors.text(DDAP_COOKIES_ENCRYPTOR_PASSWORD, DDAP_COOKIES_ENCRYPTOR_SALT);
         String icTokenJwt = fetchRealPersonaIcToken(USER_WITH_ACCESS, REALM);
         String refreshTokenJwt = fetchRealPersonaRefreshToken(USER_WITH_ACCESS, REALM);
-        String baseAccountId = JwtTestUtil.getSubject(icTokenJwt);
+        String baseAccountId = JwtTestUtil.getSubject(encryptor.decrypt(icTokenJwt));
         String requestedScope = "link:" + baseAccountId;
 
         // @formatter:off
