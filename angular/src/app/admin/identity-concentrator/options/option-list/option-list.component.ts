@@ -17,7 +17,9 @@ export class OptionListComponent implements OnInit {
 
   ngOnInit() {
     this.optionService.get()
-      .subscribe((options) => this.options = options);
+      .subscribe((options) => {
+        this.options = options;
+      });
   }
 
   updateOptionValue({ optionKey, newValue }) {
