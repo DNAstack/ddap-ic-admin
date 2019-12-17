@@ -34,7 +34,7 @@ public class IcAdminController {
 
     @GetMapping(value = "/access")
     public Mono<? extends ResponseEntity<?>> getAccess(ServerHttpRequest request, @PathVariable String realm) {
-        Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.DAM, CookieKind.REFRESH));
+        Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.DAM, CookieKind.REFRESH));
 
         Mono<UserAccess> accessesMono = accessTesterClient.determineAccessForUser(realm, tokens);
 

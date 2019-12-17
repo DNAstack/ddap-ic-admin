@@ -1,5 +1,6 @@
 package com.dnastack.ddap.ic.admin.service;
 
+import com.dnastack.ddap.common.security.UserTokenCookiePackager;
 import com.dnastack.ddap.ic.admin.client.ReactiveAdminIcClient;
 import com.dnastack.ddap.ic.admin.model.UserAccess;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +23,10 @@ public class IcAdminAccessTester {
         this.icClient = icClient;
     }
 
-    public Mono<UserAccess> determineAccessForUser(String realm, Map<CookieKind, String> tokens) {
+    public Mono<UserAccess> determineAccessForUser(String realm, Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens) {
         UserAccess access = new UserAccess();
 
-        return icClient.getConfig(realm, tokens.get(CookieKind.IC), tokens.get(CookieKind.REFRESH))
+        return icClient.getConfig(realm, tokens.get(CookieKind.IC).getClearText(), tokens.get(CookieKind.REFRESH).getClearText())
             .doOnSuccessOrError((icConfig, throwable) -> {
                 if (throwable != null && !throwable.getMessage().contains("403")) {
                     log.warn("Unexpected exception", throwable);

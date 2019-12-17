@@ -23,6 +23,7 @@ import java.beans.PropertyEditorSupport;
 import java.net.URI;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
@@ -67,14 +68,18 @@ public class AccountLinkingController {
     public Mono<? extends ResponseEntity<?>> unlinkAccount(ServerHttpRequest request,
                                                            @PathVariable String realm,
                                                            @PathVariable String subjectName) {
-        Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.REFRESH));
-        final String targetAccountId = JwtUtil.dangerousStopgapExtractSubject(tokens.get(CookieKind.IC)).map(JwtUtil.JwtSubject::getSub).orElse(null);
+        final Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.REFRESH));
+        final String targetAccountId = JwtUtil.dangerousStopgapExtractSubject(tokens.get(CookieKind.IC).getClearText()).map(JwtUtil.JwtSubject::getSub).orElse(null);
         if (targetAccountId == null) {
             return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization is invalid"));
         }
+        final Map<CookieKind, String> clearTextTokens = tokens.entrySet()
+                                                              .stream()
+                                                              .collect(Collectors.toMap(Map.Entry::getKey,
+                                                                                        e -> e.getValue().getClearText()));
 
-        Mono<String> unlinkAccountMono = accountLinkingService.unlinkAccount(realm, tokens, subjectName);
-        Mono<TokenResponse> refreshAccessTokenMono = oAuthClient.refreshAccessToken(realm, tokens.get(CookieKind.REFRESH));
+        Mono<String> unlinkAccountMono = accountLinkingService.unlinkAccount(realm, clearTextTokens, subjectName);
+        Mono<TokenResponse> refreshAccessTokenMono = oAuthClient.refreshAccessToken(realm, clearTextTokens.get(CookieKind.REFRESH));
 
         return unlinkAccountMono.then(refreshAccessTokenMono)
                 .flatMap((tokenResponse) -> {
@@ -91,8 +96,8 @@ public class AccountLinkingController {
                                                                     @PathVariable String realm,
                                                                     @RequestParam String provider,
                                                                     @RequestParam(defaultValue = "external_idp") AccountLinkingType type) {
-        Map<CookieKind, String> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.REFRESH));
-        final String targetAccountId = JwtUtil.dangerousStopgapExtractSubject(tokens.get(CookieKind.IC)).map(JwtUtil.JwtSubject::getSub).orElse(null);
+        Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.REFRESH));
+        final String targetAccountId = JwtUtil.dangerousStopgapExtractSubject(tokens.get(CookieKind.IC).getClearText()).map(JwtUtil.JwtSubject::getSub).orElse(null);
         if (targetAccountId == null) {
             return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization is invalid"));
         }
@@ -109,11 +114,11 @@ public class AccountLinkingController {
                         .header(SET_COOKIE, cookiePackager.packageToken(state, cookieDomainPath.getHost(), CookieKind.OAUTH_STATE).toString())
                         .build());
             case PERSONA:
-                Mono<TokenResponse> refreshAccessTokenMono = oAuthClient.refreshAccessToken(realm, tokens.get(CookieKind.REFRESH));
+                Mono<TokenResponse> refreshAccessTokenMono = oAuthClient.refreshAccessToken(realm, tokens.get(CookieKind.REFRESH).getClearText());
                 Mono<String> linkAccountMono = oAuthClient.personaLogin(realm, scopes, provider, UriUtil.selfLinkToApi(request, realm, ""))
                         .doOnError(exception -> log.info("Failed to negotiate persona token at beginning of account linking", exception))
                         .flatMap(tokenResponse -> accountLinkingService.finishAccountLinking(
-                                tokenResponse.getAccessToken(), request.getCookies().getFirst("ic_token").getValue(), realm, tokens.get(CookieKind.REFRESH)
+                                tokenResponse.getAccessToken(), request.getCookies().getFirst("ic_token").getValue(), realm, tokens.get(CookieKind.REFRESH).getClearText()
                         ));
                 return linkAccountMono.then(refreshAccessTokenMono).flatMap((tokenResponse) -> Mono.just(ResponseEntity.status(307)
                         .location(UriUtil.selfLinkToUi(request, realm, "identity"))
