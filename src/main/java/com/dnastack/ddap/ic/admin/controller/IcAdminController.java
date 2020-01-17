@@ -19,7 +19,7 @@ import java.util.Set;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1alpha/{realm}/identity")
+@RequestMapping("/api/v1alpha/realm/{realm}/identity")
 public class IcAdminController {
 
     private UserTokenCookiePackager cookiePackager;

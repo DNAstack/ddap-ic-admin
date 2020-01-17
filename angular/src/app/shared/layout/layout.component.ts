@@ -4,12 +4,12 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
 
+import { Identity } from '../../account/identity/identity.model';
 import { IdentityService } from '../../account/identity/identity.service';
 import { IdentityStore } from '../../account/identity/identity.store';
+import { AuthService } from '../../account/shared/auth/auth.service';
 import { UserAccess } from '../../account/shared/auth/user-access.model';
-import { Identity } from "../../account/identity/identity.model";
-import { AuthService } from "../../account/shared/auth/auth.service";
-import { ic } from "../proto/ic-service";
+import { ic } from '../proto/ic-service';
 import IAccountProfile = ic.v1.IAccountProfile;
 
 const refreshRepeatTimeoutInMs = 600000;
@@ -48,7 +48,7 @@ export class LayoutComponent implements OnInit {
 
     this.activatedRoute.root.firstChild.params.subscribe((params) => {
       this.realm = params.realmId;
-      this.loginPath = `/api/v1alpha/${this.realm}/identity/login`;
+      this.loginPath = `/api/v1alpha/realm/${this.realm}/identity/login`;
     });
 
     // Workaround to get fresh cookies

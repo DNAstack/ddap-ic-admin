@@ -1,21 +1,22 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import IUser = scim.v2.IUser;
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { VisaPassportService } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Subscription } from 'rxjs';
+
+import { ic } from '../../shared/proto/ic-service';
+import { scim } from '../../shared/proto/user-service';
+import IConnectedAccount = ic.v1.IConnectedAccount;
+import { PersonalInfoFormComponent } from '../../shared/users/personal-info-form/personal-info-form.component';
+import { UsersService } from '../../shared/users/users.service';
 
 import { AccountLink } from './account-link.model';
 import { Identity } from './identity.model';
 import { IdentityService } from './identity.service';
 import { IdentityStore } from './identity.store';
 import { identityProviderMetadataExists, identityProviders } from './providers.constants';
-import { VisaPassportService } from "ddap-common-lib";
-import { ic } from "../../shared/proto/ic-service";
-import IConnectedAccount = ic.v1.IConnectedAccount;
-import { PersonalInfoFormComponent } from "../../shared/users/personal-info-form/personal-info-form.component";
-import { UsersService } from "../../shared/users/users.service";
-import { scim } from "../../shared/proto/user-service";
-import IUser = scim.v2.IUser;
-import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   templateUrl: './identity.component.html',
@@ -112,7 +113,7 @@ export class IdentityComponent implements OnInit {
   updatePersonalInfo(): void {
     const change = this.personalInfoForm.getModel();
     this.usersService.patchLoggedInUser(change)
-      .subscribe(() => this.openSnackBar("Successfully update personal information"));
+      .subscribe(() => this.openSnackBar('Successfully update personal information'));
   }
 
   private openSnackBar(message) {
@@ -123,7 +124,7 @@ export class IdentityComponent implements OnInit {
 
   private getLoginUrl(): string {
     const loginUrlSuffix = `login?scope=link+openid+account_admin+ga4gh_passport_v1+identities&redirectUri=/${this.realm}/account/identity`;
-    return `/api/v1alpha/${this.realm}/identity/${loginUrlSuffix}`;
+    return `/api/v1alpha/realm/${this.realm}/identity/${loginUrlSuffix}`;
   }
 
   private getAvailableAccounts() {

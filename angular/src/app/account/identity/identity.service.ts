@@ -25,7 +25,7 @@ export class IdentityService {
   }
 
   getIdentity(params = {}): Observable<Identity> {
-    return this.http.get<any>(`${environment.ddapApiUrl}/${realmIdPlaceholder}/identity`, {params})
+    return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity`, {params})
       .pipe(
         this.errorHandler.notifyOnError(`Can't load account's information.`)
       );
@@ -53,16 +53,16 @@ export class IdentityService {
 
   unlinkConnectedAccount(account: IConnectedAccount) {
     const subjectName = account.properties.subject;
-    return this.http.delete<any>(`${environment.ddapApiUrl}/${realmIdPlaceholder}/identity/link/${subjectName}`)
+    return this.http.delete<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/link/${subjectName}`)
       .subscribe(() => window.location.reload());
   }
 
   refreshTokens(params?) {
-    return this.http.get<any>(`${environment.ddapApiUrl}/${realmIdPlaceholder}/identity/refresh`, {params});
+    return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/refresh`, {params});
   }
 
   invalidateTokens(params?) {
-    return this.http.get<any>(`${environment.ddapApiUrl}/${realmIdPlaceholder}/identity/logout`, {params});
+    return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/logout`, {params});
   }
 
   private getAccountLinksFromProviders(idps: object, realm: string): AccountLink[] {

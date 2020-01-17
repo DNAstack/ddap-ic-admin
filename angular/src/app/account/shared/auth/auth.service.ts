@@ -2,8 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
-import { UserAccess } from "./user-access.model";
-import { environment } from "../../../../environments/environment";
+
+import { environment } from '../../../../environments/environment';
+
+import { UserAccess } from './user-access.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +16,7 @@ export class AuthService {
   }
 
   getIcUserAccess(params = {}): Observable<UserAccess> {
-    return this.http.get<UserAccess>(`${environment.ddapApiUrl}/${realmIdPlaceholder}/identity/access`, {params});
+    return this.http.get<UserAccess>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/access`, {params});
   }
 
 }

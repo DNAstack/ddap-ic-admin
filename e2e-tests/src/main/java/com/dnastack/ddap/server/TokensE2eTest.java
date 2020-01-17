@@ -24,7 +24,7 @@ public class TokensE2eTest extends AbstractBaseE2eTest {
     }
 
     private String ddap(String path) {
-        return format("/api/v1alpha%s", path);
+        return format("/api/v1alpha/realm%s", path);
     }
 
     @Test
