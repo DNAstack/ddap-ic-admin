@@ -19,7 +19,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.dnastack.ddap.common.AbstractBaseE2eTest.*;
-import static com.dnastack.ddap.common.util.WebDriverUtil.getUrlWithBasicCredentials;
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -71,7 +70,7 @@ public class PersonaLoginStrategy implements LoginStrategy {
 
     @Override
     public <T extends AnyDdapPage> T performPersonaLogin(WebDriver driver, TestingPersona persona, String realm, Function<WebDriver, T> pageFactory) {
-        driver.get(getUrlWithBasicCredentials(URI.create(DDAP_BASE_URL).resolve(format("/api/v1alpha/realm/%s/identity/login", realm)).toString(), DDAP_USERNAME, DDAP_PASSWORD));
+        driver.get(URI.create(DDAP_BASE_URL).resolve(format("/api/v1alpha/realm/%s/identity/login", realm)).toString());
         ICLoginPage icLoginPage = new ICLoginPage(driver);
         return icLoginPage.loginAsPersona(persona, pageFactory);
     }

@@ -2,12 +2,15 @@ package com.dnastack.ddap.server;
 
 import com.dnastack.ddap.common.AbstractBaseE2eTest;
 import com.dnastack.ddap.common.TestingPersona;
+import com.dnastack.ddap.common.util.DdapLoginUtil;
+import org.apache.http.cookie.Cookie;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.dnastack.ddap.common.util.WebDriverCookieHelper.SESSION_COOKIE_NAME;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.*;
 
@@ -29,6 +32,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
     @Test
     public void testScopes() throws Exception {
         String requestedScope = "link";
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String icToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM, "openid");
         String damToken = fetchRealPersonaDamToken(TestingPersona.USER_WITH_ACCESS, REALM);
         String refreshToken = fetchRealPersonaRefreshToken(TestingPersona.USER_WITH_ACCESS, REALM);
@@ -38,6 +42,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
                 .log().method()
                 .log().cookies()
                 .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
                 .cookie("ic_token", icToken)
                 .cookie("dam_token", damToken)
                 .cookie("refresh_token", refreshToken)
@@ -61,6 +66,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
                 .log().method()
                 .log().cookies()
                 .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
                 .cookie("ic_token", icToken)
                 .cookie("dam_token", damToken)
                 .cookie("refresh_token", refreshToken)
@@ -79,6 +85,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
 
     @Test
     public void testAccount() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String icToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM, "");
         String danToken = fetchRealPersonaDamToken(TestingPersona.USER_WITH_ACCESS, REALM);
         String refreshToken = fetchRealPersonaRefreshToken(TestingPersona.USER_WITH_ACCESS, REALM);
@@ -88,6 +95,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
                 .log().method()
                 .log().cookies()
                 .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
                 .cookie("ic_token", icToken)
                 .cookie("dam_token", danToken)
                 .cookie("refresh_token", refreshToken)
@@ -109,6 +117,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
 
     @Test
     public void testIcUserAccessAsAdmin() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String icToken = fetchRealPersonaIcToken(TestingPersona.ADMINISTRATOR, REALM, "");
         String danToken = fetchRealPersonaDamToken(TestingPersona.ADMINISTRATOR, REALM);
         String refreshToken = fetchRealPersonaRefreshToken(TestingPersona.ADMINISTRATOR, REALM);
@@ -121,6 +130,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
                 .log().method()
                 .log().cookies()
                 .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
                 .cookie("ic_token", icToken)
                 .cookie("dam_token", danToken)
                 .cookie("refresh_token", refreshToken)
@@ -138,6 +148,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
 
     @Test
     public void testIcUserAccessAsNonAdmin() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String icToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM, "");
         String danToken = fetchRealPersonaDamToken(TestingPersona.USER_WITH_ACCESS, REALM);
         String refreshToken = fetchRealPersonaRefreshToken(TestingPersona.USER_WITH_ACCESS, REALM);
@@ -150,6 +161,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
                 .log().method()
                 .log().cookies()
                 .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
                 .cookie("ic_token", icToken)
                 .cookie("dam_token", danToken)
                 .cookie("refresh_token", refreshToken)

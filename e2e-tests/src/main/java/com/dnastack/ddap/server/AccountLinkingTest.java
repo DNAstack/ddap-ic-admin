@@ -2,21 +2,21 @@ package com.dnastack.ddap.server;
 
 import com.dnastack.ddap.common.AbstractBaseE2eTest;
 import com.dnastack.ddap.common.TestingPersona;
-import com.dnastack.ddap.common.util.JwtTestUtil;
+import com.dnastack.ddap.common.util.DdapLoginUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.cookie.Cookie;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import java.io.IOException;
 import java.util.List;
 
 import static com.dnastack.ddap.common.TestingPersona.USER_WITHOUT_ACCESS;
 import static com.dnastack.ddap.common.TestingPersona.USER_WITH_ACCESS;
+import static com.dnastack.ddap.common.util.WebDriverCookieHelper.SESSION_COOKIE_NAME;
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -35,6 +35,7 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
 
     @Test
     public void redirectToIcLoginPageShouldPassRequestedScopes() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String requestedScope = "link:ic_" + System.currentTimeMillis();
 
         // @formatter:off
@@ -42,6 +43,7 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
             .redirects().follow(false)
         .when()
             .get(ddap("/identity/login?scope=" + requestedScope))
@@ -55,6 +57,7 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
 
     @Test
     public void linkIcLoginExternalAccountShouldPassLinkScopeForAccountInIcToken() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String icTokenJwt = fetchRealPersonaIcToken(USER_WITH_ACCESS, REALM);
         String refreshTokenJwt = fetchRealPersonaRefreshToken(USER_WITH_ACCESS, REALM);
 
@@ -64,6 +67,7 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
                     .log().method()
                     .log().cookies()
                     .log().uri()
+                    .cookie(SESSION_COOKIE_NAME, session.getValue())
                     .cookie("ic_token", icTokenJwt)
                     .cookie("refresh_token", refreshTokenJwt)
                 .when()
@@ -85,6 +89,7 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
             .cookie("ic_token", icTokenJwt)
             .cookie("refresh_token", refreshTokenJwt)
             .redirects().follow(false)

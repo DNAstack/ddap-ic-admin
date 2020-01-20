@@ -2,12 +2,15 @@ package com.dnastack.ddap.server;
 
 import com.dnastack.ddap.common.AbstractBaseE2eTest;
 import com.dnastack.ddap.common.TestingPersona;
+import com.dnastack.ddap.common.util.DdapLoginUtil;
 import io.restassured.http.ContentType;
+import org.apache.http.cookie.Cookie;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
 
+import static com.dnastack.ddap.common.util.WebDriverCookieHelper.SESSION_COOKIE_NAME;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
@@ -29,6 +32,7 @@ public class TokensE2eTest extends AbstractBaseE2eTest {
 
     @Test
     public void testGetTokens() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String icToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM, "");
 
         // @formatter:off
@@ -36,6 +40,7 @@ public class TokensE2eTest extends AbstractBaseE2eTest {
                 .log().method()
                 .log().cookies()
                 .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
                 .cookie("ic_token", icToken)
                 .redirects().follow(false)
                 .when()
@@ -52,6 +57,7 @@ public class TokensE2eTest extends AbstractBaseE2eTest {
 
     @Test
     public void testRevokeToken() throws Exception {
+        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String icToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM, "");
 
         // @formatter:off
@@ -59,6 +65,7 @@ public class TokensE2eTest extends AbstractBaseE2eTest {
                 .log().method()
                 .log().cookies()
                 .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
                 .cookie("ic_token", icToken)
                 .redirects().follow(false)
                 .when()
@@ -81,6 +88,7 @@ public class TokensE2eTest extends AbstractBaseE2eTest {
                 .log().method()
                 .log().cookies()
                 .log().uri()
+            .cookie(SESSION_COOKIE_NAME, session.getValue())
                 .cookie("ic_token", icToken)
                 .redirects().follow(false)
                 .when()
