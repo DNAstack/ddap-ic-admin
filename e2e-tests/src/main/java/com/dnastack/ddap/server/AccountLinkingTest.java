@@ -55,10 +55,29 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
 
     @Test
     public void linkIcLoginExternalAccountShouldPassLinkScopeForAccountInIcToken() throws Exception {
-        TextEncryptor encryptor = Encryptors.text(DDAP_COOKIES_ENCRYPTOR_PASSWORD, DDAP_COOKIES_ENCRYPTOR_SALT);
         String icTokenJwt = fetchRealPersonaIcToken(USER_WITH_ACCESS, REALM);
         String refreshTokenJwt = fetchRealPersonaRefreshToken(USER_WITH_ACCESS, REALM);
-        String baseAccountId = JwtTestUtil.getSubject(encryptor.decrypt(icTokenJwt));
+
+        // @formatter:off
+        final ScimUserInfo userInfo =
+                getRequestSpecification()
+                    .log().method()
+                    .log().cookies()
+                    .log().uri()
+                    .cookie("ic_token", icTokenJwt)
+                    .cookie("refresh_token", refreshTokenJwt)
+                .when()
+                    .get(format("/identity/scim/v2/%s/Me", REALM))
+                    .then()
+                    .statusCode(200)
+                    .body("id", notNullValue())
+                    .extract()
+                    .body()
+                    .as(ScimUserInfo.class);
+        // @formatter:on
+
+
+        String baseAccountId = userInfo.getId();
         String requestedScope = "link:" + baseAccountId;
 
         // @formatter:off
@@ -195,5 +214,10 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
     @Data
     static class IcConnectecAccountProperties {
         String subject;
+    }
+
+    @Data
+    static class ScimUserInfo {
+        String id;
     }
 }

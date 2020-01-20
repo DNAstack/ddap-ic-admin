@@ -29,27 +29,27 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
         setupIcConfig(TestingPersona.ADMINISTRATOR, icConfig, REALM);
     }
 
-    private String damViaDdap(String path) {
-        return format("/dam/v1alpha/%s%s", REALM, path);
-    }
-
     @Test
     public void shouldIncludeValidAuthStatusInResponseHeader() throws Exception {
-        String unexpiredUserTokenCookie = fakeUserToken(Instant.now().plusSeconds(10));
+        final String accessToken = fetchRealPersonaIcToken(TestingPersona.USER_WITHOUT_ACCESS.getId(), REALM);
 
         // @formatter:off
         getRequestSpecification()
             .log().method()
             .log().cookies()
             .log().uri()
-            .cookie("dam_token", unexpiredUserTokenCookie)
+            .cookie("ic_token", accessToken)
         .when()
-            .get(damViaDdap("/resources/resource-name/views/view-name"))
+            .get(scimUserInfo())
         .then()
             .log().body()
             .log().ifValidationFails()
             .header("X-DDAP-Authenticated", "true");
         // @formatter:on
+    }
+
+    public String scimUserInfo() {
+        return format("/identity/scim/v2/%s/Me", REALM);
     }
 
     @Test
@@ -61,9 +61,9 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
-            .cookie("dam_token", expiredUserTokenCookie)
+            .cookie("ic_token", expiredUserTokenCookie)
         .when()
-            .get(damViaDdap("/resources/resource-name/views/view-name"))
+            .get(scimUserInfo())
         .then()
             .log().body()
             .log().ifValidationFails()
@@ -79,7 +79,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
         .when()
-            .get(damViaDdap("/resources/resource-name/views/view-name"))
+            .get(scimUserInfo())
         .then()
             .log().body()
             .log().ifValidationFails()
@@ -115,14 +115,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
-            .cookie("dam_token", expiredUserTokenCookie)
+            .cookie("ic_token", expiredUserTokenCookie)
             .when()
-            .get(damViaDdap("/resources/resource-name/views/view-name"))
+            .get(scimUserInfo())
             .then()
             .log().body()
             .log().ifValidationFails()
             .statusCode(isOneOf(401, 404))
-            .cookie("dam_token", "expired");
+            .cookie("ic_token", "expired");
         // @formatter:on
     }
 
@@ -137,7 +137,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().uri()
             .cookie("ic_token", expiredUserTokenCookie)
             .when()
-            .get(damViaDdap("/accounts/-"))
+            .get(scimUserInfo())
             .then()
             .log().body()
             .log().ifValidationFails()
@@ -155,14 +155,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
-            .cookie("dam_token", expiredUserTokenCookie)
+            .cookie("ic_token", expiredUserTokenCookie)
             .when()
-            .get(damViaDdap("/resources/resource-name/views/view-name"))
+            .get(scimUserInfo())
             .then()
             .log().body()
             .log().ifValidationFails()
             .statusCode(isOneOf(401, 404))
-            .cookie("dam_token", "expired");
+            .cookie("ic_token", "expired");
         // @formatter:on
     }
 
