@@ -1,7 +1,9 @@
 package com.dnastack.ddap.ic.admin.controller;
 
 import com.dnastack.ddap.common.security.UserTokenCookiePackager;
-import com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieKind;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieName;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieValue;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.TokenKind;
 import com.dnastack.ddap.ic.admin.model.UserAccess;
 import com.dnastack.ddap.ic.admin.service.IcAdminAccessTester;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.Set;
+
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.IC;
 
 @Slf4j
 @RestController
@@ -34,7 +38,7 @@ public class IcAdminController {
 
     @GetMapping(value = "/access")
     public Mono<? extends ResponseEntity<?>> getAccess(ServerHttpRequest request, @PathVariable String realm) {
-        Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(CookieKind.IC, CookieKind.DAM, CookieKind.REFRESH));
+        Map<CookieName, CookieValue> tokens = cookiePackager.extractRequiredTokens(request, Set.of(IC.cookieName(TokenKind.ACCESS), IC.cookieName(TokenKind.REFRESH)));
 
         Mono<UserAccess> accessesMono = accessTesterClient.determineAccessForUser(realm, tokens);
 

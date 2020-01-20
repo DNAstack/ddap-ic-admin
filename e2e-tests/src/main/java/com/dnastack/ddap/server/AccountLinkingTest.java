@@ -68,8 +68,8 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
                     .log().cookies()
                     .log().uri()
                     .cookie(SESSION_COOKIE_NAME, session.getValue())
-                    .cookie("ic_token", icTokenJwt)
-                    .cookie("refresh_token", refreshTokenJwt)
+                    .cookie("ic_access", icTokenJwt)
+                    .cookie("ic_refresh", refreshTokenJwt)
                 .when()
                     .get(format("/identity/scim/v2/%s/Me", REALM))
                     .then()
@@ -90,8 +90,8 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", icTokenJwt)
-            .cookie("refresh_token", refreshTokenJwt)
+            .cookie("ic_access", icTokenJwt)
+            .cookie("ic_refresh", refreshTokenJwt)
             .redirects().follow(false)
         .when()
             .get(ddap("/identity/link?provider=google"))
@@ -119,8 +119,8 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
-            .cookie("ic_token", icTokenJwtBeforeLinking)
-                .cookie("refresh_token", refreshTokenJwt)
+            .cookie("ic_access", icTokenJwtBeforeLinking)
+                .cookie("ic_refresh", refreshTokenJwt)
             .redirects().follow(false)
         .when()
             .get(ddap(format("/identity/link?provider=%s&type=persona", USER_WITHOUT_ACCESS.getId())))
@@ -128,7 +128,7 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
             .log().body()
             .log().ifValidationFails()
             .statusCode(307)
-                .header("Set-Cookie", startsWith("dam_token"))
+                .header("Set-Cookie", startsWith("ic_identity"))
             .header("Location", endsWith("/" + REALM + "/identity"));
         // @formatter:on
 
@@ -138,7 +138,7 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
             .log().method()
             .log().cookies()
             .log().uri()
-            .cookie("ic_token", icTokenJwtBeforeLinking)
+            .cookie("ic_access", icTokenJwtBeforeLinking)
         .when()
             .get(icViaDdap("/accounts/-"))
         .then()
@@ -158,8 +158,8 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
         getRequestSpecification().log().method()
                .log().cookies()
                .log().uri()
-               .cookie("ic_token", icTokenAfterLinking)
-                .cookie("refresh_token", refreshTokenJwt)
+               .cookie("ic_access", icTokenAfterLinking)
+                .cookie("ic_refresh", refreshTokenJwt)
                .redirects().follow(false)
                .when()
                .delete(ddap("/identity/link/test-user-no-access@dnastack.com"))
@@ -167,7 +167,7 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
                .log().body()
                .log().ifValidationFails()
                .statusCode(200)
-                .header("Set-Cookie", startsWith("dam_token"));
+                .header("Set-Cookie", startsWith("ic_identity"));
         // @formatter:on
 
         // check that we can query my account, and that accounts are no-longer linked
@@ -176,7 +176,7 @@ public class AccountLinkingTest extends AbstractBaseE2eTest {
                 .log().method()
                 .log().cookies()
                 .log().uri()
-                .cookie("ic_token", icTokenAfterLinking)
+                .cookie("ic_access", icTokenAfterLinking)
                 .when()
                 .get(icViaDdap("/accounts/-"))
                 .then()

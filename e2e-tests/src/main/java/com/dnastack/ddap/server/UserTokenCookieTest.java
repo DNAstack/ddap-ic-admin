@@ -43,7 +43,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", accessToken)
+            .cookie("ic_access", accessToken)
         .when()
             .get(scimUserInfo())
         .then()
@@ -68,7 +68,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", expiredUserTokenCookie)
+            .cookie("ic_access", expiredUserTokenCookie)
         .when()
             .get(scimUserInfo())
         .then()
@@ -108,7 +108,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", validPersonaToken)
+            .cookie("ic_access", validPersonaToken)
         .when()
             .get(icViaDdap("/accounts/-"))
         .then()
@@ -129,14 +129,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", expiredUserTokenCookie)
+            .cookie("ic_access", expiredUserTokenCookie)
             .when()
             .get(scimUserInfo())
             .then()
             .log().body()
             .log().ifValidationFails()
             .statusCode(isOneOf(401, 404))
-            .cookie("ic_token", "expired");
+            .cookie("ic_access", "expired");
         // @formatter:on
     }
 
@@ -151,14 +151,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", expiredUserTokenCookie)
+            .cookie("ic_access", expiredUserTokenCookie)
             .when()
             .get(scimUserInfo())
             .then()
             .log().body()
             .log().ifValidationFails()
             .statusCode(isOneOf(401, 404))
-            .cookie("ic_token", "expired");
+            .cookie("ic_access", "expired");
         // @formatter:on
     }
 
@@ -173,14 +173,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", expiredUserTokenCookie)
+            .cookie("ic_access", expiredUserTokenCookie)
             .when()
             .get(scimUserInfo())
             .then()
             .log().body()
             .log().ifValidationFails()
             .statusCode(isOneOf(401, 404))
-            .cookie("ic_token", "expired");
+            .cookie("ic_access", "expired");
         // @formatter:on
     }
 
@@ -195,14 +195,14 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .log().cookies()
             .log().uri()
             .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_token", expiredUserTokenCookie)
+            .cookie("ic_access", expiredUserTokenCookie)
             .when()
             .get(icViaDdap("/accounts/-"))
             .then()
             .log().body()
             .log().ifValidationFails()
             .statusCode(isOneOf(401, 404))
-            .cookie("ic_token", "expired");
+            .cookie("ic_access", "expired");
         // @formatter:on
     }
 

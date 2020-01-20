@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriTemplate;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class ReactiveAdminIcClient {
         this.webClientFactory = webClientFactory;
     }
 
-    public Mono<Object> getConfig(String realm, String icToken, String refreshToken) {
+    public Mono<Object> getConfig(String realm, String accessToken, String refreshToken) {
         final UriTemplate template = new UriTemplate("/identity/v1alpha/{realm}/config" +
                 "?client_id={clientId}" +
                 "&client_secret={clientSecret}");
@@ -34,12 +35,15 @@ public class ReactiveAdminIcClient {
         variables.put("clientId", idpProperties.getClientId());
         variables.put("clientSecret", idpProperties.getClientSecret());
 
-        return webClientFactory.getWebClient(realm, refreshToken, OAuthFilter.Audience.IC)
+        return webClientFactory
+                .getWebClient(realm, refreshToken, OAuthFilter.Audience.IC)
                 .get()
                 .uri(idpProperties.getBaseUrl().resolve(template.expand(variables)))
-                .header(AUTHORIZATION, "Bearer " + icToken)
+                .header(AUTHORIZATION, "Bearer " + accessToken)
                 .retrieve()
-                .bodyToMono(Object.class);
+                .bodyToMono(Object.class)
+                // Sometimes IC fails with transaction error on first try
+                .retryBackoff(2, Duration.ofMillis(200));
     }
 
 }

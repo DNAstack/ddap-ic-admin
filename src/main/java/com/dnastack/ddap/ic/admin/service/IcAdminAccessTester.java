@@ -1,6 +1,8 @@
 package com.dnastack.ddap.ic.admin.service;
 
-import com.dnastack.ddap.common.security.UserTokenCookiePackager;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieName;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieValue;
+import com.dnastack.ddap.common.security.UserTokenCookiePackager.TokenKind;
 import com.dnastack.ddap.ic.admin.client.ReactiveAdminIcClient;
 import com.dnastack.ddap.ic.admin.model.UserAccess;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-import static com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieKind;
+import static com.dnastack.ddap.common.security.UserTokenCookiePackager.BasicServices.IC;
 
 @Slf4j
 @Component
@@ -23,18 +25,15 @@ public class IcAdminAccessTester {
         this.icClient = icClient;
     }
 
-    public Mono<UserAccess> determineAccessForUser(String realm, Map<CookieKind, UserTokenCookiePackager.CookieValue> tokens) {
-        UserAccess access = new UserAccess();
-
-        return icClient.getConfig(realm, tokens.get(CookieKind.IC).getClearText(), tokens.get(CookieKind.REFRESH).getClearText())
-            .doOnSuccessOrError((icConfig, throwable) -> {
-                if (throwable != null && !throwable.getMessage().contains("403")) {
-                    log.warn("Unexpected exception", throwable);
-                }
-                access.setIsAdmin(throwable == null);
-            })
-            .thenReturn(access)
-            .onErrorReturn(access);
+    public Mono<UserAccess> determineAccessForUser(String realm, Map<CookieName, CookieValue> tokens) {
+        return icClient.getConfig(realm, tokens.get(IC.cookieName(TokenKind.ACCESS)).getClearText(), tokens.get(IC.cookieName(TokenKind.REFRESH)).getClearText())
+                       .map(response -> new UserAccess(true))
+                       .onErrorResume(throwable -> {
+                           if (throwable != null && !throwable.getMessage().contains("403")) {
+                               log.warn("Unexpected exception", throwable);
+                           }
+                           return Mono.just(new UserAccess(false));
+                       });
     }
 
 }
