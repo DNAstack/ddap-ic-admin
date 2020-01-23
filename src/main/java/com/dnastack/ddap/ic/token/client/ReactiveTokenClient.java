@@ -44,7 +44,7 @@ public class ReactiveTokenClient {
             .header(AUTHORIZATION, "Bearer " + icToken)
             .retrieve()
             .bodyToMono(String.class)
-            .flatMap(json -> ProtobufDeserializer.fromJson(json, TokenService.ListTokensResponse.getDefaultInstance()));
+            .flatMap(json -> ProtobufDeserializer.fromJsonToMono(json, TokenService.ListTokensResponse.getDefaultInstance()));
     }
 
     public Mono<Object> revokeToken(String icToken, TokenService.DeleteTokenRequest request) {
