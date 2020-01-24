@@ -11,11 +11,15 @@
           <mat-panel-title>{{ token.name }}</mat-panel-title>
           <mat-panel-description>{{ token.metadata.client_desc }}</mat-panel-description>
         </mat-expansion-panel-header>
-
-        <json-editor [options]="{ mode: 'view', mainMenuBar: false, navigationBar: false, statusBar: false }"
-                     [data]="token">
-        </json-editor>
-
+        <mat-divider></mat-divider>
+        <div class="flex">
+          <div class="fg-1">
+            <ddaplib-entity-viewer [listData]="getClientData(token)" [description]="'Client Details'"></ddaplib-entity-viewer>
+          </div>
+          <div class="fg-2">
+            <ddaplib-entity-viewer [listData]="getTokenData(token)" [description]="'Token Details'"></ddaplib-entity-viewer>
+          </div>
+        </div>
         <mat-action-row>
           <button mat-button
                   color="warn"

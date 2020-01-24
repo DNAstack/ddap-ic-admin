@@ -1,11 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-
-import { TokensService } from "../tokens.service";
-import { BehaviorSubject, Observable } from "rxjs";
-import { tokens } from "../../../shared/proto/token-service";
+import { Component, OnInit } from '@angular/core';
+import _get from 'lodash.get';
+import _pick from 'lodash.pick';
+import { BehaviorSubject, Observable } from 'rxjs';
 import ListTokensResponse = tokens.v1.ListTokensResponse;
 import IToken = tokens.v1.IToken;
-import { switchMap } from "rxjs/operators";
+import { switchMap } from 'rxjs/operators';
+
+import { tokens } from '../../../shared/proto/token-service';
+import { TokensService } from '../tokens.service';
 
 @Component({
   selector: 'ddap-token-list',
@@ -32,4 +34,11 @@ export class TokenListComponent implements OnInit {
       .subscribe(() => this.refreshTokens$.next(undefined));
   }
 
+  getTokenData(token: tokens.v1.IToken) {
+    return _pick(token, ['aud', 'exp', 'iat', 'scope', 'target']);
+  }
+
+  getClientData(token: tokens.v1.IToken) {
+    return _get(token, 'client');
+  }
 }

@@ -27,13 +27,10 @@
         <mat-expansion-panel-header collapsedHeight="5rem"
                                     expandedHeight="5rem">
           <mat-panel-title>{{ user.name.formatted }}</mat-panel-title>
-          <mat-panel-description>{{ user.id }}</mat-panel-description>
+          <mat-panel-description [ngClass]="{'active' : user.active }">{{user.active ? 'Active' : 'Inactive'}}</mat-panel-description>
         </mat-expansion-panel-header>
-
-        <json-editor [options]="{ mode: 'view', mainMenuBar: false, navigationBar: false, statusBar: false }"
-                     [data]="user">
-        </json-editor>
-
+        <mat-divider></mat-divider>
+        <ddaplib-entity-viewer [listData]="modifyUserData(user)"></ddaplib-entity-viewer>
         <mat-action-row>
           <button mat-button
                   color="primary"
