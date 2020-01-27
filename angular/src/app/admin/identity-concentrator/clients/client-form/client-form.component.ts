@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormValidators, isExpanded } from 'ddap-common-lib';
+import { FormArray, FormGroup } from '@angular/forms';
+import { isExpanded } from 'ddap-common-lib';
 import Client = ic.v1.Client;
 import { Form } from 'ddap-common-lib';
-import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
-import _get from 'lodash.get';
+import { EntityModel } from 'ddap-common-lib';
 
 import { ic } from '../../../../shared/proto/ic-service';
+
+import { ClientFormBuilder } from './client-form-builder.service';
 
 @Component({
   selector: 'ddap-client-form',
@@ -16,7 +17,7 @@ import { ic } from '../../../../shared/proto/ic-service';
 export class ClientFormComponent implements Form, OnInit {
 
   @Input()
-  model?: EntityModel = new EntityModel('', Client.create());
+  client?: EntityModel = new EntityModel('', Client.create());
 
   form: FormGroup;
   isExpanded: Function = isExpanded;
@@ -25,29 +26,15 @@ export class ClientFormComponent implements Form, OnInit {
     return this.form.get('redirectUris') as FormArray;
   }
 
-  constructor(private formBuilder: FormBuilder) {
-
+  constructor(private clientFormBuilder: ClientFormBuilder) {
   }
 
   ngOnInit(): void {
-    const { ui, clientId, redirectUris } = this.model.dto;
-    const redirectUrisForm = this.formBuilder.array(redirectUris || []);
-
-    this.form = this.formBuilder.group({
-      id: [this.model.name || '', [Validators.pattern(nameConstraintPattern)]],
-      ui: this.formBuilder.group({
-        label: [_get(ui, 'label', ''), [Validators.required]],
-        description: [_get(ui, 'description', ''), [Validators.required, Validators.maxLength(255)]],
-      }),
-      clientId: [clientId, [Validators.required]],
-      redirectUris: redirectUrisForm,
-    });
+    this.form = this.clientFormBuilder.buildForm(this.client);
   }
 
   addRedirectUri() {
-    this.redirectUris.insert(0, this.formBuilder.control('', [
-      FormValidators.url, Validators.required,
-    ]));
+    this.redirectUris.insert(0, this.clientFormBuilder.buildStringControl());
   }
 
   removeRedirectUri(index: number): void {
@@ -55,11 +42,9 @@ export class ClientFormComponent implements Form, OnInit {
   }
 
   getModel(): EntityModel {
-    const { id, clientId, ui, redirectUris } = this.form.value;
+    const { id, ...rest } = this.form.value;
     const clientApplication: Client = Client.create({
-      clientId,
-      ui,
-      redirectUris,
+      ...rest,
     });
 
     return new EntityModel(id, clientApplication);

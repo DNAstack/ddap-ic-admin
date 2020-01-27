@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { ic } from '../../../../shared/proto/ic-service';
 
 import IdentityProvider = ic.v1.IdentityProvider;
+import { IdentityProviderFormBuilder } from "./identity-provider-form-builder.service";
 
 @Component({
   selector: 'ddap-identity-provider-form',
@@ -23,49 +24,21 @@ export class IdentityProviderFormComponent implements OnInit, Form {
   }
 
   @Input()
-  model?: EntityModel = new EntityModel('', IdentityProvider.create());
+  identityProvider?: EntityModel = new EntityModel('', IdentityProvider.create());
 
   form: FormGroup;
   isExpanded: Function = isExpanded;
   translators$: Observable<any>;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private identityProviderFormBuilder: IdentityProviderFormBuilder) {
   }
 
   ngOnInit(): void {
-    const {
-      ui,
-      tokenUrl,
-      authorizeUrl,
-      clientId,
-      issuer,
-      responseType,
-      translateUsing,
-      scopes,
-    } = _get(this.model, 'dto', {});
-
-    const scopeForm = this.formBuilder.array(scopes || []);
-    // TODO: DISCO-2456 Blocked by API
-    // this.translators$ = this.passportTranslators.allDams();
-
-    this.form = this.formBuilder.group({
-      id: [this.model.name || '', [Validators.required, Validators.pattern(nameConstraintPattern)]],
-      ui: this.formBuilder.group({
-        label: [_get(ui, 'label', ''), []],
-        description: [_get(ui, 'description', ''), [Validators.maxLength(255)]],
-      }),
-      issuer: [issuer, [Validators.required]],
-      tokenUrl: [tokenUrl, [FormValidators.url]],
-      authorizeUrl: [authorizeUrl, [FormValidators.url]],
-      clientId: [clientId],
-      responseType: [responseType],
-      translateUsing: [translateUsing],
-      scopes: scopeForm,
-    });
+    this.form = this.identityProviderFormBuilder.buildForm(this.identityProvider);
   }
 
   addScope() {
-    this.scopes.insert(0, this.formBuilder.control('', [Validators.required]));
+    this.scopes.insert(0, this.identityProviderFormBuilder.buildStringControl());
   }
 
   removeScope(index: number): void {
@@ -73,27 +46,10 @@ export class IdentityProviderFormComponent implements OnInit, Form {
   }
 
   getModel(): EntityModel {
-    const {
-      id,
-      ui,
-      tokenUrl,
-      authorizeUrl,
-      clientId,
-      issuer,
-      responseType,
-      translateUsing,
-      scopes,
-    } = this.form.value;
+    const { id, ...rest } = this.form.value;
 
     const identityProvider: IdentityProvider = IdentityProvider.create({
-      ui,
-      tokenUrl,
-      authorizeUrl,
-      clientId,
-      issuer,
-      responseType,
-      translateUsing,
-      scopes,
+      ...rest,
     });
 
     return new EntityModel(id, identityProvider);
