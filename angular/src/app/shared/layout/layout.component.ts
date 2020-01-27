@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import { AuthService } from '../../account/shared/auth/auth.service';
 import { UserAccess } from '../../account/shared/auth/user-access.model';
 import { ic } from '../proto/ic-service';
 import IAccountProfile = ic.v1.IAccountProfile;
+import { RealmService } from '../realm/realm.service';
 
 const refreshRepeatTimeoutInMs = 600000;
 
@@ -30,7 +31,9 @@ export class LayoutComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private identityService: IdentityService,
               private identityStore: IdentityStore,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private realmService: RealmService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -40,7 +43,7 @@ export class LayoutComponent implements OnInit {
           return;
         }
         const { sandbox, account } = identity;
-        this.isSandbox = sandbox;
+        this.isSandbox = true; // sandbox;
         this.profile = account.profile;
       });
 
@@ -75,6 +78,16 @@ export class LayoutComponent implements OnInit {
       });
   }
 
+  onAcknowledge(dialogData) {
+    if (dialogData) {
+      if (dialogData.action === 'edit') {
+        this.changeRealmAndGoToLogin(dialogData.realm);
+      } else if (dialogData.action === 'delete') {
+        this.deleteRealm(dialogData.realm);
+      }
+    }
+  }
+
   private determineAdminAccessForIc() {
     this.authService.getIcUserAccess()
       .subscribe((icAccess: UserAccess) => {
@@ -87,6 +100,21 @@ export class LayoutComponent implements OnInit {
       .pipe(
         repeatWhen(() => interval(refreshRepeatTimeoutInMs))
       );
+  }
+
+  private changeRealmAndGoToLogin(realm) {
+    this.identityStore.getLoginHintForPrimaryAccount()
+      .subscribe((loginHint) => {
+        window.location.href = `/api/v1alpha/realm/${realm}/identity/login?loginHint=${loginHint}`;
+      });
+  }
+
+  private deleteRealm(realm) {
+    if (realm !== 'master') {
+      this.realmService.deleteRealm(realm).subscribe(() => {
+        this.router.navigate(['/master']).then(() => window.location.reload());
+      });
+    }
   }
 
 }
