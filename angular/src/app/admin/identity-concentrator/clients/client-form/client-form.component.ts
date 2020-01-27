@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormValidators } from 'ddap-common-lib';
+import { FormValidators, isExpanded } from 'ddap-common-lib';
 import Client = ic.v1.Client;
 import { Form } from 'ddap-common-lib';
 import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
@@ -19,6 +19,7 @@ export class ClientFormComponent implements Form, OnInit {
   model?: EntityModel = new EntityModel('', Client.create());
 
   form: FormGroup;
+  isExpanded: Function = isExpanded;
 
   get redirectUris() {
     return this.form.get('redirectUris') as FormArray;

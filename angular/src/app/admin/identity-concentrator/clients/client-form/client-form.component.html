@@ -57,9 +57,11 @@
     </div>
   </h3>
 
-  <mat-accordion multi displayMode="flat">
-    <mat-expansion-panel *ngFor="let redirectUri of redirectUris.controls; let i=index"
-                         formArrayName="redirectUris"
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="redirectUris">
+    <mat-expansion-panel #redirectExpansionPanel
+                         *ngFor="let redirectUri of redirectUris.controls; let i=index"
+                         [expanded]="isExpanded(redirectUri, redirectExpansionPanel)"
                          [attr.data-se]="'redirect-uri-' + i">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">

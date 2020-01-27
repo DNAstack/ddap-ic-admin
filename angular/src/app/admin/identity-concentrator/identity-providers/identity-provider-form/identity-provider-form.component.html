@@ -106,9 +106,11 @@
     </div>
   </h3>
 
-  <mat-accordion multi displayMode="flat">
-    <mat-expansion-panel *ngFor="let scope of scopes.controls; let i=index"
-                         formArrayName="scopes"
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="scopes">
+    <mat-expansion-panel #scopeExpansionPanel
+                         *ngFor="let scope of scopes.controls; let i=index"
+                         [expanded]="isExpanded(scope, scopeExpansionPanel)"
                          [attr.data-se]="'scope-' + i">
       <mat-expansion-panel-header collapsedHeight="5rem"
                                   expandedHeight="5rem">

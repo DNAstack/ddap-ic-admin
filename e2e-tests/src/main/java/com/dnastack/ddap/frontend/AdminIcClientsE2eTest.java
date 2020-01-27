@@ -44,7 +44,6 @@ public class AdminIcClientsE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-description"), "add-client-desc");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-redirect"));
-        adminManagePage.toggleExpansionPanel("redirect-uri-0");
         adminManagePage.fillField(DdapBy.se("inp-redirect"), "https://test-source.com");
 
         adminListPage = adminManagePage.saveEntity();

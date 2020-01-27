@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormValidators } from 'ddap-common-lib';
+import { FormValidators, isExpanded } from 'ddap-common-lib';
 import { Form } from 'ddap-common-lib';
 import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
@@ -18,18 +18,18 @@ import IdentityProvider = ic.v1.IdentityProvider;
 })
 export class IdentityProviderFormComponent implements OnInit, Form {
 
-  @Input()
-  model?: EntityModel = new EntityModel('', IdentityProvider.create());
-
-  form: FormGroup;
-  translators$: Observable<any>;
-
   get scopes() {
     return this.form.get('scopes') as FormArray;
   }
 
-  constructor(private formBuilder: FormBuilder) {
+  @Input()
+  model?: EntityModel = new EntityModel('', IdentityProvider.create());
 
+  form: FormGroup;
+  isExpanded: Function = isExpanded;
+  translators$: Observable<any>;
+
+  constructor(private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
