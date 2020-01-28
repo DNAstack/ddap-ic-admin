@@ -6,7 +6,7 @@ import com.dnastack.ddap.common.security.UserTokenCookiePackager.CookieName;
 import com.dnastack.ddap.common.security.UserTokenCookiePackager.TokenKind;
 import com.dnastack.ddap.common.util.http.UriUtil;
 import com.dnastack.ddap.ic.common.security.JwtUtil;
-import com.dnastack.ddap.ic.oauth.client.ReactiveIcOAuthClient;
+import com.dnastack.ddap.ic.oauth.client.ReactiveIdpOAuthClient;
 import com.dnastack.ddap.ic.oauth.model.TokenResponse;
 import com.dnastack.ddap.ic.service.AccountLinkingService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,13 +34,13 @@ public class AccountLinkingController {
 
     private static final String DEFAULT_SCOPES = "openid ga4gh_passport_v1 account_admin identities";
 
-    private ReactiveIcOAuthClient oAuthClient;
+    private ReactiveIdpOAuthClient oAuthClient;
     private UserTokenCookiePackager cookiePackager;
     private OAuthStateHandler stateHandler;
     private AccountLinkingService accountLinkingService;
 
     @Autowired
-    public AccountLinkingController(ReactiveIcOAuthClient oAuthClient,
+    public AccountLinkingController(ReactiveIdpOAuthClient oAuthClient,
                                     UserTokenCookiePackager cookiePackager,
                                     OAuthStateHandler stateHandler,
                                     AccountLinkingService accountLinkingService) {

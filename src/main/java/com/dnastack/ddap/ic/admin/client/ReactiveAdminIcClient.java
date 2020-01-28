@@ -2,7 +2,7 @@ package com.dnastack.ddap.ic.admin.client;
 
 import com.dnastack.ddap.common.client.AuthAwareWebClientFactory;
 import com.dnastack.ddap.common.client.OAuthFilter;
-import com.dnastack.ddap.ic.common.config.IdpProperties;
+import com.dnastack.ddap.ic.common.config.IcProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriTemplate;
@@ -18,11 +18,11 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 public class ReactiveAdminIcClient {
 
-    private IdpProperties idpProperties;
+    private IcProperties icProperties;
     private AuthAwareWebClientFactory webClientFactory;
 
-    public ReactiveAdminIcClient(IdpProperties idpProperties, AuthAwareWebClientFactory webClientFactory) {
-        this.idpProperties = idpProperties;
+    public ReactiveAdminIcClient(IcProperties icProperties, AuthAwareWebClientFactory webClientFactory) {
+        this.icProperties = icProperties;
         this.webClientFactory = webClientFactory;
     }
 
@@ -32,13 +32,13 @@ public class ReactiveAdminIcClient {
                 "&client_secret={clientSecret}");
         final Map<String, Object> variables = new HashMap<>();
         variables.put("realm", realm);
-        variables.put("clientId", idpProperties.getClientId());
-        variables.put("clientSecret", idpProperties.getClientSecret());
+        variables.put("clientId", icProperties.getClientId());
+        variables.put("clientSecret", icProperties.getClientSecret());
 
         return webClientFactory
                 .getWebClient(realm, refreshToken, OAuthFilter.Audience.IC)
                 .get()
-                .uri(idpProperties.getBaseUrl().resolve(template.expand(variables)))
+                .uri(icProperties.getBaseUrl().resolve(template.expand(variables)))
                 .header(AUTHORIZATION, "Bearer " + accessToken)
                 .retrieve()
                 .bodyToMono(Object.class)

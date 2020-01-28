@@ -2,7 +2,7 @@ package com.dnastack.ddap.ic.token.client;
 
 import com.dnastack.ddap.common.client.ProtobufDeserializer;
 import com.dnastack.ddap.common.client.WebClientFactory;
-import com.dnastack.ddap.ic.common.config.IdpProperties;
+import com.dnastack.ddap.ic.common.config.IcProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriTemplate;
@@ -18,10 +18,10 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 public class ReactiveTokenClient {
 
-    private IdpProperties idpProperties;
+    private IcProperties icProperties;
 
-    public ReactiveTokenClient(IdpProperties idpProperties) {
-        this.idpProperties = idpProperties;
+    public ReactiveTokenClient(IcProperties icProperties) {
+        this.icProperties = icProperties;
     }
 
     public Mono<TokenService.ListTokensResponse> getTokens(String icToken, TokenService.ListTokensRequest request) {
@@ -32,15 +32,15 @@ public class ReactiveTokenClient {
             "&pageToken={pageToken}" +
             "&pageSize={pageSize}");
         final Map<String, Object> variables = new HashMap<>();
-        variables.put("clientId", idpProperties.getClientId());
-        variables.put("clientSecret", idpProperties.getClientSecret());
+        variables.put("clientId", icProperties.getClientId());
+        variables.put("clientSecret", icProperties.getClientSecret());
         variables.put("parent", request.getParent());
         variables.put("pageToken", request.getPageToken());
         variables.put("pageSize", request.getPageSize());
 
         return WebClientFactory.getWebClient()
             .get()
-            .uri(idpProperties.getBaseUrl().resolve(template.expand(variables)))
+            .uri(icProperties.getBaseUrl().resolve(template.expand(variables)))
             .header(AUTHORIZATION, "Bearer " + icToken)
             .retrieve()
             .bodyToMono(String.class)
@@ -52,13 +52,13 @@ public class ReactiveTokenClient {
             "?client_id={clientId}" +
             "&client_secret={clientSecret}");
         final Map<String, Object> variables = new HashMap<>();
-        variables.put("clientId", idpProperties.getClientId());
-        variables.put("clientSecret", idpProperties.getClientSecret());
+        variables.put("clientId", icProperties.getClientId());
+        variables.put("clientSecret", icProperties.getClientSecret());
         variables.put("tokenName", request.getName());
 
         return WebClientFactory.getWebClient()
             .delete()
-            .uri(idpProperties.getBaseUrl().resolve(template.expand(variables)))
+            .uri(icProperties.getBaseUrl().resolve(template.expand(variables)))
             .header(AUTHORIZATION, "Bearer " + icToken)
             .retrieve()
             .bodyToMono(Object.class);
