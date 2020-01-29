@@ -19,8 +19,8 @@ idp:
 ic:
   enabled: true
   base-url: ${idp.base-url}
-  client-id: 812c1319-fef5-4aa6-9393-beb5ec8facdf
-  client-secret: 0000-0000-0000-0000-0000
+  client-id: ${idp.client-id}
+  client-secret: ${idp.client-secret}
 
 ddap:
   public-uri: http://localhost:8086
