@@ -78,86 +78,11 @@
     }
   },
   "clients": {
-    "chao_test": {
-      "clientId": "46551464-5015-4588-928c-11a4e8440682",
-      "redirectUris": [
-        "http://localhost:8085/api",
-        "https://dev-gl4yfhvd3a-uc.a.run.app/api"
-      ],
-      "ui": {
-        "description": "DDAP Developer environment",
-        "label": "Chao's IC DDAP Development"
-      }
-    },
-    "craig_test": {
-      "clientId": "1f8ff367-3950-48c2-9358-781f9adff70c",
-      "redirectUris": [
-        "http://localhost:8080",
-        "https://ic-dot-hcls-data-connect-demo.appspot.com"
-      ],
-      "ui": {
-        "description": "DDAP Developer environment",
-        "label": "Craig's IC DDAP Development"
-      }
-    },
-    "dnastack_fe": {
-      "clientId": "b1aed96d-6367-4313-87a1-65eda4962a76",
-      "redirectUris": [
-        "http://localhost:8085/api",
-        "https://ddap-ic-admin.staging.dnastack.com/api",
-        "https://ddap-ic-admin.prod.dnastack.com/api",
-        "https://ddap-ic-admin-candidate.staging.dnastack.com",
-        "https://ddap-ic-admin-candidate.prod.dnastack.com"
-      ],
-      "ui": {
-        "description": "DDAP Developer environment",
-        "label": "DNASTACK IC DDAP Development"
-      }
-    },
-    "ga4gh_dam": {
-      "clientId": "05c14eaf-c762-4dbf-b7aa-c7bab5dd41b2",
-      "ui": {
-        "description": "Data Access Management Service",
-        "label": "DAM"
-      }
-    },
-    "ga4gh_ddap_dev": {
-      "clientId": "b6bf058f-7904-4b98-8982-d5a7a3a38052",
-      "redirectUris": [
-        "http://localhost:8085/api",
-        "https://ddap-ic-admin.staging.dnastack.com/api",
-        "https://ddap-ic-admin.prod.dnastack.com/api",
-        "https://ddap-ic-admin-candidate.staging.dnastack.com",
-        "https://ddap-ic-admin-candidate.prod.dnastack.com"
-      ],
-      "ui": {
-        "description": "DDAP Developer environment",
-        "label": "IC DDAP Development"
-      }
-    },
-    "test_client": {
-      "clientId": "903cfaeb-57d9-4ef6-5659-04377794ed64",
-      "redirectUris": [
-        "/",
-        "http://localhost:8080"
-      ],
-      "ui": {
-        "description": "Test page",
-        "label": "Local Test Page"
-      }
-    },
-    "test_page": {
-      "clientId": "903cfaeb-57d9-4ef6-5659-04377794ed65",
-      "redirectUris": [
-        "/"
-      ],
-      "ui": {
-        "description": "Test page",
-        "label": "Test Page"
-      }
-    },
     "edit-client-id": {
       "clientId": "1f8ff367-3950-3333-9358-781f9adff70c",
+      "scope": "openid ga4gh_passport_v1 account_admin identities profile offline_access",
+      "grant_types": ["authorization_code", "refresh_token"],
+      "response_types": ["code"],
       "redirectUris": [
         "http://localhost:8080",
         "https://ic-dot-hcls-data-connect-demo.appspot.com"
@@ -169,6 +94,9 @@
     },
     "delete-client-id": {
       "clientId": "1f8ff367-3950-2222-9358-781f9adff70c",
+      "scope": "openid ga4gh_passport_v1 account_admin identities profile offline_access",
+      "grant_types": ["authorization_code", "refresh_token"],
+      "response_types": ["code"],
       "redirectUris": [
         "http://localhost:8080",
         "https://ic-dot-hcls-data-connect-demo.appspot.com"
@@ -180,6 +108,9 @@
     },
     "this_ddap": {
       "clientId": "$$E2E_CLIENT_ID$$",
+      "scope": "openid ga4gh_passport_v1 account_admin identities profile offline_access",
+      "grant_types": ["authorization_code", "refresh_token"],
+      "response_types": ["code"],
       "redirectUris": [
         "http://localhost:8085/api",
         "$$E2E_BASE_URI$$/api"

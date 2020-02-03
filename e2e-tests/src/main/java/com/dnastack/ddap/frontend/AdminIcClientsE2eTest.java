@@ -3,6 +3,7 @@ package com.dnastack.ddap.frontend;
 import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.AdminManagePage;
 import com.dnastack.ddap.common.util.DdapBy;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.dnastack.ddap.common.fragments.NavBar.icClientsLink;
@@ -11,6 +12,7 @@ import static com.dnastack.ddap.common.fragments.NavBar.icClientsLink;
 public class AdminIcClientsE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
+    @Ignore
     public void addEmptyClient() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(icClientsLink());
