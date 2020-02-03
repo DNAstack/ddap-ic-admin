@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import IConnectedAccount = ic.v1.IConnectedAccount;
+import IConnectedAccount = common.IConnectedAccount;
 import { any } from 'codelyzer/util/function';
 import { ErrorHandlerService, realmIdPlaceholder } from 'ddap-common-lib';
 import _get from 'lodash.get';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
-import { ic } from '../../shared/proto/ic-service';
+import { common } from '../../shared/proto/ic-service';
 
 import { AccountLink } from './account-link.model';
 import { Identity } from './identity.model';

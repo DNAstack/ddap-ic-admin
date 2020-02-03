@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { isExpanded } from 'ddap-common-lib';
-import Client = ic.v1.Client;
+import Client = common.Client;
 import { Form } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
 
-import { ic } from '../../../../shared/proto/ic-service';
+import { common } from '../../../../shared/proto/ic-service';
 
 import { ClientFormBuilder } from './client-form-builder.service';
 
