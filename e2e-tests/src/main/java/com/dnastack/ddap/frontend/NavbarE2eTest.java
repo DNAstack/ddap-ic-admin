@@ -52,7 +52,6 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
 
         ICLoginPage icLoginPage = ddapPage.getNavBar().logOut();
         ddapPage.waitForInflightRequests();
-        assertThat(icLoginPage.getRealm(), is(REALM));
 
         // check if cookies are not present on landing page without logging in
         driver.get(getUrlWithBasicCredentials(DDAP_BASE_URL));

@@ -29,59 +29,6 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
         return format("/api/v1alpha/realm/%s%s", REALM, path);
     }
 
-    @Test
-    public void testScopes() throws Exception {
-        String requestedScope = "link";
-        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
-        String icToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM, "openid");
-        String damToken = fetchRealPersonaDamToken(TestingPersona.USER_WITH_ACCESS, REALM);
-        String refreshToken = fetchRealPersonaRefreshToken(TestingPersona.USER_WITH_ACCESS, REALM);
-
-        // @formatter:off
-        getRequestSpecification()
-                .log().method()
-                .log().cookies()
-                .log().uri()
-            .cookie(SESSION_COOKIE_NAME, session.getValue())
-                .cookie("ic_access", icToken)
-                .cookie("ic_identity", damToken)
-                .cookie("ic_refresh", refreshToken)
-                .redirects().follow(false)
-                .when()
-                .get(ddap("/identity"))
-                .then()
-                .log().body()
-                .log().ifValidationFails()
-                .statusCode(200)
-                .assertThat()
-                .body("scopes", not(empty()))
-                .body("scopes", not(contains("link")));
-        // @formatter:on
-
-        icToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM, "openid", requestedScope);
-        damToken = fetchRealPersonaDamToken(TestingPersona.USER_WITH_ACCESS, REALM);
-
-        // @formatter:off
-        getRequestSpecification()
-                .log().method()
-                .log().cookies()
-                .log().uri()
-            .cookie(SESSION_COOKIE_NAME, session.getValue())
-                .cookie("ic_access", icToken)
-                .cookie("ic_identity", damToken)
-                .cookie("ic_refresh", refreshToken)
-                .redirects().follow(false)
-                .when()
-                .get(ddap("/identity"))
-                .then()
-                .log().body()
-                .log().ifValidationFails()
-                .statusCode(200)
-                .assertThat()
-                .body("scopes", not(empty()))
-                .body("scopes", hasItem(requestedScope));
-        // @formatter:on
-    }
 
     @Test
     public void testAccount() throws Exception {

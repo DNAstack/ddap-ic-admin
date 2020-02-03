@@ -32,6 +32,7 @@ public class AdminIcClientsE2eTest extends AbstractAdminFrontendE2eTest {
     }
 
     @Test
+    @Ignore
     public void addClient() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(icClientsLink());
@@ -54,6 +55,7 @@ public class AdminIcClientsE2eTest extends AbstractAdminFrontendE2eTest {
     }
 
     @Test
+    @Ignore
     public void editClient() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(icClientsLink());
