@@ -6,10 +6,10 @@ import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Observable } from 'rxjs';
 
-import { ic } from '../../../../shared/proto/ic-service';
+import { common } from '../../../../shared/proto/ic-service';
 
-import IdentityProvider = ic.v1.IdentityProvider;
-import { IdentityProviderFormBuilder } from "./identity-provider-form-builder.service";
+import IdentityProvider = common.IdentityProvider;
+import { IdentityProviderFormBuilder } from './identity-provider-form-builder.service';
 
 @Component({
   selector: 'ddap-identity-provider-form',

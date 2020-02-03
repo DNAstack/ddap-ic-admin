@@ -6,9 +6,9 @@ import { VisaPassportService } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Subscription } from 'rxjs';
 
-import { ic } from '../../shared/proto/ic-service';
+import { common, ic } from '../../shared/proto/ic-service';
 import { scim } from '../../shared/proto/user-service';
-import IConnectedAccount = ic.v1.IConnectedAccount;
+import IConnectedAccount = common.IConnectedAccount;
 import { PersonalInfoFormComponent } from '../../shared/users/personal-info-form/personal-info-form.component';
 import { UsersService } from '../../shared/users/users.service';
 

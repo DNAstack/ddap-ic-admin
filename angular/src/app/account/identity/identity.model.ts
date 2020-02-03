@@ -1,8 +1,8 @@
-import { ic } from "../../shared/proto/ic-service";
-import Account = ic.v1.Account;
+import { common } from '../../shared/proto/ic-service';
+import Account = common.Account;
 
 export interface Identity {
-  account: Account,
+  account: Account;
   scopes: string[];
   sandbox: boolean;
 }
