@@ -9,8 +9,8 @@ import { IdentityService } from '../../account/identity/identity.service';
 import { IdentityStore } from '../../account/identity/identity.store';
 import { AuthService } from '../../account/shared/auth/auth.service';
 import { UserAccess } from '../../account/shared/auth/user-access.model';
-import { common } from '../proto/ic-service';
-import IAccountProfile = common.IAccountProfile;
+import { ic } from '../proto/ic-service';
+import IAccountProfile = ic.v1.IAccountProfile;
 
 const refreshRepeatTimeoutInMs = 600000;
 

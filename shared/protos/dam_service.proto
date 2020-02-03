@@ -18,8 +18,7 @@ syntax = "proto3";
 // end points to receive requests and returns responses using these messages.
 package dam.v1;
 
-import "proto/common/v1/common.proto"; /* copybara-comment */
-import "proto/common/v1/oauthclient.proto"; /* copybara-comment */
+import "proto/common/v1/common.proto";
 
 option go_package = "github.com/GoogleCloudPlatform/healthcare-federated-access-services/proto/dam/v1";
 
@@ -31,7 +30,7 @@ message DamConfig {
   map<string, TrustedSource> trusted_sources = 5;
   map<string, Policy> policies = 6;
   map<string, Resource> resources = 7;
-  map<string, common.Client> clients = 8;
+  map<string, Client> clients = 8;
   map<string, ServiceTemplate> service_templates = 9;
   map<string, ClaimDefinition> claim_definitions = 10;
   map<string, common.TestPersona> test_personas = 11;
@@ -61,6 +60,9 @@ message Policy {
 }
 
 message View {
+  message Interface {
+    repeated string uri = 1;
+  }
   message Item {
     map<string, string> vars = 1;
   }
@@ -81,16 +83,20 @@ message View {
   map<string, Interface> computed_interfaces = 13 [json_name = "interfaces"];
 }
 
-message Interface {
-  repeated string uri = 1;
-}
-
 message Resource {
   string umbrella = 1;
   map<string, View> views = 2;
   repeated string clients = 3;
   string max_token_ttl = 4;
   map<string, string> ui = 5;
+}
+
+message Client {
+  string client_id = 1;
+  int64 revision = 2;
+  double commit_time = 3;
+  map<string, string> ui = 4;
+  repeated string redirect_uris = 5;
 }
 
 message ServiceTemplate {
@@ -135,7 +141,6 @@ message ConfigOptions {
   int32 gcp_managed_keys_per_account = 4;
   string gcp_service_account_project = 5;
   map<string, Descriptor> computed_descriptors = 6 [json_name = "descriptors"];
-  string gcp_iam_billing_project = 7;
 }
 
 message ClaimDefinition {
@@ -169,7 +174,6 @@ message VariableFormat {
   string regexp = 1;
   bool optional = 2;
   map<string, string> ui = 3;
-  string type = 4;
 }
 
 message Realm {}
@@ -177,6 +181,14 @@ message Realm {}
 message PassportTranslator {
   repeated string compatible_issuers = 1;
   map<string, string> ui = 2;
+}
+
+message ResourceToken {
+  string name = 1;
+  View view = 2;
+  string account = 3;
+  string token = 4;
+  string ttl = 5;
 }
 
 ///////////////////////////////////////////////////
@@ -273,7 +285,6 @@ message GetFlatViewsResponse {
     map<string, string> resource_ui = 18;
     map<string, string> view_ui = 19;
     map<string, string> role_ui = 20;
-    repeated string role_categories = 21;
   }
   map<string, FlatView> views = 1;
 }
@@ -319,6 +330,14 @@ message GetTokenRequest {
   string ttl = 3;
 }
 
+message GetTokenResponse {
+  string name = 1;
+  View view = 2;
+  string account = 3;
+  string token = 4;
+  string ttl = 5;
+}
+
 message GetTestResultsRequest {}
 
 message GetTestResultsResponse {
@@ -340,6 +359,12 @@ message GetTestResultsResponse {
   int32 executed = 7;
   int32 passed = 8;
   string error = 9;
+}
+
+message ClientSecretRequest {}
+
+message ClientSecretResponse {
+  string secret = 1;
 }
 
 message TargetAdaptersRequest {}
@@ -465,64 +490,44 @@ message ConfigTestPersonaRequest {
   ConfigModification modification = 2;
 }
 
+message ConfigClientRequest {
+  Client item = 1;
+  ConfigModification modification = 2;
+}
+
 message ResourceTokenRequestState {
-  enum TokenType {
-    UNSPECIFIED = 0;
-    DATASET = 1;
-    ENDPOINT = 2;
-  }
-  TokenType type = 12;
   message Resource {
     string realm = 1;
     string resource = 2;
     string view = 3;
     string role = 4;
-    string url = 5;
   }
   repeated Resource resources = 1;
-  string client_id = 2 [deprecated = true];
-  string state = 3 [deprecated = true];
+  string client_id = 2;
+  string state = 3;
   string broker = 4;
-  string redirect = 5 [deprecated = true];
+  string redirect = 5;
   int64 ttl = 6;
   bool response_key_file = 7;
-  string challenge = 8;
-  string issuer = 9;
-  string subject = 10;
-  int64 epoch_seconds = 11;
-  string realm = 13;
-  repeated string identities = 14;
 }
 
 message AuthCode {
-  string client_id = 1 [deprecated = true];
-  string state = 2;
-  int64 epoch_seconds = 3;
+  string client_id = 1;
+  bool response_key_file = 2;
+  map<string, ResourceToken> tokens = 3;
 }
 
-message ResourceTokens {
-  message Descriptor {
-    map<string, Interface> interfaces = 1;
-    string access = 2;
-    repeated string permissions = 3;
-  }
-  // Extends:
-  // https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse
-  message ResourceToken {
-    string account = 1;
-    string access_token = 2 [json_name = "access_token"];
-    string token_type = 3 [json_name = "token_type"];
-    string refresh_token = 4 [json_name = "access_token"];
-    uint32 expires_in = 5 [json_name = "expires_in"];
-    string id_token = 6 [json_name = "id_token"];
-    string key_file = 7 [json_name = "key_file"];
-    string platform = 8;
-    string name = 9 [deprecated = true];
-    View view = 10 [deprecated = true];
-    string ttl = 11 [deprecated = true];
-    string token = 12 [deprecated = true];
-  }
-  map<string, Descriptor> resources = 1;
-  map<string, ResourceToken> access = 2;
-  uint32 epoch_seconds = 3;
+///////////////////////////////////////////////////
+// oidc
+
+message OidcConfig {
+  string issuer = 1 [json_name = "issuer"];
+  string jwks_uri = 2 [json_name = "jwks_uri"];
+  string auth_url = 3 [json_name = "auth_url"];
+  repeated string response_types_supported = 4
+      [json_name = "response_types_supported"];
+  string token_endpoint = 5 [json_name = "token_endpoint"];
+  string revocation_endpoint = 8 [json_name = "revocation_endpoint"];
+  string userinfo_endpoint = 6 [json_name = "userinfo_endpoint"];
+  repeated string scopes_supported = 7 [json_name = "scopes_supported"];
 }
