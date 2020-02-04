@@ -7,6 +7,7 @@ import { scim } from "../proto/user-service";
 import IPatch = scim.v2.IPatch;
 import IListUsersResponse = scim.v2.IListUsersResponse;
 import IUser = scim.v2.IUser;
+import { share } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,8 @@ export class UsersService {
   getLoggedInUser(): Observable<IUser> {
     return this.http.get<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Me`)
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load User information.`)
+        this.errorHandler.notifyOnError(`Can't load User information.`),
+        share()
       );
   }
 

@@ -22,36 +22,38 @@
         <ddap-realm-input></ddap-realm-input>
       </div>
 
-      <div *ngIf="profile"
+      <div *ngIf="userInfo$ | async as userInfo; else unauthenticated"
          class="ddap-logout">
         <mat-list-item class="credentials-username"
                        data-se="nav-account">
-          <h4 mat-line>{{ profile?.name || '&nbsp;' }}</h4>
+          <h4 mat-line>{{ userInfo?.displayName || '&nbsp;' }}</h4>
           <span mat-line
                 data-se="nav-logout"
                 (click)="logout()">Log Out</span>
           <div class="credentials-picture">
+            <!-- TODO: use userInfo.photos -->
             <img matListAvatar
-                 [src]="profile?.picture || '/assets/images/placeholder_identity.png'"
+                 [src]="'/assets/images/placeholder_identity.png'"
                  alt="Profile picture">
           </div>
         </mat-list-item>
       </div>
-      <a [href]="loginPath"
-         *ngIf="!profile"
-         data-se="nav-login">
-        <mat-list-item class="credentials-username"
-                       data-se="nav-account">
-          <h4 mat-line>Log In</h4>
-          <div class="credentials-picture">
-            <img matListAvatar
-                 [src]="profile?.picture || '/assets/images/placeholder_identity.png'"
-                 alt="Profile picture">
-          </div>
-        </mat-list-item>
-      </a>
+      <ng-template #unauthenticated>
+        <a [href]="loginPath"
+           data-se="nav-login">
+          <mat-list-item class="credentials-username"
+                         data-se="nav-account">
+            <h4 mat-line>Log In</h4>
+            <div class="credentials-picture">
+              <img matListAvatar
+                   [src]="'/assets/images/placeholder_identity.png'"
+                   alt="Profile picture">
+            </div>
+          </mat-list-item>
+        </a>
+      </ng-template>
 
-      <ng-container *ngIf="profile">
+      <ng-container *ngIf="userInfo$ | async as userInfo">
         <mat-list-item [routerLink]="['account', 'identity']"
                        [routerLinkActive]="['active-nav-link']"
                        data-se="nav-identity">
@@ -61,7 +63,7 @@
       </ng-container>
     </mat-nav-list>
 
-    <div *ngIf="profile"
+    <div *ngIf="userInfo$ | async as userInfo"
          class="accordion-wrapper">
       <mat-accordion [multi]="false"
                      *ngIf="isIcAdmin">
@@ -91,7 +93,7 @@
         </mat-expansion-panel>
       </mat-accordion>
     </div>
-    <div *ngIf="profile"
+    <div *ngIf="userInfo$ | async as userInfo"
          class="accordion-wrapper">
       <mat-accordion [multi]="false"
                      *ngIf="isIcAdmin">
@@ -132,7 +134,7 @@
   <mat-sidenav-content>
     <ddaplib-sandbox-banner *ngIf="isSandbox"></ddaplib-sandbox-banner>
 
-    <ng-container *ngIf="profile; else anonymousUserLandingPage">
+    <ng-container *ngIf="userInfo$ | async as userInfo; else anonymousUserLandingPage">
       <ng-container *ngIf="isChildPage(); else authorizedUserLandingPage">
         <router-outlet></router-outlet>
       </ng-container>

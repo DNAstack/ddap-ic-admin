@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import IUser = scim.v2.IUser;
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from "@angular/router";
 import { VisaPassportService } from 'ddap-common-lib';
 import _get from 'lodash.get';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from "rxjs";
 
 import { common, ic } from '../../shared/proto/ic-service';
 import { scim } from '../../shared/proto/user-service';
@@ -33,7 +33,7 @@ export class IdentityComponent implements OnInit {
 
   realm: string;
   displayScopeWarning = false;
-  userInfo: IUser;
+  userInfo$: Observable<IUser>;
 
   constructor(private activatedRoute: ActivatedRoute,
               private identityService: IdentityService,
@@ -49,10 +49,7 @@ export class IdentityComponent implements OnInit {
       this.realm = params.realmId;
     });
 
-    this.usersService.getLoggedInUser()
-      .subscribe((userInfo: IUser) => {
-        this.userInfo = userInfo;
-      });
+    this.userInfo$ = this.usersService.getLoggedInUser();
 
     this.identityStore.state$
       .subscribe((identity: Identity) => {
@@ -113,7 +110,7 @@ export class IdentityComponent implements OnInit {
   updatePersonalInfo(): void {
     const change = this.personalInfoForm.getModel();
     this.usersService.patchLoggedInUser(change)
-      .subscribe(() => this.openSnackBar('Successfully update personal information'));
+      .subscribe(() => this.openSnackBar('Successfully update personal information. To take effect reload the page.'));
   }
 
   private openSnackBar(message) {

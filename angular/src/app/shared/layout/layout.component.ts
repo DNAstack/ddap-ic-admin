@@ -2,15 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { interval, Observable } from 'rxjs';
-import { repeatWhen } from 'rxjs/operators';
+import { repeatWhen, share } from "rxjs/operators";
 
 import { Identity } from '../../account/identity/identity.model';
 import { IdentityService } from '../../account/identity/identity.service';
 import { IdentityStore } from '../../account/identity/identity.store';
 import { AuthService } from '../../account/shared/auth/auth.service';
 import { UserAccess } from '../../account/shared/auth/user-access.model';
-import { common } from '../proto/ic-service';
-import IAccountProfile = common.IAccountProfile;
+import { scim } from '../proto/user-service';
+import { UsersService } from '../users/users.service';
+import IUser = scim.v2.IUser;
 
 const refreshRepeatTimeoutInMs = 600000;
 
@@ -20,20 +21,24 @@ const refreshRepeatTimeoutInMs = 600000;
 })
 export class LayoutComponent implements OnInit {
 
+  userInfo$: Observable<IUser>;
+
   isSandbox = false;
-  profile: IAccountProfile = null;
   isIcAdmin = false;
   realm: string;
   loginPath: string;
 
   constructor(public loader: LoadingBarService,
               private activatedRoute: ActivatedRoute,
+              private usersService: UsersService,
               private identityService: IdentityService,
               private identityStore: IdentityStore,
               private authService: AuthService) {
   }
 
   ngOnInit() {
+    this.userInfo$ = this.usersService.getLoggedInUser();
+
     this.identityStore.state$
       .subscribe((identity: Identity) => {
         if (!identity) {
@@ -41,7 +46,6 @@ export class LayoutComponent implements OnInit {
         }
         const { sandbox, account } = identity;
         this.isSandbox = sandbox;
-        this.profile = account.profile;
       });
 
     this.determineAdminAccessForIc();
