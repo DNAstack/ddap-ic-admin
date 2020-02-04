@@ -12,6 +12,11 @@ export const routes: Routes = [
     loadChildren: () => import('./users/users.module')
       .then(mod => mod.UsersModule),
   },
+  {
+    path: 'sessions',
+    loadChildren: () => import('./tokens/tokens.module')
+      .then(mod => mod.TokensModule),
+  },
 ];
 
 @NgModule({

@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
+import { NgJsonEditorModule } from 'ang-jsoneditor';
 
+import { AdminSharedModule } from '../shared/shared.module';
+
+import { TokenListComponent } from './token-list/token-list.component';
 import { TokensRoutingModule } from './tokens-routing.module';
-import { TokenListComponent } from "./token-list/token-list.component";
-import { AccountSharedModule } from "../shared/shared.module";
-import { NgJsonEditorModule } from "ang-jsoneditor";
 
 @NgModule({
   declarations: [
     TokenListComponent,
   ],
   imports: [
-    AccountSharedModule,
+    AdminSharedModule,
     TokensRoutingModule,
     NgJsonEditorModule,
   ],

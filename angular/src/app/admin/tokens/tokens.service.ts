@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import ListTokensResponse = tokens.v1.ListTokensResponse;
+import { realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { tokens } from "../../shared/proto/token-service";
-import ListTokensResponse = tokens.v1.ListTokensResponse;
+import { tokens } from '../../shared/proto/token-service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +16,11 @@ export class TokensService {
   }
 
   getTokens(params = {}): Observable<ListTokensResponse> {
-    return this.http.get<any>(`${environment.ddapApiUrl}/tokens`, { params });
+    return this.http.get<ListTokensResponse>(`${environment.idpApiUrl}/${realmIdPlaceholder}/admin/tokens`, { params });
   }
 
   revokeToken(tokenId: string): Observable<null> {
-    return this.http.delete<any>(`${environment.ddapApiUrl}/tokens/${tokenId}`);
+    return this.http.delete<any>(`${environment.idpApiUrl}/${realmIdPlaceholder}/admin/tokens/${tokenId}`);
   }
 
 }
