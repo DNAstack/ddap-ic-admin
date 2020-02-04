@@ -21,13 +21,15 @@
 </ddaplib-searchable-header>
 
 <ddaplib-main>
-  <ng-container *ngIf="(users$ | async) as usersResponse">
+  <ng-container *ngIf="users$ | async as usersResponse">
     <mat-accordion>
       <mat-expansion-panel *ngFor="let user of usersResponse['Resources']">
         <mat-expansion-panel-header collapsedHeight="5rem"
                                     expandedHeight="5rem">
-          <mat-panel-title>{{ user.name.formatted }}</mat-panel-title>
-          <mat-panel-description [ngClass]="{'active' : user.active }">{{user.active ? 'Active' : 'Inactive'}}</mat-panel-description>
+          <mat-panel-title>{{ user.displayName }}</mat-panel-title>
+          <mat-panel-description [ngClass]="{ 'active' : user.active }">
+            {{ user.active ? 'Active' : 'Inactive' }}
+          </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-divider></mat-divider>
         <ddaplib-entity-viewer [listData]="modifyUserData(user)"></ddaplib-entity-viewer>
@@ -42,10 +44,10 @@
         </mat-action-row>
       </mat-expansion-panel>
       <ddaplib-paginator color="primary"
-                      [paginationType]="'unidirectional'"
-                      [length]="usersResponse.totalResults"
-                      [pageSize]="usersResponse.itemsPerPage"
-                      (pageChange)="changePage($event)">
+                         [paginationType]="'unidirectional'"
+                         [length]="usersResponse.totalResults"
+                         [pageSize]="usersResponse.itemsPerPage"
+                         (pageChange)="changePage($event)">
       </ddaplib-paginator>
     </mat-accordion>
   </ng-container>

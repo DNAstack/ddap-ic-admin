@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import _get from 'lodash.get';
+
 import IUser = scim.v2.IUser;
 import IAttribute = scim.v2.IAttribute;
-import { scim } from "../../proto/user-service";
+import { scim } from '../../proto/user-service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class PersonalInfoFormBuilder {
 
   buildForm(adminMode: boolean, user?: IUser): FormGroup {
     return this.formBuilder.group({
+      displayName: [_get(user, 'displayName')],
       name: this.formBuilder.group({
         formatted: [_get(user, 'name.formatted')],
         familyName: [_get(user, 'name.familyName')],

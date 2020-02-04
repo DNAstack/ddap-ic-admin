@@ -1,11 +1,13 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormArray, FormGroup } from "@angular/forms";
-import { PersonalInfoFormBuilder } from "./personal-info-form-builder.service";
-import _get from "lodash.get";
-import _isEqual from "lodash.isequal";
-import { flatDeep, Form } from "ddap-common-lib";
-import { scim } from "../../proto/user-service";
-import { PathOperation } from "../path-operation.enum";
+import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormGroup } from '@angular/forms';
+import { flatDeep, Form } from 'ddap-common-lib';
+import _get from 'lodash.get';
+import _isEqual from 'lodash.isequal';
+
+import { scim } from '../../proto/user-service';
+import { PathOperation } from '../path-operation.enum';
+
+import { PersonalInfoFormBuilder } from './personal-info-form-builder.service';
 import IPatch = scim.v2.IPatch;
 import Patch = scim.v2.Patch;
 import IOperation = scim.v2.Patch.IOperation;
@@ -49,7 +51,8 @@ export class PersonalInfoFormComponent implements Form, OnInit {
     const formValues = this.form.getRawValue();
     const pathsToFields = this.getListOfFullPathsToFields('', {
       active: formValues.active,
-      name: formValues.name
+      displayName: formValues.displayName,
+      name: formValues.name,
     });
     const operations: IOperation[] = pathsToFields
       .filter((path) => this.valueHasChanged(path, _get(formValues, path)))
@@ -62,7 +65,7 @@ export class PersonalInfoFormComponent implements Form, OnInit {
       });
 
     return Patch.create({
-      schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+      schemas: ['urn:ietf:params:scim:api:messages:2.0:PatchOp'],
       operations,
     });
   }
