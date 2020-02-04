@@ -3,57 +3,6 @@
   "revision": "1",
   "commitTime": 1544824316,
   "identityProviders": {
-    "elixir": {
-      "issuer": "https://login.elixir-czech.org/oidc/",
-      "authorizeUrl": "https://login.elixir-czech.org/oidc/authorize",
-      "responseType": "token id_token",
-      "tokenUrl": "https://login.elixir-czech.org/oidc/token",
-      "scopes": [
-        "openid",
-        "profile",
-        "ga4gh"
-      ],
-      "translateUsing": "elixir_translator",
-      "clientId": "5bf6422e-ab73-42a9-b558-b89cab0421db",
-      "ui": {
-        "description": "Elixir identity provider",
-        "iconUrl": "/identity/static/elixir_identity.png",
-        "label": "Elixir"
-      }
-    },
-    "era_commons": {
-      "issuer": "https://dbgap.nlm.nih.gov/aa",
-      "authorizeUrl": "https://dbgap.ncbi.nlm.nih.gov/aa/wga.cgi?login=NFL\\u0026redirect_to=${REDIRECT_URI}\\u0026page=redirect",
-      "tokenUrl": "https://dbgap.ncbi.nlm.nih.gov/aa/jwt/user.cgi?",
-      "translateUsing": "dbgap_translator",
-      "ui": {
-        "description": "eRA Commons identity provider",
-        "iconUrl": "/identity/static/era_commons_identity.jpg",
-        "label": "eRA Commons"
-      }
-    },
-    "google": {
-      "issuer": "https://accounts.google.com",
-      "authorizeUrl": "https://accounts.google.com/o/oauth2/v2/auth",
-      "tokenUrl": "https://oauth2.googleapis.com/token",
-      "clientId": "2978103516-cmpti2bi0c5rteimvoks1abubdvjrdik.apps.googleusercontent.com",
-      "ui": {
-        "description": "Google identity provider",
-        "iconUrl": "/identity/static/google_identity.png",
-        "label": "Google"
-      }
-    },
-    "nih_login": {
-      "issuer": "https://federationdev.nih.gov",
-      "authorizeUrl": "https://federationdev.nih.gov:443/auth/oauth/v2/authorize",
-      "tokenUrl": "https://federationdev.nih.gov:443/auth/oauth/v2/token",
-      "clientId": "701a0bea-8f7d-4cc6-86ed-bb6cb427685a",
-      "ui": {
-        "description": "NIH Login identity provider",
-        "iconUrl": "/identity/static/nih_identity.jpeg",
-        "label": "NIH Login"
-      }
-    },
     "edit-ip-id": {
       "issuer": "https://www.googleapis.com/oauth2/v4/token",
       "authorizeUrl": "https://accounts.google.com/o/oauth2/v2/auth",
@@ -84,8 +33,7 @@
       "grant_types": ["authorization_code", "refresh_token"],
       "response_types": ["code"],
       "redirectUris": [
-        "http://localhost:8080",
-        "https://ic-dot-hcls-data-connect-demo.appspot.com"
+        "http://localhost:8086/api/v1alpha/identity/loggedIn"
       ],
       "ui": {
         "description": "description",
@@ -98,8 +46,7 @@
       "grant_types": ["authorization_code", "refresh_token"],
       "response_types": ["code"],
       "redirectUris": [
-        "http://localhost:8080",
-        "https://ic-dot-hcls-data-connect-demo.appspot.com"
+        "http://localhost:8086/api/v1alpha/identity/loggedIn"
       ],
       "ui": {
         "description": "description",
@@ -112,7 +59,7 @@
       "grant_types": ["authorization_code", "refresh_token"],
       "response_types": ["code"],
       "redirectUris": [
-        "http://localhost:8085/api",
+        "http://localhost:8086/api",
         "$$E2E_BASE_URI$$/api"
       ],
       "ui": {

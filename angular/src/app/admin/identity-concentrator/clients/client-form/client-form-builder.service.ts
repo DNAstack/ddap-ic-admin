@@ -18,19 +18,22 @@ export class ClientFormBuilder {
         label: [_get(client, 'dto.ui.label'), [Validators.required]],
         description: [_get(client, 'dto.ui.description'), [Validators.required, Validators.maxLength(255)]],
       }),
-      clientId: [_get(client, 'dto.clientId'), [Validators.required]],
-      redirectUris: this.buildArrayForm(_get(client, 'dto.redirectUris')),
+      clientId: [_get(client, 'dto.clientId'), []],
+      scope: [_get(client, 'dto.scope'), [Validators.required]],
+      grantTypes: this.buildArrayForm(_get(client, 'dto.grantTypes'), []),
+      responseTypes: this.buildArrayForm(_get(client, 'dto.responseTypes'), []),
+      redirectUris: this.buildArrayForm(_get(client, 'dto.redirectUris'), [FormValidators.url]),
     });
   }
 
-  buildArrayForm(array?: string[]): FormArray {
+  buildArrayForm(array?: string[], validators?: any[]): FormArray {
     return this.formBuilder.array(array
-                                  ? array.map((value) => this.buildStringControl(value))
+                                  ? array.map((value) => this.buildStringControl(value, validators))
                                   : []);
   }
 
-  buildStringControl(value?: string): FormControl {
-    return this.formBuilder.control(value, [Validators.required, FormValidators.url]);
+  buildStringControl(value?: string, validators?: any[]): FormControl {
+    return this.formBuilder.control(value, [...validators]);
   }
 
 }

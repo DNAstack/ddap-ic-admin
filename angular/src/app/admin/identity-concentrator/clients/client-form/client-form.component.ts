@@ -1,9 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
-import { isExpanded } from 'ddap-common-lib';
 import Client = common.Client;
-import { Form } from 'ddap-common-lib';
-import { EntityModel } from 'ddap-common-lib';
+import { FormArray, FormGroup, Validators } from '@angular/forms';
+import { EntityModel, Form, FormValidators, isExpanded } from 'ddap-common-lib';
 
 import { common } from '../../../../shared/proto/ic-service';
 
@@ -16,15 +14,23 @@ import { ClientFormBuilder } from './client-form-builder.service';
 })
 export class ClientFormComponent implements Form, OnInit {
 
+  get redirectUris() {
+    return this.form.get('redirectUris') as FormArray;
+  }
+
+  get grantTypes() {
+    return this.form.get('grantTypes') as FormArray;
+  }
+
+  get responseTypes() {
+    return this.form.get('responseTypes') as FormArray;
+  }
+
   @Input()
   client?: EntityModel = new EntityModel('', Client.create());
 
   form: FormGroup;
   isExpanded: Function = isExpanded;
-
-  get redirectUris() {
-    return this.form.get('redirectUris') as FormArray;
-  }
 
   constructor(private clientFormBuilder: ClientFormBuilder) {
   }
@@ -33,12 +39,28 @@ export class ClientFormComponent implements Form, OnInit {
     this.form = this.clientFormBuilder.buildForm(this.client);
   }
 
-  addRedirectUri() {
-    this.redirectUris.insert(0, this.clientFormBuilder.buildStringControl());
+  addRedirectUri(): void {
+    this.redirectUris.insert(0, this.clientFormBuilder.buildStringControl(null, [Validators.required, FormValidators.url]));
   }
 
   removeRedirectUri(index: number): void {
     this.redirectUris.removeAt(index);
+  }
+
+  addGrantType(): void {
+    this.grantTypes.insert(0, this.clientFormBuilder.buildStringControl(null, [Validators.required]));
+  }
+
+  removeGrantType(index: number): void {
+    this.grantTypes.removeAt(index);
+  }
+
+  addResponseType(): void {
+    this.responseTypes.insert(0, this.clientFormBuilder.buildStringControl(null, [Validators.required]));
+  }
+
+  removeResponseType(index: number): void {
+    this.responseTypes.removeAt(index);
   }
 
   getModel(): EntityModel {

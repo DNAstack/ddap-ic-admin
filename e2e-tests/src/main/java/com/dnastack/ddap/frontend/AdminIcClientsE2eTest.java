@@ -3,8 +3,10 @@ package com.dnastack.ddap.frontend;
 import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.AdminManagePage;
 import com.dnastack.ddap.common.util.DdapBy;
-import org.junit.Ignore;
+import org.junit.Assume;
 import org.junit.Test;
+
+import java.time.Instant;
 
 import static com.dnastack.ddap.common.fragments.NavBar.icClientsLink;
 
@@ -12,51 +14,38 @@ import static com.dnastack.ddap.common.fragments.NavBar.icClientsLink;
 public class AdminIcClientsE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
-    @Ignore
-    public void addEmptyClient() {
-        AdminListPage adminListPage = ddapPage.getNavBar()
-                .goToAdmin(icClientsLink());
-
-        adminListPage.assertListItemDoNotExist("empty-client-label");
-
-        AdminManagePage adminManagePage = adminListPage.clickManage();
-
-        adminManagePage.fillField(DdapBy.se("inp-id"), "empty-client-id");
-        adminManagePage.fillField(DdapBy.se("inp-clientId"), "cd26716c-b170-41f7-912e-0f72749c3e9a");
-        adminManagePage.fillField(DdapBy.se("inp-label"), "empty-client-label");
-        adminManagePage.fillField(DdapBy.se("inp-description"), "empty-client-desc");
-
-        adminListPage = adminManagePage.saveEntity();
-
-        adminListPage.assertListItemExists("empty-client-label");
-    }
-
-    @Test
-    @Ignore
     public void addClient() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(icClientsLink());
 
-        adminListPage.assertListItemDoNotExist("add-client-label");
+        adminListPage.assertListItemDoNotExist("test-client-app-name");
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
-        adminManagePage.fillField(DdapBy.se("inp-id"), "add-client-id");
-        adminManagePage.fillField(DdapBy.se("inp-clientId"), "cd26716c-b170-41f7-912e-0f72749c3e9a");
-        adminManagePage.fillField(DdapBy.se("inp-label"), "add-client-label");
-        adminManagePage.fillField(DdapBy.se("inp-description"), "add-client-desc");
+        adminManagePage.fillField(DdapBy.se("inp-id"), "test-client-app");
+        adminManagePage.fillField(DdapBy.se("inp-label"), "test-client-app-name");
+        adminManagePage.fillField(DdapBy.se("inp-description"), "This is description");
+        adminManagePage.fillField(DdapBy.se("inp-scope"), "openid ga4gh_passport_v1 account_admin identities profile offline_access");
 
-        adminManagePage.enterButton(DdapBy.se("btn-add-redirect"));
-        adminManagePage.fillField(DdapBy.se("inp-redirect"), "https://test-source.com");
+        adminManagePage.enterButton(DdapBy.se("btn-add-grantType"));
+        adminManagePage.fillField(DdapBy.se("inp-grantType"), "authorization_code");
+
+        adminManagePage.enterButton(DdapBy.se("btn-add-responseType"));
+        adminManagePage.fillField(DdapBy.se("inp-responseType"), "code");
+
+        adminManagePage.enterButton(DdapBy.se("btn-add-redirectUri"));
+        adminManagePage.fillField(DdapBy.se("inp-redirectUri"), "http://localhost:8087");
 
         adminListPage = adminManagePage.saveEntity();
 
-        adminListPage.assertListItemExists("add-client-label");
+        adminListPage.assertListItemExists("test-client-app-name");
     }
 
     @Test
-    @Ignore
     public void editClient() {
+        // DAM functionality for PUT is broken, ignoring until sorted out
+        Assume.assumeTrue(Instant.now().isAfter(Instant.ofEpochSecond(1581125077))); // Feb 7, 2020
+
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(icClientsLink());
 
