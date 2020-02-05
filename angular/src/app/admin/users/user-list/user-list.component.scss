@@ -41,3 +41,18 @@ ddaplib-searchable-header {
     color: $primary-color;
   }
 }
+
+.filter-active {
+  margin-bottom: 1rem;
+
+  label {
+    color: $color-grey;
+  }
+
+  mat-radio-button:first-child {
+    margin-left: 1.5rem;
+  }
+  mat-radio-button {
+    margin-left: 1rem;
+  }
+}

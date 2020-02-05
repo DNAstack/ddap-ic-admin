@@ -21,6 +21,23 @@
 </ddaplib-searchable-header>
 
 <ddaplib-main>
+  <div class="filter-active">
+    <label id="filter-active-label">Filter by activity:</label>
+    <mat-radio-group aria-labelledby="filter-active-label"
+                     [formControl]="activeFilter"
+                     (change)="refreshUsers()">
+      <mat-radio-button [value]="null">
+        All
+      </mat-radio-button>
+      <mat-radio-button [value]="true">
+        Active
+      </mat-radio-button>
+      <mat-radio-button [value]="false">
+        Disabled
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+
   <ng-container *ngIf="users$ | async as usersResponse">
     <mat-accordion>
       <mat-expansion-panel *ngFor="let user of usersResponse['Resources']">

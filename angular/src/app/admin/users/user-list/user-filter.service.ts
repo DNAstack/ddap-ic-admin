@@ -21,12 +21,23 @@ export class UserFilterService {
     let filterQuery = '';
     this.filterableAttributes.forEach((filterAttribute) => {
       if (filterQuery !== '') {
-        filterQuery += ` Or `;
+        filterQuery += ` or `;
       }
       filterQuery += `${filterAttribute} co "${query}"`;
     });
 
     return filterQuery;
+  }
+
+  public static buildActiveFilter(activeFilter: boolean): string {
+    return `active eq "${activeFilter}"`;
+  }
+
+  public static appendActiveFilter(filterQuery: string, activeFilter: boolean): string {
+    if (activeFilter === null) {
+      return filterQuery;
+    }
+    return `( ${filterQuery} ) and ${this.buildActiveFilter(activeFilter)}`;
   }
 
 }

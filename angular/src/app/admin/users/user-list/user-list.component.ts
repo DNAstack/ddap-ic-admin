@@ -19,6 +19,7 @@ import { UserFilterService } from "./user-filter.service";
 export class UserListComponent implements OnInit {
 
   query: FormControl = new FormControl('');
+  activeFilter: FormControl = new FormControl(null);
   users$: Observable<IListUsersResponse>;
 
   private readonly defaultPageSize = 25;
@@ -42,14 +43,18 @@ export class UserListComponent implements OnInit {
 
   refreshUsers() {
     const query = this.query.value;
+    const activeFilter = this.activeFilter.value;
     const params = this.refreshUsers$.getValue();
+
     if (query && query !== '') {
-      params.filter = UserFilterService.buildFilterQuery(query);
-      this.refreshUsers$.next(params);
+      params.filter = UserFilterService.appendActiveFilter(UserFilterService.buildFilterQuery(query), activeFilter);
+    } else if (activeFilter !== null) {
+      params.filter = UserFilterService.buildActiveFilter(activeFilter);
     } else {
       delete params.filter;
-      this.refreshUsers$.next(params);
     }
+
+    this.refreshUsers$.next(params);
   }
 
   changePage(page: PageEvent) {
