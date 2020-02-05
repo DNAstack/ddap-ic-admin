@@ -8,6 +8,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { scim } from '../../../shared/proto/user-service';
 import { UsersService } from '../../../shared/users/users.service';
+import { UserFilterService } from "./user-filter.service";
 
 
 @Component({
@@ -43,7 +44,7 @@ export class UserListComponent implements OnInit {
     const query = this.query.value;
     const params = this.refreshUsers$.getValue();
     if (query && query !== '') {
-      params.filter = `id co "${query}" Or name.formatted co "${query}" Or name.givenName co "${query}" Or name.familyName co "${query}"`;
+      params.filter = UserFilterService.buildFilterQuery(query);
       this.refreshUsers$.next(params);
     } else {
       delete params.filter;
@@ -77,6 +78,6 @@ export class UserListComponent implements OnInit {
     if (previousPageIndex < pageIndex) {
       return previousStartIndex + pageSize;
     }
-
   }
+
 }
