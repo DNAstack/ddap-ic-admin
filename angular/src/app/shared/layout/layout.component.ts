@@ -81,8 +81,12 @@ export class LayoutComponent implements OnInit {
   }
 
   getPrimaryPhoto(photos: IAttribute[]) {
+    const placeholderImage = '/assets/images/placeholder_identity.png';
+    if (!photos || photos.length < 1) {
+      return placeholderImage;
+    }
     const primaryPhoto = photos.find((photo) => photo.primary);
-    return primaryPhoto ? primaryPhoto.value : '/assets/images/placeholder_identity.png';
+    return primaryPhoto ? primaryPhoto.value : placeholderImage;
   }
 
   private determineAdminAccessForIc() {
