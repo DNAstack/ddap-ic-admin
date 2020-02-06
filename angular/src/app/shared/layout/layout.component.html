@@ -31,9 +31,8 @@
                 data-se="nav-logout"
                 (click)="logout()">Log Out</span>
           <div class="credentials-picture">
-            <!-- TODO: use userInfo.photos -->
             <img matListAvatar
-                 [src]="'/assets/images/placeholder_identity.png'"
+                 [src]="getPrimaryPhoto(userInfo.photos)"
                  alt="Profile picture">
           </div>
         </mat-list-item>

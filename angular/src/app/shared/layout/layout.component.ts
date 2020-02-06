@@ -12,6 +12,7 @@ import { UserAccess } from '../../account/shared/auth/user-access.model';
 import { scim } from '../proto/user-service';
 import { UsersService } from '../users/users.service';
 import IUser = scim.v2.IUser;
+import IAttribute = scim.v2.IAttribute;
 
 const refreshRepeatTimeoutInMs = 600000;
 
@@ -77,6 +78,11 @@ export class LayoutComponent implements OnInit {
       .subscribe(() => {
         window.location.href = `${this.loginPath}`;
       });
+  }
+
+  getPrimaryPhoto(photos: IAttribute[]) {
+    const primaryPhoto = photos.find((photo) => photo.primary);
+    return primaryPhoto ? primaryPhoto.value : '/assets/images/placeholder_identity.png';
   }
 
   private determineAdminAccessForIc() {
