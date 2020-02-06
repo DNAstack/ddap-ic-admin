@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { scim } from '../../../shared/proto/user-service';
 import IUser = scim.v2.IUser;
 import { PersonalInfoFormComponent } from '../../../shared/users/personal-info-form/personal-info-form.component';
-import { UsersService } from '../../../shared/users/users.service';
+import { UserService } from '../../../shared/users/user.service';
 import IPatch = scim.v2.IPatch;
 
 @Component({
@@ -34,7 +34,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private validationService: FormValidationService,
-              private usersService: UsersService) {
+              private usersService: UserService) {
   }
 
   ngOnInit() {

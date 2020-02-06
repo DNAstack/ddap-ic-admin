@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { interval, Observable } from 'rxjs';
-import { repeatWhen, share } from "rxjs/operators";
+import { repeatWhen } from "rxjs/operators";
 
 import { Identity } from '../../account/identity/identity.model';
 import { IdentityService } from '../../account/identity/identity.service';
@@ -10,7 +10,7 @@ import { IdentityStore } from '../../account/identity/identity.store';
 import { AuthService } from '../../account/shared/auth/auth.service';
 import { UserAccess } from '../../account/shared/auth/user-access.model';
 import { scim } from '../proto/user-service';
-import { UsersService } from '../users/users.service';
+import { UserService } from '../users/user.service';
 import IUser = scim.v2.IUser;
 import IAttribute = scim.v2.IAttribute;
 
@@ -31,7 +31,7 @@ export class LayoutComponent implements OnInit {
 
   constructor(public loader: LoadingBarService,
               private activatedRoute: ActivatedRoute,
-              private usersService: UsersService,
+              private usersService: UserService,
               private identityService: IdentityService,
               private identityStore: IdentityStore,
               private authService: AuthService) {

@@ -1,24 +1,27 @@
 import { NgModule } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
+import { DdapFormModule } from 'ddap-common-lib';
 
+import { AdminSharedModule } from '../shared/shared.module';
+
+import { UserDetailComponent } from './user-detail/user-detail.component';
+import { UserListComponent } from './user-list/user-list.component';
 import { UsersRoutingModule } from './users-routing.module';
-import { AdminSharedModule } from "../shared/shared.module";
-import { UserListComponent } from "./user-list/user-list.component";
-import { DdapFormModule } from "ddap-common-lib";
-import { UserDetailComponent } from "./user-detail/user-detail.component";
-import { MatRadioModule } from "@angular/material/radio";
 
 @NgModule({
   declarations: [
     UserDetailComponent,
     UserListComponent,
   ],
-    imports: [
-        AdminSharedModule,
-        UsersRoutingModule,
+  imports: [
+    AdminSharedModule,
+    UsersRoutingModule,
 
-        DdapFormModule,
-        MatRadioModule,
-    ],
+    DdapFormModule,
+    MatRadioModule,
+    MatDialogModule,
+  ],
 })
 export class UsersModule {
 

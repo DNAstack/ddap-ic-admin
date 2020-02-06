@@ -4,6 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 
+import {
+  UserAccountCloseConfirmationDialogComponent
+} from './shared/users/user-account-close-confirmation-dialog/user-account-close-confirmation-dialog.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {
@@ -26,6 +29,7 @@ import { SharedModule } from './shared/shared.module';
   ],
   entryComponents: [
     RealmChangeConfirmationDialogComponent,
+    UserAccountCloseConfirmationDialogComponent,
   ],
   bootstrap: [AppComponent],
 })

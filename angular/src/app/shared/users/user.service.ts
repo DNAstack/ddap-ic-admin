@@ -2,17 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ErrorHandlerService, realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
-import { environment } from "../../../environments/environment";
-import { scim } from "../proto/user-service";
 import IPatch = scim.v2.IPatch;
 import IListUsersResponse = scim.v2.IListUsersResponse;
 import IUser = scim.v2.IUser;
-import { share } from "rxjs/operators";
+import { share } from 'rxjs/operators';
+
+import { environment } from '../../../environments/environment';
+import { scim } from '../proto/user-service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService {
+export class UserService {
 
   constructor(private http: HttpClient,
               private errorHandler: ErrorHandlerService) {
@@ -46,6 +47,10 @@ export class UsersService {
 
   patchUser(userId: string, patchModel: IPatch): Observable<IUser> {
     return this.http.patch<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`, patchModel);
+  }
+
+  deleteUser(userId: string): Observable<void> {
+    return this.http.delete<void>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
   }
 
 }

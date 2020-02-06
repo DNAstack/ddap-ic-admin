@@ -28,7 +28,8 @@ export class IdentityStore extends Store<Identity> {
           const primaryAccount: any = account.connectedAccounts.find((connectedAccount: ConnectedAccount) => {
             return connectedAccount.primary;
           });
-          return primaryAccount.loginHint;
+          // If no account is marked primary select first one
+          return primaryAccount ? primaryAccount.loginHint : account.connectedAccounts[0]['loginHint'];
         })
       );
   }

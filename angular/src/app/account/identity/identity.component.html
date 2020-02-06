@@ -9,6 +9,13 @@
     <ddap-personal-info-form [user]="userInfo">
     </ddap-personal-info-form>
     <div class="flex align-horizontal--end">
+      <button mat-button
+              color="warn"
+              class="uppercase"
+              data-se="btn-close-user-account"
+              (click)="closeAccount(userInfo)">
+        Close Account
+      </button>
       <button mat-raised-button
               color="primary"
               class="uppercase"
@@ -23,6 +30,8 @@
                       mode="indeterminate">
     </mat-progress-bar>
   </ng-template>
+
+  <mat-divider></mat-divider>
 
   <mat-accordion class="ddap-connected-accounts">
     <h2>Connected Accounts</h2>

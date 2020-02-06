@@ -52,6 +52,13 @@
         <ddaplib-entity-viewer [listData]="modifyUserData(user)"></ddaplib-entity-viewer>
         <mat-action-row>
           <button mat-button
+                  color="warn"
+                  class="uppercase"
+                  data-se="btn-close-user-account"
+                  (click)="closeAccount(user)">
+            Close Account
+          </button>
+          <button mat-button
                   color="primary"
                   class="uppercase"
                   data-se="btn-edit-user"

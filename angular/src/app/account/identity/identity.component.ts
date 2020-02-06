@@ -1,16 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import IUser = scim.v2.IUser;
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 import { VisaPassportService } from 'ddap-common-lib';
 import _get from 'lodash.get';
-import { Observable, Subscription } from "rxjs";
+import { Observable, Subscription } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
 import { common } from '../../shared/proto/ic-service';
 import { scim } from '../../shared/proto/user-service';
 import IConnectedAccount = common.IConnectedAccount;
 import { PersonalInfoFormComponent } from '../../shared/users/personal-info-form/personal-info-form.component';
-import { UsersService } from '../../shared/users/users.service';
+import {
+  UserAccountCloseConfirmationDialogComponent
+} from '../../shared/users/user-account-close-confirmation-dialog/user-account-close-confirmation-dialog.component';
+import { UserService } from '../../shared/users/user.service';
 
 import { AccountLink } from './account-link.model';
 import { Identity } from './identity.model';
@@ -39,7 +44,8 @@ export class IdentityComponent implements OnInit {
               private identityService: IdentityService,
               private identityStore: IdentityStore,
               private visaPassportService: VisaPassportService,
-              private usersService: UsersService,
+              private userService: UserService,
+              private dialog: MatDialog,
               private snackBar: MatSnackBar) {
 
   }
@@ -49,7 +55,7 @@ export class IdentityComponent implements OnInit {
       this.realm = params.realmId;
     });
 
-    this.userInfo$ = this.usersService.getLoggedInUser();
+    this.userInfo$ = this.userService.getLoggedInUser();
 
     this.identityStore.state$
       .subscribe((identity: Identity) => {
@@ -109,8 +115,25 @@ export class IdentityComponent implements OnInit {
 
   updatePersonalInfo(): void {
     const change = this.personalInfoForm.getModel();
-    this.usersService.patchLoggedInUser(change)
+    this.userService.patchLoggedInUser(change)
       .subscribe(() => this.openSnackBar('Successfully update personal information. To take effect reload the page.'));
+  }
+
+  closeAccount(user: IUser) {
+    const dialogRef = this.dialog.open(UserAccountCloseConfirmationDialogComponent, {
+      data: {
+        selfClosing: true,
+      },
+    });
+    dialogRef.afterClosed().subscribe((acknowledged) => {
+      if (acknowledged) {
+        this.userService.deleteUser(user.id)
+            .pipe(
+                flatMap(() => this.identityService.invalidateTokens())
+            )
+            .subscribe(() => window.location.href = `/`);
+      }
+    });
   }
 
   private openSnackBar(message) {
