@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import _get from 'lodash.get';
 
 import IUser = scim.v2.IUser;
 import IAttribute = scim.v2.IAttribute;
 import { scim } from '../../proto/user-service';
+import { FormValidators } from "ddap-common-lib";
 
 @Injectable({
   providedIn: 'root',
@@ -23,21 +24,27 @@ export class PersonalInfoFormBuilder {
         givenName: [_get(user, 'name.givenName')],
         middleName: [_get(user, 'name.middleName')],
       }),
+      locale: [_get(user, 'locale')],
+      preferredLanguage: [_get(user, 'preferredLanguage')],
+      timezone: [_get(user, 'timezone')],
       active: new FormControl({ value: _get(user, 'active'), disabled: !adminMode }),
-      emails: this.buildEmailsForm(_get(user, 'emails')),
+      emails: this.buildAttributeArrayForm(_get(user, 'emails'), [Validators.required]),
+      photos: this.buildAttributeArrayForm(_get(user, 'photos'), [Validators.required, FormValidators.url]),
     });
   }
 
-  buildEmailsForm(emails?: IAttribute[]): FormArray {
-    return this.formBuilder.array(emails
-                                  ? emails.map(({ value }: any) => this.buildEmailForm(value))
+  buildAttributeArrayForm(attributes?: IAttribute[], validators?: any[]): FormArray {
+    return this.formBuilder.array(attributes
+                                  ? attributes.map((attribute: IAttribute) => this.buildAttributeForm(attribute, validators))
                                   : []
     );
   }
 
-  buildEmailForm(value?: string): FormGroup {
+  buildAttributeForm(attribute?: IAttribute, validators?: any[]): FormGroup {
     return this.formBuilder.group({
-      value: [value],
+      value: [_get(attribute, 'value'), [...validators]],
+      primary: [_get(attribute, 'primary')],
+      $ref: [_get(attribute, '$ref')],
     });
   }
 

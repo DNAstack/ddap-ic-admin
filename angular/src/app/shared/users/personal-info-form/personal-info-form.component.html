@@ -36,9 +36,52 @@
              data-se="inp-familyName">
     </mat-form-field>
   </div>
+  <div class="row">
+    <mat-form-field class="col">
+      <input matInput
+             placeholder="Locale"
+             formControlName="locale"
+             data-se="inp-locale">
+    </mat-form-field>
+    <mat-form-field class="col">
+      <input matInput
+             placeholder="Preferred Language"
+             formControlName="preferredLanguage"
+             data-se="inp-preferredLanguage">
+    </mat-form-field>
+    <mat-form-field class="col">
+      <input matInput
+             placeholder="Timezone"
+             formControlName="timezone"
+             data-se="inp-timezone">
+    </mat-form-field>
+  </div>
 
-  <ng-container formArrayName="emails">
-    <ng-container *ngFor="let email of emails.controls; let i=index">
+  <h3>
+    <span>Emails</span>
+  </h3>
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="emails">
+    <mat-expansion-panel #emailExpansionPanel
+                         *ngFor="let email of emails.controls; let i=index"
+                         [expanded]="isExpanded(email, emailExpansionPanel)"
+                         [attr.data-se]="'email-' + i">
+        <mat-expansion-panel-header collapsedHeight="5rem"
+                                    expandedHeight="5rem">
+          <ng-container *ngIf="email">
+            <mat-panel-title>
+              <span>{{ email.get('value').value || 'Email' }}</span>
+            </mat-panel-title>
+            <mat-panel-description class="uppercase">
+              {{ email.get('primary').value ? 'Primary' : '' }}
+            </mat-panel-description>
+            <div class="invalid-warning" *ngIf="email.invalid">
+              <mat-icon class="icon icon-warning"
+                        matTooltip="Email is invalid">
+              </mat-icon>
+            </div>
+          </ng-container>
+        </mat-expansion-panel-header>
       <ng-container [formGroupName]="i">
         <div class="row">
           <mat-form-field class="col">
@@ -46,10 +89,87 @@
                    placeholder="Email"
                    formControlName="value"
                    readonly
+                   required
                    [attr.data-se]="'inp-email-' + i">
           </mat-form-field>
+          <button *ngIf="!email.get('primary').value; else primaryEmail"
+                  mat-button
+                  color="primary"
+                  class="uppercase"
+                  type="button"
+                  [attr.data-se]="'btn-make-primary-email-' + i"
+                  (click)="makeAttributePrimary(emails.controls, email)">
+            Make Primary
+          </button>
+          <ng-template #primaryEmail>
+            <button mat-button
+                    disabled
+                    class="primary-attribute-btn uppercase"
+                    type="button">
+              Primary
+            </button>
+          </ng-template>
         </div>
       </ng-container>
-    </ng-container>
-  </ng-container>
+
+        <div class="footer">
+          <button mat-button
+                  type="button"
+                  color="warn"
+                  class="uppercase"
+                  (click)="unlinkAccount(i)">
+            Unlink Account
+          </button>
+        </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <h3 >
+    <span>Photos</span>
+  </h3>
+  <mat-accordion multi displayMode="flat"
+                 formArrayName="photos">
+    <mat-expansion-panel #photoExpansionPanel
+                         *ngFor="let photo of photos.controls; let i=index"
+                         [expanded]="isExpanded(photo, photoExpansionPanel)"
+                         [attr.data-se]="'photo-' + i">
+        <mat-expansion-panel-header collapsedHeight="5rem"
+                                    expandedHeight="5rem">
+          <ng-container *ngIf="photo">
+            <mat-panel-title>
+              <span>{{ photo.get('value').value || 'Photo' }}</span>
+            </mat-panel-title>
+            <mat-panel-description class="uppercase">
+              {{ photo.get('primary').value ? 'Primary' : '' }}
+            </mat-panel-description>
+            <div class="invalid-warning" *ngIf="photo.invalid">
+              <mat-icon class="icon icon-warning"
+                        matTooltip="Photo is invalid">
+              </mat-icon>
+            </div>
+          </ng-container>
+        </mat-expansion-panel-header>
+        <ng-container [formGroupName]="i">
+          <div class="row">
+            <mat-form-field class="col">
+              <input matInput
+                     placeholder="Photo"
+                     formControlName="value"
+                     required
+                     [attr.data-se]="'inp-photo-' + i">
+            </mat-form-field>
+          </div>
+        </ng-container>
+
+        <div class="footer">
+          <button mat-button
+                  type="button"
+                  color="warn"
+                  class="uppercase"
+                  (click)="removePhoto(i)">
+            Remove Photo
+          </button>
+        </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 </form>
