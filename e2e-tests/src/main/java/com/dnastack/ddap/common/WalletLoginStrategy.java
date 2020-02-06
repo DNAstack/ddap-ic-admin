@@ -21,7 +21,6 @@ import org.apache.http.util.EntityUtils;
 import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +29,6 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.dnastack.ddap.common.AbstractBaseE2eTest.*;
 import static java.lang.String.format;
@@ -44,8 +42,7 @@ public class WalletLoginStrategy implements LoginStrategy {
 
     private static final Pattern STATE_PATTERN = Pattern.compile("\\s*let\\s+state\\s*=\\s*\"([^\"]+)\"");
     private static final Pattern PATH_PATTERN = Pattern.compile("\\s*let\\s+path\\s*=\\s*\"([^\"]+)\"");
-    private static final String[] DEFAULT_SCOPES = new String[] {"openid", "ga4gh_passport_v1", "account_admin",
-            "identities", "offline_access"};
+    private static final String[] DEFAULT_SCOPES = new String[] {"openid", "ga4gh_passport_v1", "account_admin", "identities", "offline_access"};
 
     private Map<String, LoginInfo> personalAccessTokens;
     private String walletUrl;

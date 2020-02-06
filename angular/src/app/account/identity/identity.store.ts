@@ -25,9 +25,8 @@ export class IdentityStore extends Store<Identity> {
       .pipe(
         pluck('account'),
         map((account: Account) => {
-          const username = account.profile.username;
           const primaryAccount: any = account.connectedAccounts.find((connectedAccount: ConnectedAccount) => {
-            return connectedAccount.profile.username === username;
+            return connectedAccount.primary;
           });
           return primaryAccount.loginHint;
         })
