@@ -3,13 +3,11 @@ import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/form
 import { Form, FormValidators, isExpanded } from 'ddap-common-lib';
 
 import { scim } from '../../proto/user-service';
+import { ScimService } from '../scim.service';
+import { UserService } from '../user.service';
 
 import { PersonalInfoFormBuilder } from './personal-info-form-builder.service';
 import IPatch = scim.v2.IPatch;
-import Patch = scim.v2.Patch;
-import IOperation = scim.v2.Patch.IOperation;
-
-import { ScimService } from "../scim.service";
 
 @Component({
   selector: 'ddap-personal-info-form',
@@ -34,7 +32,8 @@ export class PersonalInfoFormComponent implements Form, OnInit {
   form: FormGroup;
   isExpanded: Function = isExpanded;
 
-  constructor(private personalInfoFormBuilder: PersonalInfoFormBuilder) {
+  constructor(private personalInfoFormBuilder: PersonalInfoFormBuilder,
+              private userService: UserService) {
   }
 
   ngOnInit() {
@@ -49,8 +48,10 @@ export class PersonalInfoFormComponent implements Form, OnInit {
     return this.form.valid;
   }
 
-  unlinkAccount(i) {
-    // TODO
+  unlinkAccount(email: AbstractControl) {
+    const ref = email.get('$ref').value;
+    this.userService.patchUser(this.user.id, ScimService.getAccountUnlinkPatch(ref))
+      .subscribe();
   }
 
   makeAttributePrimary(controls: AbstractControl[], controlToBePrimary: AbstractControl): void {
@@ -65,12 +66,7 @@ export class PersonalInfoFormComponent implements Form, OnInit {
   }
 
   getModel(): IPatch {
-    const operations: IOperation[] = ScimService.getOperationsForNonArrayFields(this.user, this.form.getRawValue());
-
-    return Patch.create({
-      schemas: ['urn:ietf:params:scim:api:messages:2.0:PatchOp'],
-      operations,
-    });
+    return  ScimService.getOperationsPatch(this.user, this.form.getRawValue());
   }
 
 }

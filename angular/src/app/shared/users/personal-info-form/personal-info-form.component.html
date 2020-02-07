@@ -113,11 +113,12 @@
       </ng-container>
 
         <div class="footer">
-          <button mat-button
+          <button *ngIf="emails.controls.length > 1"
+                  mat-button
                   type="button"
                   color="warn"
                   class="uppercase"
-                  (click)="unlinkAccount(i)">
+                  (click)="unlinkAccount(email)">
             Unlink Account
           </button>
         </div>

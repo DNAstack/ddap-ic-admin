@@ -8,10 +8,12 @@ import IOperation = scim.v2.Patch.IOperation;
 import { PathOperation } from './path-operation.enum';
 import Operation = scim.v2.Patch.Operation;
 import IUser = scim.v2.IUser;
+import Patch = scim.v2.Patch;
+import IPatch = scim.v2.IPatch;
 
 export class ScimService {
 
-  public static getOperationsForNonArrayFields(user: IUser, formValues: any): IOperation[] {
+  public static getOperationsPatch(user: IUser, formValues: any): IPatch {
     const pathsToFields = this.getListOfFullPathsToFields('', {
       active: formValues.active,
       displayName: formValues.displayName,
@@ -34,7 +36,19 @@ export class ScimService {
         return this.getOperations(newValue, path);
       });
 
-    return operations;
+    return Patch.create({
+      schemas: ['urn:ietf:params:scim:api:messages:2.0:PatchOp'],
+      operations,
+    });
+  }
+
+  public static getAccountUnlinkPatch(refValue: string) {
+    const path = `emails[$ref eq "${refValue}"]`;
+    const operation = this.getPatchOperationModel(PathOperation.remove, path, '');
+    return Patch.create({
+      schemas: ['urn:ietf:params:scim:api:messages:2.0:PatchOp'],
+      operations: [operation],
+    });
   }
 
   private static getOperations(newValue: string | boolean, path: string) {
