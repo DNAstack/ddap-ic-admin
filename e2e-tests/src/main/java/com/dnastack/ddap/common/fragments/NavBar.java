@@ -54,6 +54,14 @@ public class NavBar {
         return new NavLink("Options", DdapBy.se("nav-ic-options"), icPanelSelectorLink());
     }
 
+    public static NavLink userAdministrationPanelSelectorLink() {
+        return new NavLink("User Administration", DdapBy.se("nav-user-admin-panel"), null);
+    }
+
+    public static NavLink usersLink() {
+        return new NavLink("Users", DdapBy.se("nav-users"), userAdministrationPanelSelectorLink());
+    }
+
     public NavBar(WebDriver driver) {
         this.driver = driver;
     }

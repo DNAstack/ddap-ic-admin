@@ -29,7 +29,8 @@
       <mat-radio-button [value]="null">
         All
       </mat-radio-button>
-      <mat-radio-button [value]="true">
+      <mat-radio-button [value]="true"
+                        data-se="radio-active-users-only">
         Active
       </mat-radio-button>
       <mat-radio-button [value]="false">
@@ -43,7 +44,7 @@
       <mat-expansion-panel *ngFor="let user of usersResponse['Resources']">
         <mat-expansion-panel-header collapsedHeight="5rem"
                                     expandedHeight="5rem">
-          <mat-panel-title>{{ user.displayName }}</mat-panel-title>
+          <mat-panel-title data-se="user-name">{{ user.displayName }}</mat-panel-title>
           <mat-panel-description [ngClass]="{ 'active' : user.active }">
             {{ user.active ? 'Active' : 'Inactive' }}
           </mat-panel-description>
