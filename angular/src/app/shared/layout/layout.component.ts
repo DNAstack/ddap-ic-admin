@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { interval, Observable } from 'rxjs';
-import { repeatWhen } from "rxjs/operators";
+import { repeatWhen } from 'rxjs/operators';
 
 import { Identity } from '../../account/identity/identity.model';
 import { IdentityService } from '../../account/identity/identity.service';
@@ -88,6 +88,11 @@ export class LayoutComponent implements OnInit {
     const primaryPhoto = photos.find((photo) => photo.primary);
     return primaryPhoto ? primaryPhoto.value : placeholderImage;
   }
+  onAcknowledge(dialogData) {
+    if (dialogData && dialogData.action === 'edit') {
+      this.changeRealmAndGoToLogin(dialogData.realm);
+    }
+  }
 
   private determineAdminAccessForIc() {
     this.authService.getIcUserAccess()
@@ -103,4 +108,10 @@ export class LayoutComponent implements OnInit {
       );
   }
 
+  private changeRealmAndGoToLogin(realm: string) {
+    this.identityStore.getLoginHintForPrimaryAccount()
+      .subscribe((loginHint) => {
+        window.location.href = `/api/v1alpha/realm/${realm}/identity/login?loginHint=${loginHint}`;
+      });
+  }
 }

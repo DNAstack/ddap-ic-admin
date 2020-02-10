@@ -17,21 +17,15 @@ import { RouterModule } from '@angular/router';
 import { DdapLayoutModule } from 'ddap-common-lib';
 
 import { LayoutComponent } from './layout/layout.component';
-import {
-  RealmChangeConfirmationDialogComponent
-} from './realm/realm-change-confirmation-dialog/realm-change-confirmation-dialog.component';
-import { RealmInputComponent } from './realm/realm-input/realm-input.component';
 import { PersonalInfoFormComponent } from './users/personal-info-form/personal-info-form.component';
 import {
   UserAccountCloseConfirmationDialogComponent
-} from "./users/user-account-close-confirmation-dialog/user-account-close-confirmation-dialog.component";
+} from './users/user-account-close-confirmation-dialog/user-account-close-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
     LayoutComponent,
     PersonalInfoFormComponent,
-    RealmInputComponent,
-    RealmChangeConfirmationDialogComponent,
     UserAccountCloseConfirmationDialogComponent,
   ],
   imports: [
@@ -65,7 +59,6 @@ import {
 
     DdapLayoutModule,
     PersonalInfoFormComponent,
-    RealmInputComponent,
   ],
 })
 export class SharedModule {

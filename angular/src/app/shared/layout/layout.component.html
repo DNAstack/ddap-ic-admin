@@ -19,7 +19,8 @@
     <mat-nav-list>
       <div *ngIf="isSandbox"
            class="ddap-realm-select">
-        <ddap-realm-input></ddap-realm-input>
+        <ddaplib-realm-input (onAcknowledge)="onAcknowledge($event)"
+          actions="['edit']"></ddaplib-realm-input>
       </div>
 
       <div *ngIf="userInfo$ | async as userInfo; else unauthenticated"
