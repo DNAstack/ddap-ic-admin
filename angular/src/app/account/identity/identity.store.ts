@@ -24,12 +24,15 @@ export class IdentityStore extends Store<Identity> {
     return this.state$
       .pipe(
         pluck('account'),
-        map((account: Account) => {
-          const primaryAccount: any = account.connectedAccounts.find((connectedAccount: ConnectedAccount) => {
-            return connectedAccount.primary;
-          });
-          // If no account is marked primary select first one
-          return primaryAccount ? primaryAccount.loginHint : account.connectedAccounts[0]['loginHint'];
+        map((account: any) => {
+          if ('connectedAccounts' in account) {
+            const primaryAccount: any = account.connectedAccounts.find((connectedAccount: ConnectedAccount) => {
+              return connectedAccount.primary;
+            });
+            // If no account is marked primary select first one
+            return primaryAccount ? primaryAccount.loginHint : account.connectedAccounts[0]['loginHint'];
+          }
+          // If there is no connected account we can't select loginHint
         })
       );
   }
