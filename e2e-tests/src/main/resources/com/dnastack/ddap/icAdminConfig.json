@@ -68,29 +68,6 @@
       }
     }
   },
-  "accountTags": {
-    "DAM": {
-      "category": "system",
-      "ui": {
-        "description": "User has a System assigned role within a Data Access Manager",
-        "label": "Data Access Manager"
-      }
-    },
-    "GCP": {
-      "category": "platform",
-      "ui": {
-        "description": "User is a target for resource access within GCP",
-        "label": "Google Cloud Platform"
-      }
-    },
-    "IC": {
-      "category": "system",
-      "ui": {
-        "description": "User has a System assigned role within an Identity Concentrator",
-        "label": "Identity Concentrator"
-      }
-    }
-  },
   "options": {
     "accountNameLength": 25,
     "readOnlyMasterRealm": true,
