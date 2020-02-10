@@ -10,7 +10,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static com.dnastack.ddap.common.util.WebDriverCookieHelper.SESSION_COOKIE_NAME;
 import static java.lang.String.format;
@@ -58,7 +59,10 @@ public class TokensE2eTest extends AbstractBaseE2eTest {
     @Test
     public void testGetTokens() throws Exception {
         // No mock data are returned. Ignoring until breakage is fixed
-        Assume.assumeTrue(Instant.now().isAfter(Instant.ofEpochSecond(1581125077))); // Feb 7, 2020
+        Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
+            2020, 2, 29, 12, 0, 0,0,
+            ZoneId.of("America/Toronto"))
+        ));
 
         Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String icToken = fetchRealPersonaIcToken(TestingPersona.ADMINISTRATOR, REALM, "");
@@ -86,7 +90,10 @@ public class TokensE2eTest extends AbstractBaseE2eTest {
     @Test
     public void testRevokeToken() throws Exception {
         // No mock data are returned. Ignoring until breakage is fixed
-        Assume.assumeTrue(Instant.now().isAfter(Instant.ofEpochSecond(1581125077))); // Feb 7, 2020
+        Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
+            2020, 2, 29, 12, 0, 0,0,
+            ZoneId.of("America/Toronto"))
+        ));
 
         Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String icToken = fetchRealPersonaIcToken(TestingPersona.ADMINISTRATOR, REALM, "");
