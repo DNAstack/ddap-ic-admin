@@ -16,11 +16,11 @@ export class TokensService {
   }
 
   getTokens(params = {}): Observable<ListTokensResponse> {
-    return this.http.get<ListTokensResponse>(`${environment.idpApiUrl}/${realmIdPlaceholder}/admin/tokens`, { params });
+    return this.http.get<ListTokensResponse>(`${environment.idpBaseUrl}/tokens`, { params });
   }
 
   revokeToken(tokenId: string): Observable<null> {
-    return this.http.delete<any>(`${environment.idpApiUrl}/${realmIdPlaceholder}/admin/tokens/${tokenId}`);
+    return this.http.delete<any>(`${environment.idpBaseUrl}/tokens/${tokenId}`);
   }
 
 }
