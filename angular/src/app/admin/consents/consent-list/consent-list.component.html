@@ -1,0 +1,48 @@
+<ddaplib-header icon="clients" label="Sessions">
+</ddaplib-header>
+
+<ddaplib-main>
+  <ng-container *ngIf="(consents$ | async) as consentsResponse">
+    <mat-accordion>
+      <h2>Active Consents</h2>
+      <mat-expansion-panel *ngFor="let consent of consentsResponse.consents">
+        <mat-expansion-panel-header collapsedHeight="5rem"
+                                    expandedHeight="5rem">
+          <mat-panel-title>{{ consent.name }}</mat-panel-title>
+          <mat-panel-description>{{ consent.user }}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <div class="flex flex--column">
+          <h4>Client: {{ consent.client }}</h4>
+          <h4>Items</h4>
+          <mat-list>
+            <mat-list-item *ngFor="let item of consent.items">
+              {{ item }}
+            </mat-list-item>
+          </mat-list>
+          <h4>Scopes</h4>
+          <mat-list>
+            <mat-list-item *ngFor="let scope of consent.scopes">
+              {{ scope }}
+            </mat-list-item>
+          </mat-list>
+          <h4>Resources</h4>
+          <mat-list>
+            <mat-list-item *ngFor="let resource of consent.resouces">
+              {{ resource }}
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <mat-action-row>
+          <button mat-button
+                  color="warn"
+                  class="uppercase"
+                  data-se="btn-revoke-consent"
+                  (click)="revokeConsent(consent)">
+            Revoke Consent
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+</ddaplib-main>

@@ -17,6 +17,11 @@ export const routes: Routes = [
     loadChildren: () => import('./tokens/tokens.module')
       .then(mod => mod.TokensModule),
   },
+  {
+    path: 'consents',
+    loadChildren: () => import('./consents/consents.module')
+      .then(mod => mod.ConsentsModule),
+  },
 ];
 
 @NgModule({
