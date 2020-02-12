@@ -8,7 +8,7 @@
       <mat-expansion-panel *ngFor="let consent of consentsResponse.consents">
         <mat-expansion-panel-header collapsedHeight="5rem"
                                     expandedHeight="5rem">
-          <mat-panel-title>{{ consent.name }}</mat-panel-title>
+          <mat-panel-title data-se="entity-title">{{ consent.name }}</mat-panel-title>
           <mat-panel-description>{{ consent.user }}</mat-panel-description>
         </mat-expansion-panel-header>
         <mat-divider></mat-divider>

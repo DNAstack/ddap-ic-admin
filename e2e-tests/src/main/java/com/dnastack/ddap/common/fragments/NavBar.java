@@ -62,6 +62,14 @@ public class NavBar {
         return new NavLink("Users", DdapBy.se("nav-users"), userAdministrationPanelSelectorLink());
     }
 
+    public static NavLink tokensLink() {
+        return new NavLink("Sessions", DdapBy.se("nav-sessions"), userAdministrationPanelSelectorLink());
+    }
+
+    public static NavLink consentsLink() {
+        return new NavLink("Consents", DdapBy.se("nav-consents"), userAdministrationPanelSelectorLink());
+    }
+
     public NavBar(WebDriver driver) {
         this.driver = driver;
     }

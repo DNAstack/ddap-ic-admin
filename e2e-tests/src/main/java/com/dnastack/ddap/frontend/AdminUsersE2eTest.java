@@ -12,11 +12,10 @@ import java.util.Optional;
 
 import static com.dnastack.ddap.common.TestingPersona.ADMINISTRATOR;
 import static com.dnastack.ddap.common.fragments.NavBar.usersLink;
-import static java.lang.String.format;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeThat;
 
 @Slf4j
 @SuppressWarnings("Duplicates")
@@ -33,11 +32,6 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         // would not do anything.
         adminListPage.setActiveUsersOnly();
         Optional<WebElement> activeUser = adminListPage.getFirstUserByNameAndActivity(user, true);
-
-        // NOTE: this will be fixed once ACTIVE radio button works (blocked by IC update
-        // https://github.com/GoogleCloudPlatform/healthcare-federated-access-services/commit/015c0ffc38e60fc703c9c45533cb8b35af68b5b7)
-        // Once merge delete line below
-        assumeThat(format("No active user [%s] visible. This might be due big number of users.", user), activeUser.isPresent(), equalTo(true));
 
         assertTrue("No active user present", activeUser.isPresent());
         activeUser.ifPresent(adminListPage::closeAccount);
@@ -61,11 +55,6 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         // would not do anything.
         adminListPage.setActiveUsersOnly();
         Optional<WebElement> activeUser = adminListPage.getFirstUserByNameAndActivity(user, true);
-
-        // NOTE: this will be fixed once ACTIVE radio button works (blocked by IC update
-        // https://github.com/GoogleCloudPlatform/healthcare-federated-access-services/commit/015c0ffc38e60fc703c9c45533cb8b35af68b5b7)
-        // Once merge delete line below
-        assumeThat(format("No active user [%s] visible. This might be due big number of users.", user), activeUser.isPresent(), equalTo(true));
 
         assertTrue("No active user present", activeUser.isPresent());
 
