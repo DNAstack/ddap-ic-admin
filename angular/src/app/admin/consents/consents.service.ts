@@ -18,7 +18,10 @@ export class ConsentsService {
   }
 
   revokeConsent(consentId: string): Observable<null> {
-    return this.http.delete<any>(`${environment.idpBaseUrl}/consents/${consentId}`);
+    // FIXME: https://github.com/DNAstack/healthcare-federated-access-services/blob/master/lib/ic/ic.go#L1977
+    // FIXME: https://github.com/DNAstack/healthcare-federated-access-services/blob/master/lib/ic/endpoints.go#L76
+    // FIXME: will be using proper REST endpoint for delete once consent fully implemented
+    return this.http.delete<any>(`${environment.idpBaseUrl}/consents/`);
   }
 
 }

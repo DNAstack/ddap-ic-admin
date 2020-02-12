@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import _pick from 'lodash.pick';
+
+import { consents } from '../../../shared/proto/consent-service';
 import { ConsentsService } from '../consents.service';
-import { consents } from "../../../shared/proto/consent-service";
 import ListConsentsResponse = consents.v1.ListConsentsResponse;
 import IConsent = consents.v1.IConsent;
 
@@ -32,11 +32,4 @@ export class ConsentListComponent implements OnInit {
       .subscribe(() => this.refreshConsents$.next(undefined));
   }
 
-  // getTokenData(consent: IConsent) {
-  //   return _pick(token, ['aud', 'exp', 'iat', 'scope', 'target']);
-  // }
-  //
-  // getItemsData(consent: IConsent) {
-  //   return _get(token, 'client');
-  // }
 }

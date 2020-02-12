@@ -20,7 +20,10 @@ export class TokensService {
   }
 
   revokeToken(tokenId: string): Observable<null> {
-    return this.http.delete<any>(`${environment.idpBaseUrl}/tokens/${tokenId}`);
+    // FIXME: https://github.com/DNAstack/healthcare-federated-access-services/blob/master/lib/ic/ic.go#L1972
+    // FIXME: https://github.com/DNAstack/healthcare-federated-access-services/blob/master/lib/ic/endpoints.go#L72
+    // FIXME: will be using proper REST endpoint for delete once tokens fully implemented
+    return this.http.delete<any>(`${environment.idpBaseUrl}/tokens/`);
   }
 
 }
