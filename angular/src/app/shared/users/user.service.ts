@@ -15,6 +15,9 @@ import { scim } from '../proto/user-service';
 })
 export class UserService {
 
+  // tslint:disable-next-line:max-line-length
+  // See also https://github.com/GoogleCloudPlatform/healthcare-federated-access-services/blob/master/apis.md#users-tokens-and-consents-management-endpoints
+
   constructor(private http: HttpClient,
               private errorHandler: ErrorHandlerService) {
   }
@@ -51,6 +54,17 @@ export class UserService {
 
   deleteUser(userId: string): Observable<void> {
     return this.http.delete<void>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
+  }
+
+  linkAccounts(patchModel: IPatch): Observable<any> {
+    const token1 = "TODO";
+    const token2 = "TODO";
+    return this.http.patch<IUser>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Me`, patchModel, {
+      headers: {
+        'Authorization': `Bearer ${token1}`,
+        'X-Link-Authorization': `Bearer ${token2}`,
+      },
+    });
   }
 
 }

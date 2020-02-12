@@ -1,0 +1,75 @@
+<mat-accordion class="ddap-connected-accounts">
+  <h2>Connected Accounts</h2>
+  <mat-progress-bar *ngIf="!connectedAccounts; else connectedAccountsSection"
+                    class="ddap-card-loader"
+                    mode="indeterminate">
+  </mat-progress-bar>
+  <ng-template #connectedAccountsSection>
+    <mat-expansion-panel *ngFor="let account of connectedAccounts">
+      <mat-expansion-panel-header collapsedHeight="6rem"
+                                  expandedHeight="6rem">
+        <mat-card>
+          <mat-card-header>
+            <img mat-card-avatar
+                 [src]="getPicture(account)"/>
+            <mat-card-title>{{ getProvider(account) }}</mat-card-title>
+            <mat-card-subtitle>{{ account.properties.subject }}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+        <div class="invalid-warning"
+             *ngIf="hasExpiringClaims(account)">
+          <mat-icon class="icon icon-warning"
+                    matTooltip="Some claims are expired or about to expire">
+          </mat-icon>
+        </div>
+      </mat-expansion-panel-header>
+      <ddaplib-claim-group *ngIf="account.passport as ga4ghAccountPassport"
+                           [claimGroupLabel]="'Global Alliance for Genomics and Health Claims'"
+                           [ga4ghAccountPassport]="ga4ghAccountPassport">
+      </ddaplib-claim-group>
+      <button mat-button
+              *ngIf="hasExpiringClaims(account)"
+              color="primary"
+              class="uppercase"
+              (click)="refreshClaims(account)">
+        Refresh Expiring Claims
+      </button>
+      <button mat-button
+              *ngIf="connectedAccounts.length > 1"
+              color="warn"
+              class="uppercase"
+              (click)="unlinkConnectedAccount(account)">
+        Disconnect
+      </button>
+    </mat-expansion-panel>
+  </ng-template>
+</mat-accordion>
+
+<mat-accordion class="ddap-available-accounts">
+  <h2>Connect Another Account</h2>
+  <!-- FIXME: /unserinfo needs to return scopes otherwise we cannot hide this message when it is not required -->
+  <div>
+    <p class="warning-section">
+      <mat-icon class="icon icon-warning"></mat-icon>
+      <span>To connect accounts, click the button to authorize account administration</span>
+      <button mat-stroked-button
+              color="primary"
+              class="uppercase"
+              data-se="btn-relogin"
+              (click)="redirectToLoginWithLinkScopeAndLoginHint()">
+        Authorize Account Administration
+      </button>
+    </p>
+  </div>
+  <mat-card *ngFor="let account of availableAccounts$ | async"
+            (click)="redirectToLoginWithLinkScope()">
+    <mat-card-header>
+      <img mat-card-avatar
+           [src]="getPicture(account)"/>
+      <mat-card-title class="margin-bottom--0">
+        <span>{{ account.label }}</span>
+      </mat-card-title>
+      <mat-icon class="icon icon-plus"></mat-icon>
+    </mat-card-header>
+  </mat-card>
+</mat-accordion>

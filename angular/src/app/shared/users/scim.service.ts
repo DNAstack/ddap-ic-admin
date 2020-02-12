@@ -42,7 +42,15 @@ export class ScimService {
     });
   }
 
-  public static getAccountUnlinkPatch(refValue: string) {
+  public static getAccountLinkPatch(refValue: string): IPatch {
+    const operation = this.getPatchOperationModel(PathOperation.add, 'emails', 'X-Link-Authorization');
+    return Patch.create({
+      schemas: ['urn:ietf:params:scim:api:messages:2.0:PatchOp'],
+      operations: [operation],
+    });
+  }
+
+  public static getAccountUnlinkPatch(refValue: string): IPatch {
     const path = `emails[$ref eq "${refValue}"]`;
     const operation = this.getPatchOperationModel(PathOperation.remove, path, '');
     return Patch.create({
