@@ -60,7 +60,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     @Test
     @Ignore
-    // TODO: rewrite this test without using fakeUserToken method
+    // TODO: DISCO-2702
     public void shouldIncludeInvalidAuthStatusInResponseHeader() throws Exception {
         Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String expiredUserTokenCookie = fakeUserToken(Instant.now().minusSeconds(10));
