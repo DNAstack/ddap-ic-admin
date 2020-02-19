@@ -27,20 +27,22 @@
                            [claimGroupLabel]="'Global Alliance for Genomics and Health Claims'"
                            [ga4ghAccountPassport]="ga4ghAccountPassport">
       </ddaplib-claim-group>
-      <button mat-button
-              *ngIf="hasExpiringClaims(account)"
-              color="primary"
-              class="uppercase"
-              (click)="refreshClaims(account)">
-        Refresh Expiring Claims
-      </button>
-      <button mat-button
-              *ngIf="connectedAccounts.length > 1"
-              color="warn"
-              class="uppercase"
-              (click)="unlinkConnectedAccount(account)">
-        Disconnect
-      </button>
+      <div class="footer">
+        <button mat-button
+                *ngIf="hasExpiringClaims(account)"
+                color="primary"
+                class="uppercase"
+                (click)="refreshClaims(account)">
+          Refresh Expiring Claims
+        </button>
+        <button mat-button
+                *ngIf="connectedAccounts.length > 1"
+                color="warn"
+                class="uppercase"
+                (click)="unlinkAccount(account)">
+          Disconnect
+        </button>
+      </div>
     </mat-expansion-panel>
   </ng-template>
 </mat-accordion>
@@ -62,7 +64,7 @@
     </p>
   </div>
   <mat-card *ngFor="let account of availableAccounts$ | async"
-            (click)="redirectToLoginWithLinkScope()">
+            (click)="redirectToLoginWithLinkScope(account.linkUrl)">
     <mat-card-header>
       <img mat-card-avatar
            [src]="getPicture(account)"/>

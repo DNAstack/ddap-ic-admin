@@ -56,9 +56,10 @@ export class LayoutComponent implements OnInit {
       this.loginPath = `/api/v1alpha/realm/${this.realm}/identity/login`;
     });
 
+    // FIXME: this breaks linking, since refresh does not respect scopes
     // Workaround to get fresh cookies
-    this.periodicallyRefreshTokens()
-      .subscribe();
+    // this.periodicallyRefreshTokens()
+    //   .subscribe();
   }
 
   isUsersRouteActive(): boolean {

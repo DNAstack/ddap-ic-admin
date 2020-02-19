@@ -51,7 +51,7 @@ export class PersonalInfoFormComponent implements Form, OnInit {
   unlinkAccount(email: AbstractControl) {
     const ref = email.get('$ref').value;
     this.userService.patchUser(this.user.id, ScimService.getAccountUnlinkPatch(ref))
-      .subscribe();
+      .subscribe(() => window.location.reload());
   }
 
   makeAttributePrimary(controls: AbstractControl[], controlToBePrimary: AbstractControl): void {

@@ -33,6 +33,9 @@
 
   <mat-divider></mat-divider>
 
- <ddap-connected-accounts-section [realm]="realm">
- </ddap-connected-accounts-section>
+  <ng-container *ngIf="userInfo$ | async as userInfo">
+    <ddap-connected-accounts-section [realm]="realm"
+                                     [userInfo]="userInfo">
+    </ddap-connected-accounts-section>
+  </ng-container>
 </ddaplib-main>

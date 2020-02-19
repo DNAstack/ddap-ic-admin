@@ -51,12 +51,6 @@ export class IdentityService {
       );
   }
 
-  unlinkConnectedAccount(account: IConnectedAccount) {
-    const subjectName = account.properties.subject;
-    return this.http.delete<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/link/${subjectName}`)
-      .subscribe(() => window.location.reload());
-  }
-
   refreshTokens(params?) {
     return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/refresh`, {params});
   }
@@ -71,7 +65,7 @@ export class IdentityService {
         return {
           provider: idpKey,
           label: _get(idpValue, 'ui.label', idpKey),
-          linkUrl: `${environment.ddapApiUrl}/${realm}/identity/link?provider=${idpKey}`,
+          linkUrl: `${environment.ddapApiUrl}/realm/${realm}/identity/link?provider=${idpKey}`,
         };
       });
   }

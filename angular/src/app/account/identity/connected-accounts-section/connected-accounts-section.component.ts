@@ -1,16 +1,21 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 import IConnectedAccount = common.IConnectedAccount;
 import { VisaPassportService } from 'ddap-common-lib';
 import _get from 'lodash.get';
-import { Observable, Subscription } from "rxjs";
-import { share, tap } from "rxjs/operators";
+import { Observable, Subscription } from 'rxjs';
+import { share, tap } from 'rxjs/operators';
 
 import { common } from '../../../shared/proto/ic-service';
+import { scim } from '../../../shared/proto/user-service';
+import { ScimService } from '../../../shared/users/scim.service';
+import { UserService } from '../../../shared/users/user.service';
 import { AccountLink } from '../account-link.model';
 import { Identity } from '../identity.model';
 import { IdentityService } from '../identity.service';
 import { IdentityStore } from '../identity.store';
 import { identityProviderMetadataExists, identityProviders } from '../providers.constants';
+import IUser = scim.v2.IUser;
 
 @Component({
   selector: 'ddap-connected-accounts-section',
@@ -21,15 +26,17 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
 
   @Input()
   realm: string;
+  @Input()
+  userInfo: IUser;
 
-  displayScopeWarning: boolean;
   identityStoreSubscription: Subscription;
   availableAccounts$: Observable<AccountLink[]>;
   connectedAccounts: IConnectedAccount[];
 
   constructor(private identityService: IdentityService,
               private identityStore: IdentityStore,
-              private visaPassportService: VisaPassportService) {
+              private visaPassportService: VisaPassportService,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -72,10 +79,6 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
     return _get(account, 'identityProvider.ui.label', account.provider);
   }
 
-  unlinkConnectedAccount(account: IConnectedAccount): void {
-    this.identityService.unlinkConnectedAccount(account);
-  }
-
   redirectToLoginWithLinkScopeAndLoginHint(): void {
     this.identityStore.getLoginHintForPrimaryAccount()
       .subscribe((loginHint) => {
@@ -83,8 +86,14 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
       });
   }
 
-  redirectToLoginWithLinkScope(): void {
-    window.location.href = `${this.getLoginUrl()}`;
+  redirectToLoginWithLinkScope(providerLink: string): void {
+    window.location.href = `${providerLink}`;
+  }
+
+  unlinkAccount(account) {
+    const emailObj = this.userInfo.emails.find((email) => email.value === account.properties.email);
+    this.userService.patchUser(this.userInfo.id, ScimService.getAccountUnlinkPatch(emailObj['$ref']))
+      .subscribe(() => window.location.reload());
   }
 
   private getLoginUrl(): string {

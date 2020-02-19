@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import IUser = scim.v2.IUser;
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { VisaPassportService } from 'ddap-common-lib';
@@ -8,7 +7,6 @@ import { Observable } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { scim } from '../../shared/proto/user-service';
-
 import { PersonalInfoFormComponent } from '../../shared/users/personal-info-form/personal-info-form.component';
 import {
   UserAccountCloseConfirmationDialogComponent
@@ -17,6 +15,7 @@ import { UserService } from '../../shared/users/user.service';
 
 import { IdentityService } from './identity.service';
 import { IdentityStore } from './identity.store';
+import IUser = scim.v2.IUser;
 
 @Component({
   templateUrl: './identity.component.html',
@@ -48,8 +47,8 @@ export class IdentityComponent implements OnInit {
     this.userInfo$ = this.userService.getLoggedInUser();
 
     // FIXME: This is workaround to refresh cookies after externalIdp linking
-    this.identityService.refreshTokens()
-      .subscribe();
+    // this.identityService.refreshTokens()
+    //   .subscribe();
   }
 
   updatePersonalInfo(): void {
