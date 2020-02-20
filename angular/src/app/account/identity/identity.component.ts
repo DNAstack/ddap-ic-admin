@@ -45,10 +45,6 @@ export class IdentityComponent implements OnInit {
     });
 
     this.userInfo$ = this.userService.getLoggedInUser();
-
-    // FIXME: This is workaround to refresh cookies after externalIdp linking
-    // this.identityService.refreshTokens()
-    //   .subscribe();
   }
 
   updatePersonalInfo(): void {

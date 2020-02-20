@@ -70,6 +70,10 @@ public class NavBar {
         return new NavLink("Consents", DdapBy.se("nav-consents"), userAdministrationPanelSelectorLink());
     }
 
+    public static NavLink identityLink() {
+        return new NavLink("Identity", DdapBy.se("nav-identity"), null);
+    }
+
     public NavBar(WebDriver driver) {
         this.driver = driver;
     }

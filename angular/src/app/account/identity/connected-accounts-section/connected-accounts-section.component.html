@@ -49,8 +49,7 @@
 
 <mat-accordion class="ddap-available-accounts">
   <h2>Connect Another Account</h2>
-  <!-- FIXME: /unserinfo needs to return scopes otherwise we cannot hide this message when it is not required -->
-  <div>
+  <div *ngIf="displayScopeWarning">
     <p class="warning-section">
       <mat-icon class="icon icon-warning"></mat-icon>
       <span>To connect accounts, click the button to authorize account administration</span>

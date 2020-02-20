@@ -56,15 +56,4 @@ export class UserService {
     return this.http.delete<void>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
   }
 
-  linkAccounts(patchModel: IPatch): Observable<any> {
-    const token1 = "TODO";
-    const token2 = "TODO";
-    return this.http.patch<IUser>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Me`, patchModel, {
-      headers: {
-        'Authorization': `Bearer ${token1}`,
-        'X-Link-Authorization': `Bearer ${token2}`,
-      },
-    });
-  }
-
 }

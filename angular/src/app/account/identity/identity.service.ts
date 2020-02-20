@@ -1,15 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import IConnectedAccount = common.IConnectedAccount;
-import { any } from 'codelyzer/util/function';
 import { ErrorHandlerService, realmIdPlaceholder } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Observable } from 'rxjs';
 import { map, pluck } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
-import { common } from '../../shared/proto/ic-service';
 
 import { AccountLink } from './account-link.model';
 import { Identity } from './identity.model';
@@ -65,7 +62,7 @@ export class IdentityService {
         return {
           provider: idpKey,
           label: _get(idpValue, 'ui.label', idpKey),
-          linkUrl: `${environment.ddapApiUrl}/realm/${realm}/identity/link?provider=${idpKey}`,
+          linkUrl: `${environment.ddapApiUrl}/realm/${realm}/identity/link?provider=${idpKey}:`, // DISCO-2710 ':' is needed as a workaround
         };
       });
   }

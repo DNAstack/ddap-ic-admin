@@ -1,5 +1,6 @@
 package com.dnastack.ddap.common.page;
 
+import com.dnastack.ddap.common.util.DdapBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,8 +12,7 @@ public class IdentityPage extends AnyDdapPage {
 
     public IdentityPage(WebDriver driver) {
         super(driver);
-        driver.findElement(By.xpath("//h2[contains(text(), 'My Identity')]"));
-
+        driver.findElement(DdapBy.seAndText("page-title", "My Identity"));
     }
 
     public List<String> getLinkableIdentities() {

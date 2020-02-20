@@ -1,17 +1,15 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import IConnectedAccount = common.IConnectedAccount;
 import { VisaPassportService } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Observable, Subscription } from 'rxjs';
-import { share, tap } from 'rxjs/operators';
+import { share } from 'rxjs/operators';
 
 import { common } from '../../../shared/proto/ic-service';
 import { scim } from '../../../shared/proto/user-service';
 import { ScimService } from '../../../shared/users/scim.service';
 import { UserService } from '../../../shared/users/user.service';
 import { AccountLink } from '../account-link.model';
-import { Identity } from '../identity.model';
 import { IdentityService } from '../identity.service';
 import { IdentityStore } from '../identity.store';
 import { identityProviderMetadataExists, identityProviders } from '../providers.constants';
@@ -29,6 +27,7 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
   @Input()
   userInfo: IUser;
 
+  displayScopeWarning: boolean;
   identityStoreSubscription: Subscription;
   availableAccounts$: Observable<AccountLink[]>;
   connectedAccounts: IConnectedAccount[];
@@ -46,8 +45,11 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
           return;
         }
         this.connectedAccounts = identity.account.connectedAccounts;
-        this.availableAccounts$ = this.identityService.getAccountLinks()
-          .pipe(share());
+        this.displayScopeWarning = !identity.scopes.includes('link');
+        if (!this.displayScopeWarning) {
+          this.availableAccounts$ = this.identityService.getAccountLinks()
+            .pipe(share());
+        }
       });
   }
 
