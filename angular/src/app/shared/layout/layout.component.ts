@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import IUser = scim.v2.IUser;
+import IAttribute = scim.v2.IAttribute;
+import { ViewControllerService } from 'ddap-common-lib';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
 
@@ -9,10 +12,9 @@ import { IdentityService } from '../../account/identity/identity.service';
 import { IdentityStore } from '../../account/identity/identity.store';
 import { AuthService } from '../../account/shared/auth/auth.service';
 import { UserAccess } from '../../account/shared/auth/user-access.model';
+import { AppConfigService } from '../app-config/app-config.service';
 import { scim } from '../proto/user-service';
 import { UserService } from '../users/user.service';
-import IUser = scim.v2.IUser;
-import IAttribute = scim.v2.IAttribute;
 
 const refreshRepeatTimeoutInMs = 600000;
 
@@ -34,7 +36,9 @@ export class LayoutComponent implements OnInit {
               private usersService: UserService,
               private identityService: IdentityService,
               private identityStore: IdentityStore,
-              private authService: AuthService) {
+              private authService: AuthService,
+              public viewControllerService: ViewControllerService,
+              public appConfigService: AppConfigService) {
   }
 
   ngOnInit() {

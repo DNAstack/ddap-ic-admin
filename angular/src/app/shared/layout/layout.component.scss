@@ -1,17 +1,31 @@
 @import '../../../../node_modules/ddap-common-lib/styles/modules/colors';
 
-mat-sidenav-content {
-  padding: 0 2rem;
-}
-
 mat-sidenav-container {
   height: 100%;
 }
+.credentials-username {
+  // FIXME move this image to menu component
+  display: flex;
+  align-items: center;
 
-.mat-drawer-side {
-  border-right: none;
+  img {
+    width: 34px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 16px;
+  }
+
+  .account-info-label {
+    display: block;
+    margin-top: -0.5rem;
+  }
+
+  .account-info-sublabel {
+    display: block;
+    margin-top: -2rem;
+    font-size: 0.75rem;
+  }
 }
-
 :host {
   .ddap-realm-select {
     background-color: $navbar-expanded-background;
@@ -33,10 +47,17 @@ mat-sidenav-container {
 }
 
 .sandbox-warning {
-  font-size: 1rem;
+  position: absolute;
+  left: 1rem;
+  font-size: 0.75rem;
   color: $warn-color;
 }
 
 .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title {
   color: $navbar-font-main-color;
+}
+mat-progress-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
 }

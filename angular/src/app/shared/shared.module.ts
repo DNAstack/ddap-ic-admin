@@ -9,12 +9,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { DdapLayoutModule } from 'ddap-common-lib';
+import { DdapLayoutModule, MenuModule } from 'ddap-common-lib';
 
 import { LayoutComponent } from './layout/layout.component';
 import { PersonalInfoFormComponent } from './users/personal-info-form/personal-info-form.component';
@@ -48,6 +49,9 @@ import {
     MatTooltipModule,
 
     DdapLayoutModule,
+    MenuModule,
+    MenuModule,
+    MatMenuModule,
   ],
   exports: [
     CommonModule,
