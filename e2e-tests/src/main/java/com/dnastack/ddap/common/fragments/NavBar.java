@@ -39,39 +39,40 @@ public class NavBar {
     }
 
     public static NavLink icPanelSelectorLink() {
-        return new NavLink("Identity Concentrator", DdapBy.se("nav-ic-panel"), null);
+        return new NavLink("Identity Concentrator", DdapBy.se("nav-group-ic-admin"), null);
     }
 
     public static NavLink icIdentityProvidersLink() {
-        return new NavLink("Identity Providers", DdapBy.se("nav-ic-identity-providers"), icPanelSelectorLink());
+        return new NavLink("Identity Providers", DdapBy.se("nav-ic-admin-identity-providers"), icPanelSelectorLink());
     }
 
     public static NavLink icClientsLink() {
-        return new NavLink("Clients", DdapBy.se("nav-ic-clients"), icPanelSelectorLink());
+        return new NavLink("Clients", DdapBy.se("nav-ic-admin-clients"), icPanelSelectorLink());
     }
 
     public static NavLink icOptionsLink() {
-        return new NavLink("Options", DdapBy.se("nav-ic-options"), icPanelSelectorLink());
+        return new NavLink("Options", DdapBy.se("nav-ic-admin-options"), icPanelSelectorLink());
     }
 
     public static NavLink userAdministrationPanelSelectorLink() {
-        return new NavLink("User Administration", DdapBy.se("nav-user-admin-panel"), null);
+        return new NavLink("User Administration", DdapBy.se("nav-group-user-admin"), null);
     }
 
     public static NavLink usersLink() {
-        return new NavLink("Users", DdapBy.se("nav-users"), userAdministrationPanelSelectorLink());
+
+        return new NavLink("Users", DdapBy.se("nav-admin-users"), userAdministrationPanelSelectorLink());
     }
 
     public static NavLink tokensLink() {
-        return new NavLink("Sessions", DdapBy.se("nav-sessions"), userAdministrationPanelSelectorLink());
+        return new NavLink("Sessions", DdapBy.se("nav-admin-sessions"), userAdministrationPanelSelectorLink());
     }
 
     public static NavLink consentsLink() {
-        return new NavLink("Consents", DdapBy.se("nav-consents"), userAdministrationPanelSelectorLink());
+        return new NavLink("Consents", DdapBy.se("nav-admin-consents"), userAdministrationPanelSelectorLink());
     }
 
     public static NavLink identityLink() {
-        return new NavLink("Identity", DdapBy.se("nav-identity"), null);
+        return new NavLink("Identity", DdapBy.se("nav-my-identity"), null);
     }
 
     public NavBar(WebDriver driver) {
@@ -123,28 +124,36 @@ public class NavBar {
         return driver.findElement(DdapBy.se("realm-input"));
     }
 
-    public ConfirmationRealmChangeDialog setRealm(String targetRealm) {
-        WebElement realmInput = getRealmInput();
-        new WebDriverWait(driver, 5)
+    public void setRealmAndCancel(String targetRealm) {
+        WebElement realmMenu = new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.elementToBeClickable(driver.findElement(DdapBy.se("realm-menu"))));
-        driver.findElement(DdapBy.se("realm-menu")).click();
-        new WebDriverWait(driver, 5)
+        realmMenu.click();
+        WebElement editRealmBtn = new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.elementToBeClickable(driver.findElement(DdapBy.se("edit-realm"))));
-        driver.findElement(DdapBy.se("edit-realm")).click();
-        realmInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        realmInput.sendKeys(targetRealm, Keys.RETURN);
-
-        return new ConfirmationRealmChangeDialog(driver);
+        editRealmBtn.click();
+        WebElement realmInput = getRealmInput();
+        realmInput.clear();
+        realmInput.sendKeys(targetRealm);
+        driver.findElement(DdapBy.se("cancel-realm-change")).click();
     }
 
     public String getRealm() {
-        WebElement realmInput = getRealmInput();
-        return realmInput.getAttribute("value");
+        WebElement realmInput = new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("realm-name")));
+        return realmInput.getText();
     }
 
     public ICLoginPage logOut() {
-        driver.findElement(DdapBy.se("nav-logout")).click();
+        openProfileMenu();
+        WebElement logoutBtn = new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.elementToBeClickable(DdapBy.se("nav-logout")));
+        logoutBtn.click();
         return new ICLoginPage(driver);
     }
 
+    public void openProfileMenu() {
+        WebElement menuProfileBtn = new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.elementToBeClickable(DdapBy.se("menu-profile-btn")));
+        menuProfileBtn.click();
+    }
 }

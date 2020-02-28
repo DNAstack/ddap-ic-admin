@@ -42,9 +42,8 @@ public class RealmE2eTest extends AbstractFrontendE2eTest {
         assertThat("this test is pointless unless we start on a different realm than we're going to!",
             ddapPage.getNavBar().getRealm(), is(not(otherRealm)));
 
-        ConfirmationRealmChangeDialog confirmationRealmChangeDialog = ddapPage.getNavBar().setRealm(otherRealm);
-        AnyDdapPage ddapPage = confirmationRealmChangeDialog.cancelChangeRealmDialog();
-
+        ddapPage.getNavBar().setRealmAndCancel(otherRealm);
+        ddapPage.waitForInflightRequests();
         // Wrap this with large timeout because redirect to IC and back happens here
         new WebDriverWait(driver, 10)
             .ignoring(AssertionError.class)

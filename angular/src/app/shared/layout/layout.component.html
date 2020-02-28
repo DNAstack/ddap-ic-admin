@@ -11,7 +11,7 @@
           <img [src]="getPrimaryPhoto(userInfo.photos)"
                alt="Profile picture">
           <span class="account-info">
-            <span class="account-info-label">{{ userInfo?.displayName || '&nbsp;' }}</span>
+            <span class="account-info-label" data-se="nav-profile-name">{{ userInfo?.displayName || '&nbsp;' }}</span>
             <span class="account-info-sublabel"
                   data-se="nav-logout"
               (click)="logout()">Log Out</span>

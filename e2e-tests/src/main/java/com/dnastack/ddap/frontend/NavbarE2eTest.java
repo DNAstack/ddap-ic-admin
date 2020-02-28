@@ -3,9 +3,13 @@ package com.dnastack.ddap.frontend;
 import com.dnastack.ddap.common.TestingPersona;
 import com.dnastack.ddap.common.page.AdminDdapPage;
 import com.dnastack.ddap.common.page.ICLoginPage;
+import com.dnastack.ddap.common.util.DdapBy;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
 
@@ -63,10 +67,11 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
     @Test
     public void testProfileName() {
         ddapPage = doBrowserLogin(REALM, ADMINISTRATOR, AdminDdapPage::new);
-
+        ddapPage.getNavBar().openProfileMenu();
         // check profile name
-        final String usernameXpath = "//*[@data-se='nav-account']//h4";
-        final String displayedName = driver.findElement(By.xpath(usernameXpath)).getText();
+        final WebElement profileNameElement = new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.visibilityOfElementLocated(DdapBy.se("nav-profile-name")));
+        final String displayedName = profileNameElement.getText();
         assertThat(displayedName, not(isEmptyOrNullString()));
 
         /*
