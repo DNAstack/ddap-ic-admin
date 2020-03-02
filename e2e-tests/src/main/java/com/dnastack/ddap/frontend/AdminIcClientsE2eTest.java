@@ -46,7 +46,7 @@ public class AdminIcClientsE2eTest extends AbstractAdminFrontendE2eTest {
     public void editClient() {
         // FIXME: DISCO-2660
         Assume.assumeTrue(ZonedDateTime.now().isAfter(ZonedDateTime.of(
-            2020, 2, 29, 12, 0, 0,0,
+            2020, 3, 31, 12, 0, 0,0,
             ZoneId.of("America/Toronto"))
         ));
 
@@ -56,7 +56,7 @@ public class AdminIcClientsE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.assertListItemExists("edit-client-id");
         adminListPage.assertListItemDoNotExist("edited-client-id");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("edit-client-id", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("edit-client-id");
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
         adminManagePage.fillField(DdapBy.se("inp-label"), "edited-client-id");
@@ -74,7 +74,7 @@ public class AdminIcClientsE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminListPage.assertListItemExists("delete-client-id");
 
-        AdminManagePage adminManagePage = adminListPage.clickView("delete-client-id", "Edit");
+        AdminManagePage adminManagePage = adminListPage.clickView("delete-client-id");
 
         adminListPage = adminManagePage.deleteEntity();
 

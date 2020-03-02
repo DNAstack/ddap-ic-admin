@@ -29,21 +29,25 @@ public class UserAdminListPage extends AnyDdapPage {
     }
 
     public Optional<WebElement> getFirstUserByNameAndActivity(String title, boolean enabled) {
-        new WebDriverWait(driver, 2)
-            .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(DdapBy.seAndText("user-name", title)));
-        List<WebElement> userExpansionPanels = driver.findElements(getLine(title));
-        return userExpansionPanels.stream()
+        new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(DdapBy.seAndText("entity-title", title)));
+        List<WebElement> userRows = driver.findElements(By.tagName("tr"));
+        return userRows.stream()
             .filter((element) -> {
-                String description = element.findElement(By.tagName("mat-panel-description")).getText();
-                return description.equalsIgnoreCase(enabled ? "active" : "inactive");
+                List<WebElement> cells = element.findElements(By.tagName("td"));
+                return cells.stream()
+                    .anyMatch((cell) -> cell.getText().equalsIgnoreCase(enabled ? "active" : "inactive"));
             })
             .findFirst();
     }
 
-    public AnyDdapPage closeAccount(WebElement userExpansionPanel) {
-        userExpansionPanel.click();
+    public AnyDdapPage closeAccount(WebElement userRow) {
+        WebElement moreActionsButton = userRow.findElement(DdapBy.se("btn-more-actions"));
+        new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
+        moreActionsButton.click();
 
-        WebElement closeAccountButton = userExpansionPanel.findElement(DdapBy.se("btn-close-user-account"));
+        WebElement closeAccountButton = driver.findElement(By.className("mat-menu-panel"))
+            .findElement(DdapBy.se("btn-close-user-account"));
         new WebDriverWait(driver, 5).until(d -> closeAccountButton.isDisplayed());
         closeAccountButton.click();
 
@@ -55,27 +59,18 @@ public class UserAdminListPage extends AnyDdapPage {
         return new AnyDdapPage(driver);
     }
 
-    public UserAdminManagePage editAccount(WebElement userExpansionPanel) {
-        userExpansionPanel.click();
+    public UserAdminManagePage editAccount(WebElement userRow) {
+        WebElement moreActionsButton = userRow.findElement(DdapBy.se("btn-more-actions"));
+        new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
+        moreActionsButton.click();
 
-        WebElement editAccountButton = userExpansionPanel.findElement(DdapBy.se("btn-edit-user"));
-        new WebDriverWait(driver, 5).until(d -> editAccountButton.isDisplayed());
-        editAccountButton.click();
+        WebElement closeAccountButton = driver.findElement(By.className("mat-menu-panel"))
+            .findElement(DdapBy.se("btn-edit"));
+        new WebDriverWait(driver, 5).until(d -> closeAccountButton.isDisplayed());
+        closeAccountButton.click();
 
         this.waitForInflightRequests();
         return new UserAdminManagePage(driver);
-    }
-
-    private By getLine(String user) {
-        return By.xpath(format("//mat-expansion-panel[descendant::*[contains(text(), '%s') and @data-se='user-name']]",
-            user
-        ));
-    }
-
-    private By getButton(String buttonText) {
-        return By.xpath(format("//button[descendant::*[contains(text(), '%s')]]",
-            buttonText
-        ));
     }
 
 }
