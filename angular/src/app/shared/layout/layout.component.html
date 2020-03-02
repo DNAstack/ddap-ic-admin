@@ -1,7 +1,7 @@
 <div class="site-container {{viewControllerService.view.leftSidebarOpened ? '' : 'zen-mode'}}">
   <ddaplib-main-header (realmChangeAcknowledge)="onAcknowledge($event)"
                        [realmActions]="['edit', 'delete']"
-                      [showRealmInput]="isSandbox"
+                      [isSandbox]="isSandbox"
                       [siteName]="'DDAP'">
     <ddaplib-menu-profile [showSignIn]="!(userInfo$ | async)" [loginPath]="loginPath">
       <ng-container *ngIf="userInfo$ | async as userInfo">
@@ -29,13 +29,6 @@
     <mat-sidenav #sidenav
                  mode="side"
                  [opened]="true">
-      <span *ngIf="isSandbox"
-            class="sandbox-warning"
-            style="position: absolute; left: 1rem; font-size: 0.75rem;"
-            matTooltip="This is sandbox testing environment">
-        Sandbox environment
-      </span>
-
       <app-sidenav-left *ngIf="isIcAdmin"
                       [sideNavCollapsible]="false"
                       [appTitle]="">
