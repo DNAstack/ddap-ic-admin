@@ -1,12 +1,10 @@
 package com.dnastack.ddap.common.page;
 
 import com.dnastack.ddap.common.util.DdapBy;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matcher;
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -16,35 +14,54 @@ import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 
+@Slf4j
 public class AdminOptionPage extends AdminDdapPage {
 
     public AdminOptionPage(WebDriver driver) {
         super(driver);
     }
 
-    public AdminOptionPage submitOption(String optionName, String optionValue) {
-        driver.findElement(getLine(optionName))
-                .click();
+    public AdminOptionPage submitOption(String optionName, String optionId, String optionValue) {
+        WebElement row = getOptionRow(optionName);
 
-        // need to wait for text field to become visible.
-        final WebElement input = driver.findElement(getInput(optionName));
+        WebElement moreActionsButton = row.findElement(DdapBy.se("btn-more-actions"));
+        new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
+        moreActionsButton.click();
+
+        WebElement editButton = driver.findElement(By.className("mat-menu-panel"))
+            .findElement(DdapBy.se("btn-edit"));
+        new WebDriverWait(driver, 5).until(d -> editButton.isDisplayed());
+        editButton.click();
+
+        final WebElement input = row.findElement(DdapBy.se("inp-" + optionId));
         new WebDriverWait(driver, 5).until(d -> input.isDisplayed());
 
+        String selectAll = Keys.chord(Keys.CONTROL, "a");
+        input.sendKeys(selectAll);
+        input.sendKeys(Keys.DELETE);
         input.sendKeys(optionValue);
-        final WebElement updateButton = driver.findElement(getUpdateButton(optionName));
+        final WebElement updateButton = row.findElement(DdapBy.se("btn-save"));
         updateButton.click();
 
         return this;
     }
 
+    public WebElement getOptionRow(String optionName) {
+        return driver.findElements(By.tagName("tr"))
+            .stream()
+            .filter((row) -> row.getText().contains(optionName))
+            .findFirst()
+            .get();
+    }
+
     public String getOptionValue(String optionName) {
-        return driver.findElement(getValue(optionName)).getText();
+        return getOptionRow(optionName).findElement(DdapBy.se("option-value")).getText();
     }
 
     public List<String> getOptionNames() {
-        new WebDriverWait(driver, 5).until(d -> driver.findElement(DdapBy.se("option-name")).isDisplayed());
+        new WebDriverWait(driver, 5).until(d -> driver.findElement(DdapBy.se("entity-title")).isDisplayed());
 
-        return driver.findElements(DdapBy.se("option-name")).stream()
+        return driver.findElements(DdapBy.se("entity-title")).stream()
                      .map(WebElement::getText)
                      .collect(Collectors.toList());
     }
@@ -104,7 +121,7 @@ public class AdminOptionPage extends AdminDdapPage {
     public void assertError(String optionName, int timeoutInSeconds, Matcher<String> matcher) {
         try {
             final String errorMsg = new WebDriverWait(driver, timeoutInSeconds).until(d -> {
-                final List<WebElement> errorElements = d.findElements(getError(optionName));
+                final List<WebElement> errorElements = d.findElements(By.tagName("mat-error"));
 
                 return errorElements.stream()
                                     .filter(e -> e.isDisplayed() && !StringUtils.isEmpty(e.getText()))

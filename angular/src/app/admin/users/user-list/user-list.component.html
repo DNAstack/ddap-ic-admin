@@ -110,43 +110,5 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-
-
-
-<!--    <mat-accordion>-->
-<!--      <mat-expansion-panel *ngFor="let user of usersResponse['Resources']">-->
-<!--        <mat-expansion-panel-header collapsedHeight="5rem"-->
-<!--                                    expandedHeight="5rem">-->
-<!--          <mat-panel-title data-se="user-name">{{ user.displayName }}</mat-panel-title>-->
-<!--          <mat-panel-description [ngClass]="{ 'active' : user.active }">-->
-<!--            {{ user.active ? 'Active' : 'Inactive' }}-->
-<!--          </mat-panel-description>-->
-<!--        </mat-expansion-panel-header>-->
-<!--        <mat-divider></mat-divider>-->
-<!--        <ddaplib-entity-viewer [listData]="modifyUserData(user)"></ddaplib-entity-viewer>-->
-<!--        <mat-action-row>-->
-<!--          <button mat-button-->
-<!--                  color="warn"-->
-<!--                  class="uppercase"-->
-<!--                  data-se="btn-close-user-account"-->
-<!--                  (click)="closeAccount(user)">-->
-<!--            Close Account-->
-<!--          </button>-->
-<!--          <button mat-button-->
-<!--                  color="primary"-->
-<!--                  class="uppercase"-->
-<!--                  data-se="btn-edit-user"-->
-<!--                  [routerLink]="[user.id]">-->
-<!--            Edit User-->
-<!--          </button>-->
-<!--        </mat-action-row>-->
-<!--      </mat-expansion-panel>-->
-<!--      <ddaplib-paginator color="primary"-->
-<!--                         [paginationType]="'unidirectional'"-->
-<!--                         [length]="usersResponse.totalResults"-->
-<!--                         [pageSize]="usersResponse.itemsPerPage"-->
-<!--                         (pageChange)="changePage($event)">-->
-<!--      </ddaplib-paginator>-->
-<!--    </mat-accordion>-->
   </ng-container>
 </ddaplib-main>
