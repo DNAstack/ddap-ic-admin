@@ -12,6 +12,10 @@ import { ClientsStore } from '../clients.store';
 })
 export class ClientListComponent extends IcConfigEntityListComponentBase<ClientsStore> implements OnInit {
 
+  displayedColumns: string[] = [
+    'label', 'description', 'clientId', 'scopes', 'redirectUris', 'grantTypes', 'responseTypes', 'moreActions',
+  ];
+
   constructor(protected route: ActivatedRoute,
               protected icConfigStore: IcConfigStore,
               protected clientsStore: ClientsStore) {
