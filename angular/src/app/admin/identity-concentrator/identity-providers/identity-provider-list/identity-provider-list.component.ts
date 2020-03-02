@@ -12,6 +12,10 @@ import { IdentityProvidersStore } from '../identity-providers.store';
 })
 export class IdentityProviderListComponent extends IcConfigEntityListComponentBase<IdentityProvidersStore> implements OnInit {
 
+  displayedColumns: string[] = [
+    'label', 'description', 'clientId', 'scopes', 'responseType', 'issuer', 'authorizeUrl', 'tokenUrl', 'moreActions',
+  ];
+
   constructor(protected route: ActivatedRoute,
               protected icConfigStore: IcConfigStore,
               protected identityProvidersStore: IdentityProvidersStore) {
