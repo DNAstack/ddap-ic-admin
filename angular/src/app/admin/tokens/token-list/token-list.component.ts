@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import _get from 'lodash.get';
-import _pick from 'lodash.pick';
 import { BehaviorSubject, Observable } from 'rxjs';
 import ListTokensResponse = tokens.v1.ListTokensResponse;
 import IToken = tokens.v1.IToken;
@@ -15,6 +13,8 @@ import { TokensService } from '../tokens.service';
   styleUrls: ['./token-list.component.scss'],
 })
 export class TokenListComponent implements OnInit {
+
+  displayedColumns: string[] = ['name', 'description', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions'];
 
   tokens$: Observable<ListTokensResponse>;
 
@@ -34,11 +34,4 @@ export class TokenListComponent implements OnInit {
       .subscribe(() => this.refreshTokens$.next(undefined));
   }
 
-  getTokenData(token: tokens.v1.IToken) {
-    return _pick(token, ['aud', 'exp', 'iat', 'scope', 'target']);
-  }
-
-  getClientData(token: tokens.v1.IToken) {
-    return _get(token, 'client');
-  }
 }

@@ -5,9 +5,9 @@
   <ng-container *ngIf="(consents$ | async) as consentsResponse">
     <table mat-table [dataSource]="consentsResponse.consents"
            class="table--base mat-elevation-z1">
-      <!-- Label Definition -->
-      <ng-container matColumnDef="label" sticky>
-        <th mat-header-cell *matHeaderCellDef>Label</th>
+      <!-- Name Definition -->
+      <ng-container matColumnDef="name" sticky>
+        <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let model"
             data-se="entity-title">
           {{ model.name }}

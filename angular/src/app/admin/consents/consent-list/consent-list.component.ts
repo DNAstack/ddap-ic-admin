@@ -13,7 +13,7 @@ import ListConsentsResponse = consents.v1.ListConsentsResponse;
 })
 export class ConsentListComponent implements OnInit {
 
-  displayedColumns: string[] = ['label', 'user', 'client', 'items', 'scopes', 'resources', 'moreActions'];
+  displayedColumns: string[] = ['name', 'user', 'client', 'items', 'scopes', 'resources', 'moreActions'];
 
   consents$: Observable<ListConsentsResponse>;
 
