@@ -3,8 +3,8 @@
                        [realmActions]="['edit', 'delete']"
                       [showRealmInput]="isSandbox"
                       [siteName]="'DDAP'">
-    <ddaplib-menu-profile>
-      <ng-container *ngIf="userInfo$ | async as userInfo; else unauthenticated">
+    <ddaplib-menu-profile [showSignIn]="!(userInfo$ | async)" [loginPath]="loginPath">
+      <ng-container *ngIf="userInfo$ | async as userInfo">
         <button class="credentials-username"
                 mat-menu-item
                 data-se="nav-account">
@@ -18,14 +18,6 @@
           </span>
         </button>
       </ng-container>
-      <ng-template #unauthenticated>
-        <a [href]="loginPath"
-          mat-menu-item
-          data-se="nav-login">
-          <mat-icon>perm_identity</mat-icon>
-          <span data-se="nav-account">Log In</span>
-        </a>
-      </ng-template>
     </ddaplib-menu-profile>
   </ddaplib-main-header>
   <mat-progress-bar *ngIf="loader.progress$ | async"
