@@ -37,9 +37,6 @@ ddaplib-searchable-header {
 }
 .mat-expansion-panel-header-description {
   text-transform: uppercase;
-  &.active {
-    color: $primary-color;
-  }
 }
 
 .filter-active {
@@ -55,4 +52,12 @@ ddaplib-searchable-header {
   mat-radio-button {
     margin-left: 1rem;
   }
+}
+
+td span.user-active {
+  color: $primary-color;
+}
+
+td span.user-inactive {
+  color: $color-grey;
 }

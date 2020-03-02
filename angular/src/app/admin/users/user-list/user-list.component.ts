@@ -3,19 +3,18 @@ import { FormControl } from '@angular/forms';
 import IUser = scim.v2.IUser;
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import _pick from 'lodash.pick';
-import { BehaviorSubject, EMPTY, Observable } from "rxjs";
+import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import IListUsersResponse = scim.v2.IListUsersResponse;
-import { flatMap, switchMap } from "rxjs/operators";
+import { flatMap, switchMap } from 'rxjs/operators';
 
+import { IdentityService } from '../../../account/identity/identity.service';
 import { scim } from '../../../shared/proto/user-service';
-import { UserService } from '../../../shared/users/user.service';
 import {
   UserAccountCloseConfirmationDialogComponent
 } from '../../../shared/users/user-account-close-confirmation-dialog/user-account-close-confirmation-dialog.component';
+import { UserService } from '../../../shared/users/user.service';
 
 import { UserFilterService } from './user-filter.service';
-import { IdentityService } from "../../../account/identity/identity.service";
 
 
 @Component({
@@ -24,6 +23,8 @@ import { IdentityService } from "../../../account/identity/identity.service";
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit {
+
+  displayedColumns: string[] = ['name', 'id', 'status', 'emails', 'moreActions'];
 
   query: FormControl = new FormControl('');
   activeFilter: FormControl = new FormControl(null);
@@ -76,15 +77,6 @@ export class UserListComponent implements OnInit {
     params.startIndex = this.getStartIndexBasedOnPageChangeDirection(page, params.count, params.startIndex);
     params.count = page.pageSize;
     this.refreshUsers$.next(params);
-  }
-
-  modifyUserData(user: any) {
-    let userData: {};
-    userData = _pick(user, ['id', 'userName']);
-    if ('emails' in user) {
-      userData['emails'] = user['emails'].map(email => email.value);
-    }
-    return userData;
   }
 
   closeAccount(user: IUser) {
