@@ -5,7 +5,6 @@ import { switchMap } from 'rxjs/operators';
 import { consents } from '../../../shared/proto/consent-service';
 import { ConsentsService } from '../consents.service';
 import ListConsentsResponse = consents.v1.ListConsentsResponse;
-import IConsent = consents.v1.IConsent;
 
 @Component({
   selector: 'ddap-consent-list',
@@ -13,6 +12,8 @@ import IConsent = consents.v1.IConsent;
   styleUrls: ['./consent-list.component.scss'],
 })
 export class ConsentListComponent implements OnInit {
+
+  displayedColumns: string[] = ['label', 'user', 'client', 'items', 'scopes', 'resources', 'moreActions'];
 
   consents$: Observable<ListConsentsResponse>;
 
@@ -27,8 +28,8 @@ export class ConsentListComponent implements OnInit {
     );
   }
 
-  revokeConsent(consent: IConsent) {
-    this.consentsService.revokeConsent(consent.name)
+  revokeConsent(consentId: string) {
+    this.consentsService.revokeConsent(consentId)
       .subscribe(() => this.refreshConsents$.next(undefined));
   }
 

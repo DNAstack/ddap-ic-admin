@@ -13,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { DdapLayoutModule, MenuModule } from 'ddap-common-lib';
@@ -47,9 +48,10 @@ import {
     MatSidenavModule,
     MatSnackBarModule,
     MatTooltipModule,
+    MatMenuModule,
+    MatTableModule,
 
     DdapLayoutModule,
-    MenuModule,
     MenuModule,
     MatMenuModule,
   ],
@@ -60,6 +62,8 @@ import {
     ReactiveFormsModule,
 
     MatSnackBarModule,
+    MatMenuModule,
+    MatTableModule,
 
     DdapLayoutModule,
     PersonalInfoFormComponent,
