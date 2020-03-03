@@ -11,6 +11,7 @@ import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.specification.RequestSpecification;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpRequest;
@@ -23,6 +24,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -43,6 +45,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 
 @SuppressWarnings("Duplicates")
+@Slf4j
 public abstract class AbstractBaseE2eTest {
 
     public static final String DDAP_USERNAME = optionalEnv("E2E_BASIC_USERNAME",null);
@@ -160,7 +163,12 @@ public abstract class AbstractBaseE2eTest {
             config = mapper.writeValueAsString(parsedConfig);
         }
 
-        final String modificationPayload = format("{ \"item\": %s }", config);
+        // There is logic in the DAM and IC that syncs client information in Hydra based on the state in the DAM/IC config.
+        // Unfortunately, it does this based on whatever realm it runs from,
+        // meaning you can wipe out a client accidentally while running the e2e tests.
+        String damConfig = appendMaterRealmClientsToExistingClientsInConfig(persona.getId(), config);
+
+        final String modificationPayload = format("{ \"item\": %s }", damConfig);
 
         {
             HttpPut request = new HttpPut(format("%s/identity/v1alpha/%s/config", DDAP_BASE_URL, realmName));
@@ -174,6 +182,41 @@ public abstract class AbstractBaseE2eTest {
                        response.getStatusLine().getStatusCode(),
                        allOf(greaterThanOrEqualTo(200), lessThan(300)));
         }
+    }
+
+    private static JSONObject getClientsFromMasterRealm(CookieStore cookieStore) throws IOException {
+        HttpClient httpclient = HttpClientBuilder.create()
+            .setDefaultCookieStore(cookieStore)
+            .build();
+
+        HttpGet request = new HttpGet(format("%s/identity/v1alpha/master/config", DDAP_BASE_URL));
+        HttpResponse response = httpclient.execute(request);
+        String responseBody = EntityUtils.toString(response.getEntity());
+
+        JSONObject icConfig = new JSONObject(responseBody);
+        JSONObject clients = icConfig.getJSONObject("clients");
+
+        log.debug("Parsed clients from master realm: {}", clients);
+
+        return clients;
+    }
+
+    private static String appendMaterRealmClientsToExistingClientsInConfig(String personaId, String damConfig) throws IOException {
+        final CookieStore cookieStore = loginStrategy.performPersonaLogin(personaId, "master");
+
+        JSONObject damConfigClients = new JSONObject(damConfig).getJSONObject("clients");
+        JSONObject masterRealmClients = getClientsFromMasterRealm(cookieStore);
+        masterRealmClients.keySet()
+            .forEach((masterRealmClient) -> {
+                damConfigClients.put(masterRealmClient, masterRealmClients.get(masterRealmClient));
+            });
+
+        JSONObject newDamConfig = new JSONObject(damConfig);
+        newDamConfig.put("clients", damConfigClients);
+
+        log.debug("IC Config was altered to include master realm clients: {}", newDamConfig);
+
+        return newDamConfig.toString();
     }
 
     protected static String loadTemplate(String resourcePath) {
