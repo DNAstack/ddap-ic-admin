@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ConsentListComponent } from "./consent-list/consent-list.component";
+
+import { ConsentListComponent } from './consent-list/consent-list.component';
 
 export const routes: Routes = [
   { path: '', component: ConsentListComponent },

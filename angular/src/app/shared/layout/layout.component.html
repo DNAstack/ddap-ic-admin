@@ -1,9 +1,16 @@
-<div class="site-container {{viewControllerService.view.leftSidebarOpened ? '' : 'zen-mode'}}">
+<mat-progress-bar *ngIf="loader.progress$ | async"
+                  mode="determinate"
+                  [value]="loader.progress$ | async"
+                  data-se="main-progress-bar">
+</mat-progress-bar>
+
+<div class="site-container {{ viewControllerService.view.leftSidebarOpened ? '' : 'zen-mode'}} ">
   <ddaplib-main-header (realmChangeAcknowledge)="onAcknowledge($event)"
                        [realmActions]="['edit', 'delete']"
-                      [isSandbox]="isSandbox"
-                      [siteName]="'DDAP'">
-    <ddaplib-menu-profile [showSignIn]="!(userInfo$ | async)" [loginPath]="loginPath">
+                       [isSandbox]="isSandbox"
+                       [siteName]="'DDAP'">
+    <ddaplib-menu-profile [showSignIn]="!(userInfo$ | async)"
+                          [loginPath]="loginPath">
       <ng-container *ngIf="userInfo$ | async as userInfo">
         <button class="credentials-username"
                 mat-menu-item
@@ -11,27 +18,28 @@
           <img [src]="getPrimaryPhoto(userInfo.photos)"
                alt="Profile picture">
           <span class="account-info">
-            <span class="account-info-label" data-se="nav-profile-name">{{ userInfo?.displayName || '&nbsp;' }}</span>
+            <span class="account-info-label"
+                  data-se="nav-profile-name">
+              {{ userInfo?.displayName || '&nbsp;' }}
+            </span>
             <span class="account-info-sublabel"
                   data-se="nav-logout"
-              (click)="logout()">Log Out</span>
+                  (click)="logout()">
+              Log Out
+            </span>
           </span>
         </button>
       </ng-container>
     </ddaplib-menu-profile>
   </ddaplib-main-header>
-  <mat-progress-bar *ngIf="loader.progress$ | async"
-                    mode="determinate"
-                    [value]="loader.progress$ | async"
-                    data-se="main-progress-bar">
-  </mat-progress-bar>
+
   <mat-sidenav-container>
     <mat-sidenav #sidenav
                  mode="side"
                  [opened]="true">
       <app-sidenav-left *ngIf="isIcAdmin"
-                      [sideNavCollapsible]="false"
-                      [appTitle]="'Identity Concentrator'">
+                        [sideNavCollapsible]="false"
+                        [appTitle]="'Identity Concentrator'">
       </app-sidenav-left>
     </mat-sidenav>
 

@@ -9,6 +9,16 @@ export const routes: Routes = [
         loadChildren: () => import('./identity/identity.module')
           .then(mod => mod.IdentityModule),
       },
+      {
+        path: 'sessions',
+        loadChildren: () => import('../account/tokens/tokens.module')
+          .then(mod => mod.TokensModule),
+      },
+      {
+        path: 'consents',
+        loadChildren: () => import('../account/consents/consents.module')
+          .then(mod => mod.ConsentsModule),
+      },
     ]},
 ];
 

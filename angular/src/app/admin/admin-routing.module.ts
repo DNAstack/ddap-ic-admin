@@ -12,16 +12,6 @@ export const routes: Routes = [
     loadChildren: () => import('./users/users.module')
       .then(mod => mod.UsersModule),
   },
-  {
-    path: 'sessions',
-    loadChildren: () => import('./tokens/tokens.module')
-      .then(mod => mod.TokensModule),
-  },
-  {
-    path: 'consents',
-    loadChildren: () => import('./consents/consents.module')
-      .then(mod => mod.ConsentsModule),
-  },
 ];
 
 @NgModule({

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TokenListComponent } from "./token-list/token-list.component";
+
+import { TokenListComponent } from './token-list/token-list.component';
 
 export const routes: Routes = [
   { path: '', component: TokenListComponent },
