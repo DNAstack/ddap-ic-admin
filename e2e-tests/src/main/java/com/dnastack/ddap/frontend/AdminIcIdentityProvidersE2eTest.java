@@ -11,29 +11,6 @@ import static com.dnastack.ddap.common.fragments.NavBar.icIdentityProvidersLink;
 public class AdminIcIdentityProvidersE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
-    public void addEmptyIdentityProvider() {
-        AdminListPage adminListPage = ddapPage.getNavBar()
-                .goToAdmin(icIdentityProvidersLink());
-
-        adminListPage.assertListItemDoNotExist("empty-ip-label");
-
-        AdminManagePage adminManagePage = adminListPage.clickManage();
-
-        adminManagePage.fillField(DdapBy.se("inp-id"), "empty-ip-id");
-        adminManagePage.fillField(DdapBy.se("inp-label"), "empty-ip-label");
-        adminManagePage.fillField(DdapBy.se("inp-description"), "empty-ip-desc");
-
-        adminManagePage.fillField(DdapBy.se("inp-clientId"), "cd26716c-b170-41f7-912e-0f72749c3e9a");
-        adminManagePage.fillField(DdapBy.se("inp-issuer"), "https://foo.bar.example.com/oidc");
-        adminManagePage.fillField(DdapBy.se("inp-tokenUrl"), "https://foo.bar.example.com/oidc/token");
-        adminManagePage.fillField(DdapBy.se("inp-authorizeUrl"), "https://foo.bar.example.com/oidc/authorize");
-
-        adminListPage = adminManagePage.saveEntity();
-
-        adminListPage.assertListItemExists("empty-ip-label");
-    }
-
-    @Test
     public void addIdentityProvider() {
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goToAdmin(icIdentityProvidersLink());
@@ -55,7 +32,7 @@ public class AdminIcIdentityProvidersE2eTest extends AbstractAdminFrontendE2eTes
 //        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-translateUsing"), "dbGaP Passport Translator");
 
         adminManagePage.enterButton(DdapBy.se("btn-add-scope"));
-        adminManagePage.fillField(DdapBy.se("inp-scope"), "profile");
+        adminManagePage.fillFieldFromTable(DdapBy.se("inp-scopes"), "profile");
 
         adminListPage = adminManagePage.saveEntity();
 

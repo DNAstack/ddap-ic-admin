@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import { isExpanded } from 'ddap-common-lib';
 import { Form } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
@@ -37,7 +37,8 @@ export class IdentityProviderFormComponent implements OnInit, Form {
   }
 
   addScope() {
-    if (!this.scopes.at(0).value) {
+    const firstControl = this.getFirstControl(this.scopes);
+    if (firstControl && !firstControl.value) {
       // Skip if recently added was not touched
       return;
     }
@@ -61,5 +62,10 @@ export class IdentityProviderFormComponent implements OnInit, Form {
   isValid(): boolean {
     return this.form.valid;
   }
+
+  private getFirstControl(formControls: FormArray): AbstractControl {
+    return formControls.at(0);
+  }
+
 
 }

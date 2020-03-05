@@ -53,6 +53,41 @@ public class AdminManagePage extends AdminDdapPage {
         }
     }
 
+    public void fillFieldFromTable(By fieldSelector, String value) {
+        fillField(fieldSelector, value);
+        enterButton(DdapBy.se("btn-done"));
+    }
+
+    public void editValueFromTable(String label, String inputId, String newValue) {
+        WebElement row = getTableRow(label);
+
+        WebElement moreActionsButton = row.findElement(DdapBy.se("btn-more-actions"));
+        new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
+        moreActionsButton.click();
+
+        WebElement editButton = driver.findElement(By.className("mat-menu-panel"))
+            .findElement(DdapBy.se("btn-edit"));
+        new WebDriverWait(driver, 5).until(d -> editButton.isDisplayed());
+        editButton.click();
+
+        final WebElement input = row.findElement(DdapBy.se(inputId));
+        new WebDriverWait(driver, 5).until(d -> input.isDisplayed());
+
+        String selectAll = Keys.chord(Keys.CONTROL, "a");
+        input.sendKeys(selectAll);
+        input.sendKeys(Keys.DELETE);
+        input.sendKeys(newValue);
+        row.findElement(DdapBy.se("btn-done")).click();
+    }
+
+    public WebElement getTableRow(String label) {
+        return driver.findElements(By.tagName("tr"))
+            .stream()
+            .filter((row) -> row.getText().contains(label))
+            .findFirst()
+            .get();
+    }
+
     public void fillFieldWithFirstValueFromDropdown(By fieldSelector) {
         fillFieldFromDropdown(fieldSelector, null);
     }

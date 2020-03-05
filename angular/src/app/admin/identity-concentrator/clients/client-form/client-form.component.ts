@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import Client = common.Client;
-import { FormArray, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { EntityModel, Form, FormValidators, isExpanded } from 'ddap-common-lib';
 
 import { common } from '../../../../shared/proto/ic-service';
@@ -40,7 +40,8 @@ export class ClientFormComponent implements Form, OnInit {
   }
 
   addRedirectUri(): void {
-    if (!this.redirectUris.at(0).value) {
+    const firstControl = this.getFirstControl(this.redirectUris);
+    if (firstControl && !firstControl.value) {
       // Skip if recently added was not touched
       return;
     }
@@ -48,7 +49,8 @@ export class ClientFormComponent implements Form, OnInit {
   }
 
   addGrantType(): void {
-    if (!this.grantTypes.at(0).value) {
+    const firstControl = this.getFirstControl(this.grantTypes);
+    if (firstControl && !firstControl.value) {
       // Skip if recently added was not touched
       return;
     }
@@ -56,7 +58,8 @@ export class ClientFormComponent implements Form, OnInit {
   }
 
   addResponseType(): void {
-    if (!this.grantTypes.at(0).value) {
+    const firstControl = this.getFirstControl(this.responseTypes);
+    if (firstControl && !firstControl.value) {
       // Skip if recently added was not touched
       return;
     }
@@ -78,6 +81,10 @@ export class ClientFormComponent implements Form, OnInit {
 
   isValid(): boolean {
     return this.form.valid;
+  }
+
+  private getFirstControl(formControls: FormArray): AbstractControl {
+    return formControls.at(0);
   }
 
 }
