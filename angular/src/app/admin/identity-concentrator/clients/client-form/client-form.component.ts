@@ -40,27 +40,27 @@ export class ClientFormComponent implements Form, OnInit {
   }
 
   addRedirectUri(): void {
+    if (!this.redirectUris.at(0).value) {
+      // Skip if recently added was not touched
+      return;
+    }
     this.redirectUris.insert(0, this.clientFormBuilder.buildStringControl(null, [Validators.required, FormValidators.url]));
   }
 
-  removeRedirectUri(index: number): void {
-    this.redirectUris.removeAt(index);
-  }
-
   addGrantType(): void {
+    if (!this.grantTypes.at(0).value) {
+      // Skip if recently added was not touched
+      return;
+    }
     this.grantTypes.insert(0, this.clientFormBuilder.buildStringControl(null, [Validators.required]));
   }
 
-  removeGrantType(index: number): void {
-    this.grantTypes.removeAt(index);
-  }
-
   addResponseType(): void {
+    if (!this.grantTypes.at(0).value) {
+      // Skip if recently added was not touched
+      return;
+    }
     this.responseTypes.insert(0, this.clientFormBuilder.buildStringControl(null, [Validators.required]));
-  }
-
-  removeResponseType(index: number): void {
-    this.responseTypes.removeAt(index);
   }
 
   getModel(): EntityModel {

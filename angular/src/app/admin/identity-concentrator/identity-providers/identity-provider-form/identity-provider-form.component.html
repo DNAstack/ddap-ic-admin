@@ -105,46 +105,9 @@
       </button>
     </div>
   </h3>
-
-  <mat-accordion multi displayMode="flat"
-                 formArrayName="scopes">
-    <mat-expansion-panel #scopeExpansionPanel
-                         *ngFor="let scope of scopes.controls; let i=index"
-                         [expanded]="isExpanded(scope, scopeExpansionPanel)"
-                         [attr.data-se]="'scope-' + i">
-      <mat-expansion-panel-header collapsedHeight="5rem"
-                                  expandedHeight="5rem">
-        <ng-container *ngIf="scope">
-          <mat-panel-title>
-            <mat-icon class="icon icon-access"></mat-icon>
-            <span>{{ scope.value || 'Scope' }}</span>
-          </mat-panel-title>
-          <div class="invalid-warning" *ngIf="scope.invalid">
-            <mat-icon class="icon icon-warning"
-                      matTooltip="Scope is invalid">
-            </mat-icon>
-          </div>
-        </ng-container>
-      </mat-expansion-panel-header>
-      <div class="row">
-        <mat-form-field class="col">
-          <input matInput
-                 placeholder="Scope"
-                 [formControlName]="i"
-                 data-se="inp-scope">
-        </mat-form-field>
-      </div>
-      <div class="footer">
-        <button mat-button
-                type="button"
-                color="warn"
-                class="uppercase"
-                (click)="removeScope(i)">
-          Remove Scope
-        </button>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
+  <ddaplib-form-inline-editable-table [form]="form"
+                                      [arrayFieldName]="'scopes'">
+  </ddaplib-form-inline-editable-table>
 
   <ng-content></ng-content>
 </form>

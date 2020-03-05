@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormValidators, isExpanded } from 'ddap-common-lib';
+import { FormArray, FormGroup } from '@angular/forms';
+import { isExpanded } from 'ddap-common-lib';
 import { Form } from 'ddap-common-lib';
-import { EntityModel, nameConstraintPattern } from 'ddap-common-lib';
-import _get from 'lodash.get';
+import { EntityModel } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 
 import { common } from '../../../../shared/proto/ic-service';
@@ -38,11 +37,11 @@ export class IdentityProviderFormComponent implements OnInit, Form {
   }
 
   addScope() {
+    if (!this.scopes.at(0).value) {
+      // Skip if recently added was not touched
+      return;
+    }
     this.scopes.insert(0, this.identityProviderFormBuilder.buildStringControl());
-  }
-
-  removeScope(index: number): void {
-    this.scopes.removeAt(index);
   }
 
   getModel(): EntityModel {
