@@ -8,7 +8,7 @@ import { scim } from '../../../shared/proto/ic-service';
 import { ScimService } from '../../../shared/users/scim.service';
 import { UserService } from '../../../shared/users/user.service';
 import { AccountLink } from '../account-link.model';
-import { Account, UserInfo } from '../identity.model';
+import { SimpleAccountInfo, UserInfo } from '../identity.model';
 import { IdentityService } from '../identity.service';
 import { IdentityStore } from '../identity.store';
 import { identityProviderMetadataExists, identityProviders } from '../providers.constants';
@@ -57,7 +57,7 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
     this.identityStoreSubscription.unsubscribe();
   }
 
-  hasExpiringClaims(account: Account): boolean {
+  hasExpiringClaims(account: SimpleAccountInfo): boolean {
     if (!account || !account.passport) {
       return false;
     }
@@ -71,12 +71,12 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
     window.location.href = `${this.getLoginUrl()}&loginHint=${account.loginHint}`;
   }
 
-  getPicture(account: Account) {
+  getConnectAccountPicture(account: SimpleAccountInfo) {
     const provider = account.provider;
     return _get(account, 'profile.picture', this.getDefaultProviderPicture(provider));
   }
 
-  getProvider(account: Account) {
+  getProvider(account: SimpleAccountInfo) {
     return account.provider;
   }
 
@@ -97,6 +97,10 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
       .subscribe(() => window.location.reload());
   }
 
+  getProviderPicture(provider: string) {
+    return this.getDefaultProviderPicture(provider);
+  }
+
   private getLoginUrl(): string {
     const loginUrlSuffix = `login?scope=link+openid+account_admin+ga4gh_passport_v1+identities&redirectUri=/${this.realm}/account/identity`;
     return `/api/v1alpha/realm/${this.realm}/identity/${loginUrlSuffix}`;
@@ -107,5 +111,4 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
            ? identityProviders[provider].imagePath
            : identityProviders.defaultImagePath;
   }
-
 }

@@ -13,6 +13,8 @@ public class Account {
     private String sub;
     private String provider;
     private String email;
+    private boolean primary;
+    private String loginHint;
     private String photoUrl;
     private List<FlatVisa> passport;
 

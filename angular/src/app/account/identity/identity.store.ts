@@ -5,10 +5,9 @@ import { map, pluck } from 'rxjs/operators';
 
 import { common } from '../../shared/proto/ic-service';
 
-import { Identity } from './identity.model';
+import { Identity, SimpleAccountInfo, UserInfo } from './identity.model';
 import { IdentityService } from './identity.service';
 import Account = common.Account;
-import ConnectedAccount = common.ConnectedAccount;
 
 @Injectable({
   providedIn: 'root',
@@ -23,16 +22,18 @@ export class IdentityStore extends Store<Identity> {
   getLoginHintForPrimaryAccount(): Observable<string> {
     return this.state$
       .pipe(
-        pluck('account'),
-        map((account: any) => {
-          if ('connectedAccounts' in account) {
-            const primaryAccount: any = account.connectedAccounts.find((connectedAccount: ConnectedAccount) => {
+        map((identity) => identity.account),
+        map((account: UserInfo) => {
+          if (account.connectedAccounts) {
+            const primaryAccount: SimpleAccountInfo = account.connectedAccounts.find((connectedAccount: SimpleAccountInfo) => {
               return connectedAccount.primary;
             });
             // If no account is marked primary select first one
-            return primaryAccount ? primaryAccount.loginHint : account.connectedAccounts[0]['loginHint'];
+            return primaryAccount ? primaryAccount.loginHint : account.connectedAccounts[0].loginHint;
+          } else {
+            // If there is no connected account we can't select loginHint
+            return '';
           }
-          // If there is no connected account we can't select loginHint
         })
       );
   }

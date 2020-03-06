@@ -10,7 +10,7 @@ export interface Identity {
 export interface UserInfo {
   scim: IUser;
   sub: string;
-  connectedAccounts: Account[];
+  connectedAccounts: SimpleAccountInfo[];
 }
 
 export interface Visa {
@@ -22,10 +22,12 @@ export interface Visa {
   exp: number;
 }
 
-export interface Account {
+export interface SimpleAccountInfo {
   sub: string;
+  primary: boolean;
   provider: string;
   email: string;
   photoUrl?: string;
+  loginHint: string;
   passport: Visa[];
 }

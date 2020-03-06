@@ -26,7 +26,7 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         UserAdminListPage adminListPage = ddapPage.getNavBar()
                 .goTo(usersLink(), UserAdminListPage::new);
 
-        String user = "Monica Valluri";
+        String user = optionalEnv("E2E_ADMIN_USER_NAME", "Monica Valluri");
         // There might be multiple users with same name (from previous test runs),
         // want to close the only active user which is the logged in user. Closing already inactive account
         // would not do anything.
@@ -38,8 +38,11 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
 
         // Expecting to be on root url and having invalidated all cookies except SESSION
         assertTrue(driver.getCurrentUrl().endsWith("/dnastack"));
-        assertThat(driver.manage().getCookies(), hasSize(1));
-        assertThat(driver.manage().getCookieNamed("SESSION"), notNullValue());
+        // This check isn't reliable locally because we may have all webapps running on this domain
+        if (!driver.getCurrentUrl().startsWith("http://localhost")) {
+            assertThat(driver.manage().getCookies(), hasSize(1));
+            assertThat(driver.manage().getCookieNamed("SESSION"), notNullValue());
+        }
     }
 
     @Test
@@ -49,7 +52,7 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         UserAdminListPage adminListPage = ddapPage.getNavBar()
             .goTo(usersLink(), UserAdminListPage::new);
 
-        String user = "Monica Valluri";
+        String user = optionalEnv("E2E_ADMIN_USER_NAME", "Monica Valluri");
         // There might be multiple users with same name (from previous test runs),
         // want to close the only active user which is the logged in user. Closing already inactive account
         // would not do anything.

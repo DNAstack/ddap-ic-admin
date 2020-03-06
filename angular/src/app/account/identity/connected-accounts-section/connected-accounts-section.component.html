@@ -11,9 +11,9 @@
         <mat-card>
           <mat-card-header>
             <img mat-card-avatar
-                 [src]="getPicture(account)"/>
+                 [src]="getConnectAccountPicture(account)"/>
             <mat-card-title>{{ getProvider(account) }}</mat-card-title>
-            <mat-card-subtitle>{{ account.sub }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ account.email }}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
         <div class="invalid-warning"
@@ -36,7 +36,7 @@
           Refresh Expiring Claims
         </button>
         <button mat-button
-                *ngIf="account.length > 1"
+                *ngIf="icAccount.connectedAccounts.length > 1"
                 color="warn"
                 class="uppercase"
                 (click)="unlinkAccount(account)">
@@ -62,13 +62,13 @@
       </button>
     </p>
   </div>
-  <mat-card *ngFor="let account of availableAccounts$ | async"
-            (click)="redirectToLoginWithLinkScope(account.linkUrl)">
+  <mat-card *ngFor="let accountLink of availableAccounts$ | async"
+            (click)="redirectToLoginWithLinkScope(accountLink.linkUrl)">
     <mat-card-header>
       <img mat-card-avatar
-           [src]="getPicture(account)"/>
+           [src]="getProviderPicture(accountLink.provider)"/>
       <mat-card-title class="margin-bottom--0">
-        <span>{{ account.label }}</span>
+        <span>{{ accountLink.label }}</span>
       </mat-card-title>
       <mat-icon class="icon icon-plus"></mat-icon>
     </mat-card-header>

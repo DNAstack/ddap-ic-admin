@@ -67,6 +67,11 @@ public class IcUserInfoIdentityService implements IdentityService {
                                                                       .stream()
                                                                       .map(attr -> Map.entry(attr.getRef().split("/", 3)[2], attr.getValue()))
                                                                       .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                       final Optional<String> primaryEmail = scim.getEmailsList()
+                                                                 .stream()
+                                                                 .filter(Users.Attribute::getPrimary)
+                                                                 .map(Users.Attribute::getValue)
+                                                                 .findFirst();
 
                        final List<Account> connectedAccounts =
                                emailsBySub.entrySet()
@@ -89,8 +94,11 @@ public class IcUserInfoIdentityService implements IdentityService {
                                                                                           jwt.getExp());
                                                           })
                                                           .collect(toList());
+                                              final boolean isPrimaryEmail = primaryEmail.filter(pe -> pe.equals(email)).isPresent();
+                                              final String provider = providerBySub.get(sub);
+                                              final String loginHint = provider + ":" + email;
 
-                                              return new Account(sub, providerBySub.get(sub), email, photoBySub.get(sub), visas);
+                                              return new Account(sub, provider, email, isPrimaryEmail, loginHint, photoBySub.get(sub), visas);
                                           })
                                           .collect(toList());
                        final UserInfoDto userInfoDto = new UserInfoDto(subject.getSub(), scim, connectedAccounts);

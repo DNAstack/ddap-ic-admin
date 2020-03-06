@@ -20,7 +20,6 @@ import java.util.Map;
 
 import static com.dnastack.ddap.common.util.WebDriverCookieHelper.SESSION_COOKIE_NAME;
 import static java.lang.String.format;
-import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.not;
 
 public class UserTokenCookieTest extends AbstractBaseE2eTest {
@@ -113,17 +112,12 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
             .cookie(SESSION_COOKIE_NAME, session.getValue())
             .cookie("ic_access", validPersonaToken)
         .when()
-            .get(icViaDdap("/accounts/-"))
+            .get(scimUserInfo())
         .then()
             .log().everything()
             .contentType(not("text/html"))
             .statusCode(200);
         // @formatter:on
-    }
-
-
-    private String icViaDdap(String path) {
-        return format("/identity/v1alpha/%s%s", REALM, path);
     }
 
     private String fakeUserToken(Instant exp) throws JsonProcessingException {
