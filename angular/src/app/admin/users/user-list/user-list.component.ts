@@ -8,7 +8,7 @@ import IListUsersResponse = scim.v2.IListUsersResponse;
 import { flatMap, switchMap } from 'rxjs/operators';
 
 import { IdentityService } from '../../../account/identity/identity.service';
-import { scim } from '../../../shared/proto/user-service';
+import { scim } from '../../../shared/proto/ic-service';
 import {
   UserAccountCloseConfirmationDialogComponent
 } from '../../../shared/users/user-account-close-confirmation-dialog/user-account-close-confirmation-dialog.component';

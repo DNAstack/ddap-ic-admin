@@ -1,11 +1,11 @@
 <mat-accordion class="ddap-connected-accounts">
   <h2>Connected Accounts</h2>
-  <mat-progress-bar *ngIf="!connectedAccounts; else connectedAccountsSection"
+  <mat-progress-bar *ngIf="!icAccount; else connectedAccountsSection"
                     class="ddap-card-loader"
                     mode="indeterminate">
   </mat-progress-bar>
   <ng-template #connectedAccountsSection>
-    <mat-expansion-panel *ngFor="let account of connectedAccounts">
+    <mat-expansion-panel *ngFor="let account of icAccount.connectedAccounts">
       <mat-expansion-panel-header collapsedHeight="6rem"
                                   expandedHeight="6rem">
         <mat-card>
@@ -13,7 +13,7 @@
             <img mat-card-avatar
                  [src]="getPicture(account)"/>
             <mat-card-title>{{ getProvider(account) }}</mat-card-title>
-            <mat-card-subtitle>{{ account.properties.subject }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ account.sub }}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
         <div class="invalid-warning"
@@ -36,7 +36,7 @@
           Refresh Expiring Claims
         </button>
         <button mat-button
-                *ngIf="connectedAccounts.length > 1"
+                *ngIf="account.length > 1"
                 color="warn"
                 class="uppercase"
                 (click)="unlinkAccount(account)">

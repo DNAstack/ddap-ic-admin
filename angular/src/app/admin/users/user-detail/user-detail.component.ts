@@ -4,7 +4,7 @@ import { FormValidationService } from 'ddap-common-lib';
 import { Form } from 'ddap-common-lib';
 import { Subscription } from 'rxjs';
 
-import { scim } from '../../../shared/proto/user-service';
+import { scim } from '../../../shared/proto/ic-service';
 import IUser = scim.v2.IUser;
 import { PersonalInfoFormComponent } from '../../../shared/users/personal-info-form/personal-info-form.component';
 import { UserService } from '../../../shared/users/user.service';

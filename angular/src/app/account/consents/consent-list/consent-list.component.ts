@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { consents } from '../../../shared/proto/consent-service';
+import { consents } from '../../../shared/proto/ic-service';
 import { ConsentsService } from '../consents.service';
 import ListConsentsResponse = consents.v1.ListConsentsResponse;
 

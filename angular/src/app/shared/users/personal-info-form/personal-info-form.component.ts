@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Form, FormValidators, isExpanded } from 'ddap-common-lib';
 
-import { scim } from '../../proto/user-service';
+import { scim } from '../../proto/ic-service';
 import { ScimService } from '../scim.service';
 import { UserService } from '../user.service';
 

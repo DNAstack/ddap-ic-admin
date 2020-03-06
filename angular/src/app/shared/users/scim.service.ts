@@ -2,7 +2,7 @@ import { flatDeep } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import _isEqual from 'lodash.isequal';
 
-import { scim } from '../proto/user-service';
+import { scim } from '../proto/ic-service';
 
 import IOperation = scim.v2.Patch.IOperation;
 import { PathOperation } from './path-operation.enum';

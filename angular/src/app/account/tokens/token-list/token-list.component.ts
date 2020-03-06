@@ -4,7 +4,7 @@ import ListTokensResponse = tokens.v1.ListTokensResponse;
 import IToken = tokens.v1.IToken;
 import { switchMap } from 'rxjs/operators';
 
-import { tokens } from '../../../shared/proto/token-service';
+import { tokens } from '../../../shared/proto/ic-service';
 import { TokensService } from '../tokens.service';
 
 @Component({

@@ -5,7 +5,7 @@ import { realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { tokens } from '../../shared/proto/token-service';
+import { tokens } from '../../shared/proto/ic-service';
 
 @Injectable({
   providedIn: 'root',

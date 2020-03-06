@@ -6,7 +6,7 @@ import { VisaPassportService } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
-import { scim } from '../../shared/proto/user-service';
+import { scim } from '../../shared/proto/ic-service';
 import { PersonalInfoFormComponent } from '../../shared/users/personal-info-form/personal-info-form.component';
 import {
   UserAccountCloseConfirmationDialogComponent

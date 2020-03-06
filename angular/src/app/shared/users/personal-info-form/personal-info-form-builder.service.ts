@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormValidators } from 'ddap-common-lib';
 import _get from 'lodash.get';
+
+import { scim } from '../../proto/ic-service';
 
 import IUser = scim.v2.IUser;
 import IAttribute = scim.v2.IAttribute;
-import { scim } from '../../proto/user-service';
-import { FormValidators } from "ddap-common-lib";
 
 @Injectable({
   providedIn: 'root',

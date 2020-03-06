@@ -13,7 +13,7 @@ import { IdentityStore } from '../../account/identity/identity.store';
 import { AuthService } from '../../account/shared/auth/auth.service';
 import { UserAccess } from '../../account/shared/auth/user-access.model';
 import { AppConfigService } from '../app-config/app-config.service';
-import { scim } from '../proto/user-service';
+import { scim } from '../proto/ic-service';
 import { UserService } from '../users/user.service';
 
 const refreshRepeatTimeoutInMs = 600000;

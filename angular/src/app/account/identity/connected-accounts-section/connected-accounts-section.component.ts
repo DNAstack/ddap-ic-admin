@@ -1,15 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import IConnectedAccount = common.IConnectedAccount;
 import { VisaPassportService } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Observable, Subscription } from 'rxjs';
 import { share } from 'rxjs/operators';
 
-import { common } from '../../../shared/proto/ic-service';
-import { scim } from '../../../shared/proto/user-service';
+import { scim } from '../../../shared/proto/ic-service';
 import { ScimService } from '../../../shared/users/scim.service';
 import { UserService } from '../../../shared/users/user.service';
 import { AccountLink } from '../account-link.model';
+import { Account, UserInfo } from '../identity.model';
 import { IdentityService } from '../identity.service';
 import { IdentityStore } from '../identity.store';
 import { identityProviderMetadataExists, identityProviders } from '../providers.constants';
@@ -30,7 +29,7 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
   displayScopeWarning: boolean;
   identityStoreSubscription: Subscription;
   availableAccounts$: Observable<AccountLink[]>;
-  connectedAccounts: IConnectedAccount[];
+  icAccount: UserInfo;
 
   constructor(private identityService: IdentityService,
               private identityStore: IdentityStore,
@@ -44,7 +43,7 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
         if (!identity) {
           return;
         }
-        this.connectedAccounts = identity.account.connectedAccounts;
+        this.icAccount = identity.account;
         this.displayScopeWarning = !identity.scopes.includes('link');
         if (!this.displayScopeWarning) {
           this.availableAccounts$ = this.identityService.getAccountLinks()
@@ -58,13 +57,13 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
     this.identityStoreSubscription.unsubscribe();
   }
 
-  hasExpiringClaims(account: IConnectedAccount): boolean {
+  hasExpiringClaims(account: Account): boolean {
     if (!account || !account.passport) {
       return false;
     }
 
     return Object.entries(account.passport).some(([_, passport]: any) => {
-      return passport.some((value) => this.visaPassportService.isExpiring(value));
+      return this.visaPassportService.isExpiring(passport);
     });
   }
 
@@ -72,13 +71,13 @@ export class ConnectedAccountsSectionComponent implements OnInit, OnDestroy {
     window.location.href = `${this.getLoginUrl()}&loginHint=${account.loginHint}`;
   }
 
-  getPicture(account: IConnectedAccount) {
-    const username = _get(account, 'profile.username', account.provider);
-    return _get(account, 'profile.picture', this.getDefaultProviderPicture(username));
+  getPicture(account: Account) {
+    const provider = account.provider;
+    return _get(account, 'profile.picture', this.getDefaultProviderPicture(provider));
   }
 
-  getProvider(account: IConnectedAccount) {
-    return _get(account, 'identityProvider.ui.label', account.provider);
+  getProvider(account: Account) {
+    return account.provider;
   }
 
   redirectToLoginWithLinkScopeAndLoginHint(): void {

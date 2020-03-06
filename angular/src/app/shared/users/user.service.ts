@@ -8,7 +8,7 @@ import IUser = scim.v2.IUser;
 import { share } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
-import { scim } from '../proto/user-service';
+import { scim } from '../proto/ic-service';
 
 @Injectable({
   providedIn: 'root',

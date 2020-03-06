@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { consents } from '../../shared/proto/consent-service';
+import { consents } from '../../shared/proto/ic-service';
 import ListConsentsResponse = consents.v1.ListConsentsResponse;
 
 @Injectable({
