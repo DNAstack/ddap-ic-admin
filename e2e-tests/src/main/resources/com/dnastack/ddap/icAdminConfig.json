@@ -27,32 +27,6 @@
     }
   },
   "clients": {
-    "edit-client-id": {
-      "clientId": "1f8ff367-3950-3333-9358-781f9adff70c",
-      "scope": "openid ga4gh_passport_v1 account_admin identities profile offline_access",
-      "grant_types": ["authorization_code", "refresh_token"],
-      "response_types": ["code"],
-      "redirectUris": [
-        "http://localhost:8086/api/v1alpha/identity/loggedIn"
-      ],
-      "ui": {
-        "description": "description",
-        "label": "edit-client-id"
-      }
-    },
-    "delete-client-id": {
-      "clientId": "1f8ff367-3950-2222-9358-781f9adff70c",
-      "scope": "openid ga4gh_passport_v1 account_admin identities profile offline_access",
-      "grant_types": ["authorization_code", "refresh_token"],
-      "response_types": ["code"],
-      "redirectUris": [
-        "http://localhost:8086/api/v1alpha/identity/loggedIn"
-      ],
-      "ui": {
-        "description": "description",
-        "label": "delete-client-id"
-      }
-    }
   },
   "options": {
     "accountNameLength": 25,
