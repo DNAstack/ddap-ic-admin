@@ -4,6 +4,7 @@ import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.AdminOptionPage;
 import com.dnastack.ddap.common.page.ICLoginPage;
 import com.dnastack.ddap.common.util.DdapBy;
+import com.dnastack.ddap.common.util.WebPageScroller;
 import lombok.Value;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -127,9 +128,11 @@ public class NavBar {
     public void setRealmAndCancel(String targetRealm) {
         WebElement realmMenu = new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.elementToBeClickable(driver.findElement(DdapBy.se("realm-menu"))));
+        WebPageScroller.scrollTo(driver, realmMenu);
         realmMenu.click();
         WebElement editRealmBtn = new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.elementToBeClickable(driver.findElement(DdapBy.se("edit-realm"))));
+        WebPageScroller.scrollTo(driver, editRealmBtn);
         editRealmBtn.click();
         WebElement realmInput = getRealmInput();
         realmInput.clear();
