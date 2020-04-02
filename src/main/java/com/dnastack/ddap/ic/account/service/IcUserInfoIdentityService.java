@@ -48,9 +48,6 @@ public class IcUserInfoIdentityService implements IdentityService {
                 final Users.User scim = tuple.getT2();
                 final JwtUtil.JwtSubject subject = JwtUtil.dangerousStopgapExtractSubject(token.getClearText()).get();
 
-                log.warn("USER: {}", scim);
-                log.warn("userInfo: {}", userInfo);
-
                 // TODO this code would break if two IDPs gave a user the same sub
                 final Map<String, List<VisaJwt>> visasBySub = userInfo.getPassports()
                     .stream()
