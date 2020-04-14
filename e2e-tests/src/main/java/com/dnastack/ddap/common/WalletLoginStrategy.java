@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 import static com.dnastack.ddap.common.AbstractBaseE2eTest.*;
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertTrue;
 
@@ -46,6 +47,7 @@ public class WalletLoginStrategy implements LoginStrategy {
 
     private Map<String, LoginInfo> personalAccessTokens;
     private String walletUrl;
+    private Boolean icConsentEnabled;
     private String icUrl;
 
     @Override
@@ -70,9 +72,7 @@ public class WalletLoginStrategy implements LoginStrategy {
             assertThat("Response body: " + responseBody, response.getStatusLine().getStatusCode(), is(200));
         }
 
-        final CsrfToken csrfToken = walletLogin(httpclient, loginInfo);
-
-        acceptPermissions(httpclient, csrfToken);
+        walletLogin(httpclient, loginInfo);
 
         return cookieStore;
     }
@@ -110,33 +110,41 @@ public class WalletLoginStrategy implements LoginStrategy {
             .build();
     }
 
-    private CsrfToken walletLogin(HttpClient httpClient, LoginInfo loginInfo) throws IOException {
+    private void walletLogin(HttpClient httpClient, LoginInfo loginInfo) throws IOException {
         final HttpGet request = new HttpGet(String.format("%s/login/token?token=%s", walletUrl, loginInfo.getPersonalAccessToken()));
 
         final HttpClientContext context = new HttpClientContext();
         final HttpResponse response = httpClient.execute(request, context);
-        String responseBody = EntityUtils.toString(response.getEntity());
-        final String responseMessage = format("Redirects:\n%s\n\nHeaders: %s\nResponse body: %s",
-                                            context.getRedirectLocations()
-                                                    .stream()
-                                                    .map(uri -> "\t" + uri)
-                                                    .collect(Collectors.joining("\n")),
-                                            Arrays.toString(response.getAllHeaders()),
-                                            responseBody);
-        assertThat(responseMessage, response.getStatusLine().getStatusCode(), is(200));
+        if (icConsentEnabled) {
+
+            String responseBody = EntityUtils.toString(response.getEntity());
+
+            final String responseMessage = format("Redirects:\n%s\n\nHeaders: %s\nResponse body: %s",
+                context.getRedirectLocations()
+                    .stream()
+                    .map(uri -> "\t" + uri)
+                    .collect(Collectors.joining("\n")),
+                Arrays.toString(response.getAllHeaders()),
+                responseBody);
+            assertThat(responseMessage, response.getStatusLine().getStatusCode(), is(200));
 
             /*
              There is a form for consenting to sharing claims with DDAP that must be clicked. It contains a CSRF
              token in the page within a JavaScript function. This was a quick way to workaround the issue but it is brittle.
              We need to figure out a proper way for test users to log in non-interactively in the DAM.
              */
-        final Matcher pathMatcher = PATH_PATTERN.matcher(responseBody);
-        final Matcher stateMatcher = STATE_PATTERN.matcher(responseBody);
+            final Matcher pathMatcher = PATH_PATTERN.matcher(responseBody);
+            final Matcher stateMatcher = STATE_PATTERN.matcher(responseBody);
 
-        assertTrue(responseBody, pathMatcher.find());
-        assertTrue(responseBody, stateMatcher.find());
+            assertTrue(responseBody, pathMatcher.find());
+            assertTrue(responseBody, stateMatcher.find());
 
-        return new CsrfToken(pathMatcher.group(1), stateMatcher.group(1));
+            final CsrfToken csrfToken = new CsrfToken(pathMatcher.group(1), stateMatcher.group(1));
+
+            acceptPermissions(httpClient, csrfToken);
+        } else {
+            assertThat(response.getStatusLine().getStatusCode(),equalTo(200));
+        }
     }
 
     private URI acceptPermissions(HttpClient httpClient, CsrfToken csrfToken) throws IOException {

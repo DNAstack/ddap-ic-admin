@@ -85,7 +85,7 @@ public abstract class AbstractBaseE2eTest {
                 personalAccessTokens.put(TestingPersona.ADMINISTRATOR.getId(), new LoginInfo(requiredEnv("E2E_ADMIN_USER_EMAIL"), requiredEnv("E2E_ADMIN_USER_TOKEN")));
                 personalAccessTokens.put(TestingPersona.USER_WITH_ACCESS.getId(), new LoginInfo(requiredEnv("E2E_WHITELIST_USER_EMAIL"), requiredEnv("E2E_WHITELIST_USER_TOKEN")));
                 personalAccessTokens.put(TestingPersona.USER_WITHOUT_ACCESS.getId(), new LoginInfo(requiredEnv("E2E_PLAIN_USER_EMAIL"), requiredEnv("E2E_PLAIN_USER_TOKEN")));
-                loginStrategy = new WalletLoginStrategy(personalAccessTokens, requiredEnv("E2E_WALLET_URL"), PASSPORT_ISSUER.replaceAll("/oidc$", ""));
+                loginStrategy = new WalletLoginStrategy(personalAccessTokens, requiredEnv("E2E_WALLET_URL"), Boolean.getBoolean(optionalEnv("E2E_WALLET_SKIP_IC_CONSENT","false")),PASSPORT_ISSUER.replaceAll("/oidc$", ""));
                 break;
             default:
                 throw new IllegalArgumentException(format("Unrecognized login strategy [%s]", LOGIN_STRATEGY_NAME));

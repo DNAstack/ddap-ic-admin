@@ -37,6 +37,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
         String danToken = fetchRealPersonaDamToken(TestingPersona.USER_WITH_ACCESS, REALM);
         String refreshToken = fetchRealPersonaRefreshToken(TestingPersona.USER_WITH_ACCESS, REALM);
 
+        String email = optionalEnv("E2E_WHITELIST_USER_EMAIL",TestingPersona.USER_WITH_ACCESS.getEmail());
         // @formatter:off
         getRequestSpecification()
                 .log().method()
@@ -58,7 +59,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
                 .body("accesses", not(empty()))
                 .body("account.connectedAccounts", not(empty()))
                 // Where the email is in the payload depends on if we use personas or wallet for test users
-                .body(containsString(TestingPersona.USER_WITH_ACCESS.getEmail()));
+                .body(containsString(email));
         // @formatter:on
     }
 
@@ -95,6 +96,7 @@ public class IdentityE2eTest extends AbstractBaseE2eTest {
 
     @Test
     public void testIcUserAccessAsNonAdmin() throws Exception {
+
         Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
         String icToken = fetchRealPersonaIcToken(TestingPersona.USER_WITH_ACCESS, REALM, "");
         String danToken = fetchRealPersonaDamToken(TestingPersona.USER_WITH_ACCESS, REALM);
