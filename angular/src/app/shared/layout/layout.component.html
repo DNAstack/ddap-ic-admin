@@ -37,7 +37,8 @@
     <mat-sidenav #sidenav
                  mode="side"
                  [opened]="true">
-      <app-sidenav-left *ngIf="isIcAdmin"
+      <app-sidenav-left *ngIf="isLoggedIn"
+                        [isAdmin]="isIcAdmin"
                         [sideNavCollapsible]="false"
                         [appTitle]="'Identity Concentrator'">
       </app-sidenav-left>

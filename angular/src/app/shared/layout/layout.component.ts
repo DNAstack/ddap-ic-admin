@@ -30,6 +30,7 @@ export class LayoutComponent implements OnInit {
   isIcAdmin = false;
   realm: string;
   loginPath: string;
+  isLoggedIn = false;
 
   constructor(public loader: LoadingBarService,
               private activatedRoute: ActivatedRoute,
@@ -101,6 +102,7 @@ export class LayoutComponent implements OnInit {
   private determineAdminAccessForIc() {
     this.authService.getIcUserAccess()
       .subscribe((icAccess: UserAccess) => {
+        this.isLoggedIn = true;
         this.isIcAdmin = icAccess.isAdmin;
       });
   }

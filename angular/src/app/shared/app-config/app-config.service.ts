@@ -15,18 +15,21 @@ export class AppConfigService {
       name: 'Identity Management',
       collapsible: true,
       collapsibleByDefault: true,
+      nonAdmin: true,
     })
       .registerGroup({
         key: 'user-admin',
         name: 'User Administration',
         collapsible: true,
         collapsibleByDefault: true,
+        nonAdmin: false,
       })
       .registerGroup({
         key: 'ic-admin',
         name: 'Identity Concentrator Administration',
         collapsible: false,
         collapsibleByDefault: false,
+        nonAdmin: false,
       });
 
     this.viewControllerService.registerModule({
@@ -36,6 +39,7 @@ export class AppConfigService {
       routerLink: 'account/identity',
       isApp: false,
       group: 'identity-admin',
+      nonAdmin: true,
     })
       .registerModule({
         key: 'sessions',
@@ -44,6 +48,7 @@ export class AppConfigService {
         routerLink: 'account/sessions',
         isApp: false,
         group: 'identity-admin',
+        nonAdmin: true,
       })
       .registerModule({
         key: 'consents',
@@ -52,6 +57,7 @@ export class AppConfigService {
         routerLink: 'account/consents',
         isApp: false,
         group: 'identity-admin',
+        nonAdmin: true,
       })
       .registerModule({
         key: 'admin-users',
@@ -60,6 +66,7 @@ export class AppConfigService {
         routerLink: 'admin/users',
         isApp: false,
         group: 'user-admin',
+        nonAdmin: false,
       })
       .registerModule({
         key: 'ic-admin-identity-providers',
@@ -68,6 +75,7 @@ export class AppConfigService {
         routerLink: 'admin/identity-concentrator/identity-providers',
         isApp: false,
         group: 'ic-admin',
+        nonAdmin: false,
       })
       .registerModule({
         key: 'ic-admin-clients',
@@ -76,6 +84,7 @@ export class AppConfigService {
         routerLink: 'admin/identity-concentrator/clients',
         isApp: false,
         group: 'ic-admin',
+        nonAdmin: false,
       })
       .registerModule({
         key: 'ic-admin-options',
@@ -84,6 +93,7 @@ export class AppConfigService {
         routerLink: 'admin/identity-concentrator/options',
         isApp: false,
         group: 'ic-admin',
+        nonAdmin: false,
       });
   }
 }
