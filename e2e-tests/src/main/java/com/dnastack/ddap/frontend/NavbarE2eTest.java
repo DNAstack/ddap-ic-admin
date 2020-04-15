@@ -16,6 +16,7 @@ import java.io.IOException;
 import static com.dnastack.ddap.common.TestingPersona.ADMINISTRATOR;
 import static com.dnastack.ddap.common.TestingPersona.USER_WITHOUT_ACCESS;
 import static com.dnastack.ddap.common.fragments.NavBar.icIdentityProvidersLink;
+import static com.dnastack.ddap.common.fragments.NavBar.identityManagementPanelSelectorLink;
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -43,6 +44,17 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
         ddapPage = doBrowserLogin(REALM, USER_WITHOUT_ACCESS, AdminDdapPage::new);
 
         assertThat(ddapPage.getNavBar().existsInNavBar(icIdentityProvidersLink()), is(false));
+    }
+
+    @Test
+    public void verifyNonAdminAccess() {
+        ddapPage = doBrowserLogin(REALM, USER_WITHOUT_ACCESS, AdminDdapPage::new);
+
+        ddapPage.getNavBar()
+                .assertNonAdminNavBar();
+
+        assertThat(ddapPage.getNavBar().existsInNavBar(icIdentityProvidersLink()), is(false));
+        assertThat(ddapPage.getNavBar().existsInNavBar(identityManagementPanelSelectorLink()), is(true));
     }
 
     @Test

@@ -85,6 +85,11 @@ public class NavBar {
               .forEach(this.driver::findElement);
     }
 
+    public void assertNonAdminNavBar() {
+        Stream.of(identityManagementPanelSelectorLink().getSelector())
+                .forEach(this.driver::findElement);
+    }
+
     public boolean existsInNavBar(NavLink item) {
         return driver.findElements(item.getSelector()).size() > 0;
     }

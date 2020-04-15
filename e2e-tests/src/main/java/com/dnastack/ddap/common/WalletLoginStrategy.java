@@ -47,7 +47,7 @@ public class WalletLoginStrategy implements LoginStrategy {
 
     private Map<String, LoginInfo> personalAccessTokens;
     private String walletUrl;
-    private Boolean icConsentEnabled;
+    private Boolean skipIcConsent;
     private String icUrl;
 
     @Override
@@ -115,7 +115,7 @@ public class WalletLoginStrategy implements LoginStrategy {
 
         final HttpClientContext context = new HttpClientContext();
         final HttpResponse response = httpClient.execute(request, context);
-        if (icConsentEnabled) {
+        if (!skipIcConsent) {
 
             String responseBody = EntityUtils.toString(response.getEntity());
 
