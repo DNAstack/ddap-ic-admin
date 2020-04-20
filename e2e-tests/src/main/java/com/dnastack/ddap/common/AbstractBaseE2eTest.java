@@ -86,7 +86,7 @@ public abstract class AbstractBaseE2eTest {
                 personalAccessTokens.put(TestingPersona.USER_WITH_ACCESS.getId(), new LoginInfo(requiredEnv("E2E_WHITELIST_USER_EMAIL"), requiredEnv("E2E_WHITELIST_USER_TOKEN")));
                 personalAccessTokens.put(TestingPersona.USER_WITHOUT_ACCESS.getId(), new LoginInfo(requiredEnv("E2E_PLAIN_USER_EMAIL"), requiredEnv("E2E_PLAIN_USER_TOKEN")));
                 loginStrategy = new WalletLoginStrategy(personalAccessTokens, requiredEnv("E2E_WALLET_URL"),
-                        Boolean.getBoolean(optionalEnv("E2E_WALLET_SKIP_IC_CONSENT","false")),
+                        Boolean.parseBoolean(optionalEnv("E2E_WALLET_SKIP_IC_CONSENT","false")),
                         PASSPORT_ISSUER.replaceAll("/oidc$", ""));
                 break;
             default:
