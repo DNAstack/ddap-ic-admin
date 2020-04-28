@@ -31,12 +31,12 @@
       <!-- Expires At Definition -->
       <ng-container matColumnDef="expiresAt">
         <th mat-header-cell *matHeaderCellDef>Expires At</th>
-        <td mat-cell *matCellDef="let token">{{ token.expires_at }}</td>
+        <td mat-cell *matCellDef="let token">{{ token['exp'] }}</td>
       </ng-container>
       <!-- Issued At Definition -->
       <ng-container matColumnDef="issuedAt">
         <th mat-header-cell *matHeaderCellDef>Issued At</th>
-        <td mat-cell *matCellDef="let token">{{ token.issued_at }}</td>
+        <td mat-cell *matCellDef="let token">{{ token['iat'] }}</td>
       </ng-container>
       <!-- Client Definition -->
       <ng-container matColumnDef="client">
