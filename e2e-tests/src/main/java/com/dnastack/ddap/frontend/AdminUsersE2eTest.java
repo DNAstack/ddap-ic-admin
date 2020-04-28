@@ -6,6 +6,7 @@ import com.dnastack.ddap.common.page.UserAdminManagePage;
 import com.dnastack.ddap.common.util.DdapBy;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 import java.util.Optional;
@@ -66,7 +67,13 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         adminManagePage.fillField(DdapBy.se("inp-locale"), "en_US");
         adminManagePage.fillField(DdapBy.se("inp-timezone"), "Europe/Bratislava");
         adminManagePage.toggleExpansionPanel("email-0");
-        adminManagePage.clickButton(DdapBy.se("btn-make-primary-email-0"));
+        try {
+            // Try to make email primary. There won't be this button if email is already primary
+            adminManagePage.clickButton(DdapBy.se("btn-make-primary-email-0"));
+        } catch (NoSuchElementException nsee) {
+            // If there is no button for making mail primary check if the email is primary
+            driver.findElement(DdapBy.se("primary-email-0"));
+        }
         adminListPage = adminManagePage.updateEntity();
 
         assertTrue(adminListPage.getFirstUserByNameAndActivity("This is my Clone", true).isPresent());
