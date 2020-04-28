@@ -14,15 +14,17 @@ export class ConsentsService {
   constructor(private http: HttpClient) {
   }
 
-  getConsents(params = {}): Observable<ListConsentsResponse> {
-    return this.http.get<ListConsentsResponse>(`${environment.idpBaseUrl}/consents`, { params });
+  getConsents(userId: string, params = {}): Observable<ListConsentsResponse> {
+    return this.http.get<ListConsentsResponse>(
+      `${environment.idpBaseUrl}/identity/v1alpha/users/${encodeURIComponent(userId)}/consents`,
+      { params }
+    );
   }
 
-  revokeConsent(consentId: string): Observable<null> {
-    // FIXME: https://github.com/DNAstack/healthcare-federated-access-services/blob/master/lib/ic/ic.go#L1977
-    // FIXME: https://github.com/DNAstack/healthcare-federated-access-services/blob/master/lib/ic/endpoints.go#L76
-    // FIXME: will be using proper REST endpoint for delete once consent fully implemented
-    return this.http.delete<any>(`${environment.idpBaseUrl}/consents/`);
+  revokeConsent(userId: string, consentId: string): Observable<null> {
+    return this.http.delete<any>(
+      `${environment.idpBaseUrl}/identity/v1alpha/users/${encodeURIComponent(userId)}/consents/${encodeURIComponent(consentId)}`
+    );
   }
 
 }

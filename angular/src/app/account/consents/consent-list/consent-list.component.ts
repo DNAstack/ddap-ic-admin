@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { flatMap, switchMap } from 'rxjs/operators';
 
 import { consents } from '../../../shared/proto/ic-service';
+import { UserService } from '../../../shared/users/user.service';
 import { ConsentsService } from '../consents.service';
 import ListConsentsResponse = consents.v1.ListConsentsResponse;
 
@@ -19,17 +20,28 @@ export class ConsentListComponent implements OnInit {
 
   private readonly refreshConsents$ = new BehaviorSubject<ListConsentsResponse>(undefined);
 
-  constructor(private consentsService: ConsentsService) {
+  constructor(
+    private consentsService: ConsentsService,
+    private userService: UserService
+  ) {
   }
 
   ngOnInit() {
-    this.consents$ = this.refreshConsents$.pipe(
-      switchMap(() => this.consentsService.getConsents({ pageSize: 20 }))
-    );
+    this.consents$ = this.userService.getLoggedInUser()
+      .pipe(
+        flatMap((user) => {
+          return this.refreshConsents$.pipe(
+            switchMap(() => this.consentsService.getConsents(user.id, { pageSize: 20 }))
+          );
+        })
+      );
   }
 
-  revokeConsent(consentId: string) {
-    this.consentsService.revokeConsent(consentId)
+  revokeConsent(consentId: string): void {
+    this.userService.getLoggedInUser()
+      .pipe(
+        flatMap((user) => this.consentsService.revokeConsent(user.id, consentId))
+      )
       .subscribe(() => this.refreshConsents$.next(undefined));
   }
 
