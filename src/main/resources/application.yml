@@ -84,8 +84,8 @@ spring:
                 minimumTimeout: 1000
                 maximumTimeout: 20000
                 timeoutExponentialScalingBase: 10
-            - Logging
             - StripPrefix=1
+            - Logging
             - AddRequestParameter=clientId,${idp.client-id}
             - AddRequestParameter=clientSecret,${idp.client-secret}
             - RemoveRequestHeader=Authorization

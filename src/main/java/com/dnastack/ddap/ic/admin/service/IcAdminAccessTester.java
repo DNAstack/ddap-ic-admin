@@ -26,7 +26,7 @@ public class IcAdminAccessTester {
     }
 
     public Mono<UserAccess> determineAccessForUser(String realm, Map<CookieName, CookieValue> tokens) {
-        return icClient.getConfig(realm, tokens.get(IC.cookieName(TokenKind.ACCESS)).getClearText(), tokens.get(IC.cookieName(TokenKind.REFRESH)).getClearText())
+        return icClient.getConfig(realm, tokens.get(IC.cookieName(TokenKind.ACCESS)).getClearText(), null)
                        .map(response -> new UserAccess(true))
                        .onErrorResume(throwable -> {
                            if (throwable != null && !throwable.getMessage().contains("403")) {
