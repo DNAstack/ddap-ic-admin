@@ -39,6 +39,13 @@ public class UserAdminManagePage extends AnyDdapPage {
         formInput.sendKeys(fieldValue);
     }
 
+    public void replaceField(By fieldSelector, String fieldValue) {
+        WebElement formInput = new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.elementToBeClickable(fieldSelector));
+        formInput.clear();
+        formInput.sendKeys(fieldValue);
+    }
+
     public void toggleExpansionPanel(String panelId) {
         WebElement panel = driver.findElement(DdapBy.se(panelId));
         new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(panel));

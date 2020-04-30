@@ -63,9 +63,10 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         assertTrue("No active user present", activeUser.isPresent());
 
         UserAdminManagePage adminManagePage = adminListPage.editAccount(activeUser.get());
-        adminManagePage.fillField(DdapBy.se("inp-displayName"), "This is my Clone");
-        adminManagePage.fillField(DdapBy.se("inp-locale"), "en_US");
-        adminManagePage.fillField(DdapBy.se("inp-timezone"), "Europe/Bratislava");
+        // Don't change name, because it will affect future runs of test
+        adminManagePage.replaceField(DdapBy.se("inp-displayName"), user);
+        adminManagePage.replaceField(DdapBy.se("inp-locale"), "en_US");
+        adminManagePage.replaceField(DdapBy.se("inp-timezone"), "Europe/Bratislava");
         adminManagePage.toggleExpansionPanel("email-0");
         try {
             // Try to make email primary. There won't be this button if email is already primary
@@ -76,7 +77,7 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         }
         adminListPage = adminManagePage.updateEntity();
 
-        assertTrue(adminListPage.getFirstUserByNameAndActivity("This is my Clone", true).isPresent());
+        assertTrue(adminListPage.getFirstUserByNameAndActivity(user, true).isPresent());
     }
 
 }
