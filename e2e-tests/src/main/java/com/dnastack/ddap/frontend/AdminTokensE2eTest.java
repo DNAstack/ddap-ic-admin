@@ -15,7 +15,7 @@ public class AdminTokensE2eTest extends AbstractAdminFrontendE2eTest {
         AdminListPage adminListPage = ddapPage.getNavBar()
                 .goTo(tokensLink(), AdminListPage::new);
 
-        adminListPage.assertListItemExists("fake-token");
+        adminListPage.assertTableNotEmpty();
     }
 
 }

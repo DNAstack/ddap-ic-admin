@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 import { AdminSharedModule } from '../../admin/shared/shared.module';
@@ -14,6 +15,7 @@ import { TokensRoutingModule } from './tokens-routing.module';
     AdminSharedModule,
     TokensRoutingModule,
     NgJsonEditorModule,
+    MatTooltipModule,
   ],
 })
 export class TokensModule {

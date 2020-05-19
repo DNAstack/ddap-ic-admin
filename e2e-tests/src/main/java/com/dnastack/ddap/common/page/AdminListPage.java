@@ -1,6 +1,7 @@
 package com.dnastack.ddap.common.page;
 
 import com.dnastack.ddap.common.util.DdapBy;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -31,6 +32,11 @@ public class AdminListPage extends AdminDdapPage {
     public void assertListItemDoNotExist(String title) {
         new WebDriverWait(driver, 2)
                 .until(ExpectedConditions.invisibilityOfElementLocated(DdapBy.seAndText("entity-title", title)));
+    }
+
+    public void assertTableNotEmpty() {
+        new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector(".mat-row"), 0));
     }
 
 }

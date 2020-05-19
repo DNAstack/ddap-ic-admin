@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ellipseIfLongerThan } from 'ddap-common-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import ListTokensResponse = tokens.v1.ListTokensResponse;
 import IToken = tokens.v1.IToken;
-import { switchMap } from 'rxjs/operators';
+import { flatMap, switchMap } from 'rxjs/operators';
 
 import { tokens } from '../../../shared/proto/ic-service';
+import { UserService } from '../../../shared/users/user.service';
 import { TokensService } from '../tokens.service';
 
 @Component({
@@ -14,23 +16,35 @@ import { TokensService } from '../tokens.service';
 })
 export class TokenListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'description', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions'];
+  readonly displayedColumns: string[] = ['type', 'subject', 'issuer', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions'];
+  readonly ellipseIfLongerThan: Function = ellipseIfLongerThan;
 
   tokens$: Observable<ListTokensResponse>;
 
   private readonly refreshTokens$ = new BehaviorSubject<ListTokensResponse>(undefined);
 
-  constructor(private tokenService: TokensService) {
+  constructor(
+    private tokenService: TokensService,
+    private userService: UserService
+  ) {
   }
 
   ngOnInit() {
-    this.tokens$ = this.refreshTokens$.pipe(
-      switchMap(() => this.tokenService.getTokens({ pageSize: 20 }))
-    );
+    this.tokens$ = this.userService.getLoggedInUser()
+      .pipe(
+        flatMap((user) => {
+          return this.refreshTokens$.pipe(
+            switchMap(() => this.tokenService.getTokens(user.id))
+          );
+        })
+      );
   }
 
   revokeToken(token: IToken) {
-    this.tokenService.revokeToken(token.name)
+    this.userService.getLoggedInUser()
+      .pipe(
+        flatMap((user) => this.tokenService.revokeToken(user.id, token.name))
+      )
       .subscribe(() => this.refreshTokens$.next(undefined));
   }
 
