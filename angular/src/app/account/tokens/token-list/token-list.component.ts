@@ -40,10 +40,10 @@ export class TokenListComponent implements OnInit {
       );
   }
 
-  revokeToken(token: IToken) {
+  revokeToken(tokenId: string) {
     this.userService.getLoggedInUser()
       .pipe(
-        flatMap((user) => this.tokenService.revokeToken(user.id, token.name))
+        flatMap((user) => this.tokenService.revokeToken(user.id, tokenId))
       )
       .subscribe(() => this.refreshTokens$.next(undefined));
   }
