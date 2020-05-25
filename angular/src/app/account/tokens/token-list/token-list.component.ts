@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ellipseIfLongerThan } from 'ddap-common-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import ListTokensResponse = tokens.v1.ListTokensResponse;
-import IToken = tokens.v1.IToken;
 import { flatMap, switchMap } from 'rxjs/operators';
 
 import { tokens } from '../../../shared/proto/ic-service';
@@ -16,8 +14,7 @@ import { TokensService } from '../tokens.service';
 })
 export class TokenListComponent implements OnInit {
 
-  readonly displayedColumns: string[] = ['type', 'subject', 'issuer', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions'];
-  readonly ellipseIfLongerThan: Function = ellipseIfLongerThan;
+  readonly displayedColumns: string[] = ['name', 'subject', 'issuer', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions'];
 
   tokens$: Observable<ListTokensResponse>;
 
@@ -46,6 +43,15 @@ export class TokenListComponent implements OnInit {
         flatMap((user) => this.tokenService.revokeToken(user.id, tokenId))
       )
       .subscribe(() => this.refreshTokens$.next(undefined));
+  }
+
+  // Example of 'name' 'users/ic_ba090f2bb80c42bc9e73263b145/tokens/hydra:ZDlhYTA1MzYtYmRmYS00ZmZjLTg1MDctMjA1ZDk2MDY5MjIy'
+  // where last part is 'id'
+  getIdFromName(name: string): string {
+    if (!name || !name.includes('/')) {
+      return name;
+    }
+    return name.substring(name.lastIndexOf('/') + 1);
   }
 
 }
