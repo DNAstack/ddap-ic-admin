@@ -19,6 +19,11 @@ export const routes: Routes = [
         loadChildren: () => import('../account/consents/consents.module')
           .then(mod => mod.ConsentsModule),
       },
+      {
+        path: 'auditlogs',
+        loadChildren: () => import('../account/auditlogs/auditlogs.module')
+          .then(mod => mod.AuditlogsModule),
+      },
     ]},
 ];
 

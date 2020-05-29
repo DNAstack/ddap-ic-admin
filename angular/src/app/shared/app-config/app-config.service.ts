@@ -60,6 +60,15 @@ export class AppConfigService {
         nonAdmin: true,
       })
       .registerModule({
+        key: 'auditlogs',
+        name: 'Auditlogs',
+        iconClasses: 'icon icon-rules',
+        routerLink: 'account/auditlogs',
+        isApp: false,
+        group: 'identity-admin',
+        nonAdmin: true,
+      })
+      .registerModule({
         key: 'admin-users',
         name: 'Users',
         iconClasses: 'icon icon-identities',
