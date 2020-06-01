@@ -98,6 +98,11 @@
             Edit
           </button>
           <button mat-menu-item
+                  (click)="viewAuditlog(user.id)"
+                  data-se="btn-auditlog">
+            Auditlogs
+          </button>
+          <button mat-menu-item
                   class="color--warn"
                   data-se="btn-close-user-account"
                   (click)="closeAccount(user)">

@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 import IUser = scim.v2.IUser;
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
+import { ActivatedRoute, Router } from '@angular/router';
+import { realmIdPlaceholder } from 'ddap-common-lib';
 import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import IListUsersResponse = scim.v2.IListUsersResponse;
 import { flatMap, switchMap } from 'rxjs/operators';
@@ -30,13 +32,17 @@ export class UserListComponent implements OnInit {
   activeFilter: FormControl = new FormControl(null);
   loggedInUser: IUser;
   users$: Observable<IListUsersResponse>;
+  realm: string;
 
   private readonly defaultPageSize = 25;
   private readonly refreshUsers$ = new BehaviorSubject<any>({ startIndex: 1, count: this.defaultPageSize });
 
   constructor(private userService: UserService,
               private identityService: IdentityService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private router: Router,
+              private route: ActivatedRoute) {
+    this.realm = this.route.root.firstChild.snapshot.params.realmId;
   }
 
   ngOnInit() {
@@ -105,6 +111,10 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  viewAuditlog(userid: string) {
+    this.router.navigate([this.realm, 'account', 'auditlogs'], { queryParams: {userid: userid}});
+  }
+
   private getStartIndexBasedOnPageChangeDirection(page: PageEvent, previousPageSize: number, previousStartIndex: number): number {
     const { previousPageIndex, pageIndex, pageSize } = page;
     // if page size has changed -> reset start index
@@ -118,5 +128,4 @@ export class UserListComponent implements OnInit {
       return previousStartIndex + pageSize;
     }
   }
-
 }

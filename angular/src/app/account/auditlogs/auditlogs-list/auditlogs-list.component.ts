@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
 import { Identity } from '../../identity/identity.model';
@@ -26,19 +26,24 @@ export class AuditlogsListComponent implements OnInit {
 
   ngOnInit() {
     this.columnsToDisplay = ['auditlogId', 'type'];
-    this.identityStore.state$.pipe(
-     map((identity: Identity) => {
-       if (!identity) {
-         return;
-       }
-       const { account } = identity;
-       this.account = account;
-       return account;
-     }),
-      mergeMap(account => this.auditlogsService.getLogs(account['sub'], this.pageSize))
-    ).subscribe(result => {
-      this.auditLogs$ = this.formatTableData(result['auditLogs']);
-    });
+    if (this.route.snapshot.queryParams['userid']) {
+      this.auditlogsService.getLogs(this.route.snapshot.queryParams['userid'], this.pageSize)
+      .subscribe(result => this.auditLogs$ = this.formatTableData(result['auditLogs']));
+    } else {
+      this.identityStore.state$.pipe(
+        map((identity: Identity) => {
+          if (!identity) {
+            return;
+          }
+          const { account } = identity;
+          this.account = account;
+          return account;
+        }),
+        mergeMap(account => this.auditlogsService.getLogs(account['sub'], this.pageSize))
+      ).subscribe(result => {
+        this.auditLogs$ = this.formatTableData(result['auditLogs']);
+      });
+    }
   }
 
   getLogs() {
