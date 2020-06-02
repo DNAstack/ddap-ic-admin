@@ -77,6 +77,7 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         }
         adminListPage = adminManagePage.updateEntity();
 
+        adminListPage.setActiveUsersOnly();
         assertTrue(adminListPage.getFirstUserByNameAndActivity(user, true).isPresent());
     }
 
