@@ -5,16 +5,18 @@ import com.dnastack.ddap.common.page.UserAdminListPage;
 import com.dnastack.ddap.common.page.UserAdminManagePage;
 import com.dnastack.ddap.common.util.DdapBy;
 import lombok.extern.slf4j.Slf4j;
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Optional;
 
 import static com.dnastack.ddap.common.TestingPersona.ADMINISTRATOR;
 import static com.dnastack.ddap.common.fragments.NavBar.usersLink;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -79,6 +81,39 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
 
         adminListPage.setActiveUsersOnly();
         assertTrue(adminListPage.getFirstUserByNameAndActivity(user, true).isPresent());
+    }
+
+    @Test
+    public void viewUserAuditlogs() {
+        ddapPage = doBrowserLogin(getRealm(), ADMINISTRATOR, AdminDdapPage::new);
+
+        UserAdminListPage adminListPage = ddapPage.getNavBar()
+                .goTo(usersLink(), UserAdminListPage::new);
+
+        String user = optionalEnv("E2E_ADMIN_USER_NAME", "Monica Valluri");
+        adminListPage.setActiveUsersOnly();
+
+        Optional<WebElement> activeUser = adminListPage.getFirstUserByNameAndActivity(user, true);
+
+        assertTrue("No active user present", activeUser.isPresent());
+
+        String userId = activeUser.get().findElement(DdapBy.se("user-id")).getText();
+        WebElement moreActionsButton = activeUser.get().findElement(DdapBy.se("btn-more-actions"));
+        new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
+        moreActionsButton.click();
+
+        WebElement auditlogsButton = driver.findElement(By.className("mat-menu-panel"))
+                .findElement(DdapBy.se("btn-auditlog"));
+        new WebDriverWait(driver, 5).until(d -> auditlogsButton.isDisplayed());
+        auditlogsButton.click();
+        adminListPage.waitForInflightRequests();
+
+        WebElement auditlogsTable = driver.findElement(DdapBy.se("auditlog-result"));
+        WebElement auditlog = auditlogsTable.findElements(By.tagName("tr")).get(2);
+        auditlog.click();
+        adminListPage.waitForInflightRequests();
+        assertThat("Auditlogs detail page", driver.findElement(DdapBy.se("name")).getText(),
+                containsString(userId));
     }
 
 }

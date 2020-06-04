@@ -47,6 +47,10 @@ public class NavBar {
         return new NavLink("Consents", DdapBy.se("nav-consents"), identityManagementPanelSelectorLink());
     }
 
+    public static NavLink auditlogsLink() {
+        return new NavLink("Auditlogs", DdapBy.se("nav-auditlogs"), identityManagementPanelSelectorLink());
+    }
+
     public static NavLink icPanelSelectorLink() {
         return new NavLink("Identity Concentrator", DdapBy.se("nav-group-ic-admin"), null);
     }
