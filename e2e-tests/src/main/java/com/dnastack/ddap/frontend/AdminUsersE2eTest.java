@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Optional;
@@ -107,7 +108,8 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         new WebDriverWait(driver, 5).until(d -> auditlogsButton.isDisplayed());
         auditlogsButton.click();
         adminListPage.waitForInflightRequests();
-
+        new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector(".mat-row"), 0));
         WebElement auditlogsTable = driver.findElement(DdapBy.se("auditlog-result"));
         WebElement auditlog = auditlogsTable.findElements(By.tagName("tr")).get(2);
         auditlog.click();
