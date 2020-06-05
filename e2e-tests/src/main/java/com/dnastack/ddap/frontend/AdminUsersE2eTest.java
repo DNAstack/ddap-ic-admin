@@ -108,6 +108,7 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         new WebDriverWait(driver, 5).until(d -> auditlogsButton.isDisplayed());
         auditlogsButton.click();
         adminListPage.waitForInflightRequests();
+        driver.navigate().refresh();
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector(".mat-row"), 0));
         WebElement auditlogsTable = driver.findElement(DdapBy.se("auditlog-result"));
