@@ -3,7 +3,7 @@
   <div class="page-size">
     <p>Items per page:</p>
     <mat-form-field>
-      <mat-select [value]="pageSize" (selectionChange)="getLogs()" data-se="page-size">
+      <mat-select [(value)]="pageSize" (selectionChange)="getLogs()" data-se="page-size">
         <mat-option *ngFor="let page of ['10', '20', '30', '40', '50']" [value]="page">
           {{ page }}
         </mat-option>
