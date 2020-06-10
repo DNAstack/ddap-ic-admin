@@ -17,6 +17,7 @@ export class AuditlogsListComponent implements OnInit {
   account;
   auditLogs$: Observable<object[]>;
   pageSize = '20';
+  userId: string;
   columnsToDisplay: string[];
 
   constructor(private auditlogsService: AuditlogsService,
@@ -27,7 +28,8 @@ export class AuditlogsListComponent implements OnInit {
   ngOnInit() {
     this.columnsToDisplay = ['auditlogId', 'type'];
     if (this.route.snapshot.queryParams['userid']) {
-      this.auditlogsService.getLogs(this.route.snapshot.queryParams['userid'], this.pageSize)
+      this.userId = this.route.snapshot.queryParams['userid'];
+      this.auditlogsService.getLogs(this.userId, this.pageSize)
       .subscribe(result => this.auditLogs$ = this.formatTableData(result['auditLogs']));
     } else {
       this.identityStore.state$.pipe(
@@ -39,7 +41,10 @@ export class AuditlogsListComponent implements OnInit {
           this.account = account;
           return account;
         }),
-        mergeMap(account => this.auditlogsService.getLogs(account['sub'], this.pageSize))
+        mergeMap(account => {
+          this.userId = account['sub'];
+          return this.auditlogsService.getLogs(this.userId, this.pageSize);
+        })
       ).subscribe(result => {
         this.auditLogs$ = this.formatTableData(result['auditLogs']);
       });
@@ -47,7 +52,7 @@ export class AuditlogsListComponent implements OnInit {
   }
 
   getLogs() {
-    this.auditlogsService.getLogs(this.account['sub'], this.pageSize)
+    this.auditlogsService.getLogs(this.userId, this.pageSize)
       .subscribe(result => this.auditLogs$ = this.formatTableData(result['auditLogs']));
   }
 
