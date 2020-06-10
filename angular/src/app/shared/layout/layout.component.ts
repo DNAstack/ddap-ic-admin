@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import IUser = scim.v2.IUser;
 import IAttribute = scim.v2.IAttribute;
-import { ViewControllerService } from 'ddap-common-lib';
+import { RealmActionType, ViewControllerService } from 'ddap-common-lib';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
 
@@ -25,12 +25,13 @@ const refreshRepeatTimeoutInMs = 600000;
 export class LayoutComponent implements OnInit {
 
   userInfo$: Observable<IUser>;
-
   isSandbox = false;
   isIcAdmin = false;
   realm: string;
   loginPath: string;
   isLoggedIn = false;
+
+  readonly RealmActionType = RealmActionType;
 
   constructor(public loader: LoadingBarService,
               private activatedRoute: ActivatedRoute,
