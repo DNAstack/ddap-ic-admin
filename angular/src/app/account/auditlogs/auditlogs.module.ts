@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatChipsModule } from '@angular/material/chips';
 import { DdapLayoutModule } from 'ddap-common-lib';
 
 import { AdminSharedModule } from '../../admin/shared/shared.module';
@@ -18,6 +19,7 @@ import { AuditlogsRoutingModule } from './auditlogs-routing.module';
     DdapLayoutModule,
     AdminSharedModule,
     AccountSharedModule,
+    MatChipsModule,
   ],
 })
 export class AuditlogsModule {
