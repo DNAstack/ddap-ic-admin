@@ -111,8 +111,10 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  viewAuditlog(userid: string) {
-    this.router.navigate([this.realm, 'account', 'auditlogs'], { queryParams: {userid: userid}});
+  viewAuditlog(user: scim.v2.IUser) {
+    this.router.navigate(
+      [this.realm, 'account', 'auditlogs'],
+      { queryParams: {userid: user.id, displayName: user.displayName}});
   }
 
   private getStartIndexBasedOnPageChangeDirection(page: PageEvent, previousPageSize: number, previousStartIndex: number): number {

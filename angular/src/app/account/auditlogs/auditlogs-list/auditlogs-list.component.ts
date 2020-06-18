@@ -1,15 +1,15 @@
 import { ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
-import encode = util.base64.encode;
+import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
-import { util } from 'protobufjs';
 import { Observable, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
 
 import { Identity } from '../../identity/identity.model';
 import { IdentityStore } from '../../identity/identity.store';
 import { AuditlogsService } from '../auditlogs.service';
+
+import { LogTypes } from './log-type.enum';
 
 @Component({
   selector: 'ddap-auditlogs-list',
@@ -20,12 +20,14 @@ export class AuditlogsListComponent implements OnInit {
 
   account;
   auditLogs$: Observable<object[]>;
-  pageSize = '20';
   userId: string;
-  columnsToDisplay: string[];
-  logType = '';
-  searchTextList: string[] = [];
+  pageSize: FormControl = new FormControl('20');
+  logType: FormControl = new FormControl(LogTypes.all);
+  searchTextList: FormControl = new FormControl([]);
   searchTextValues: string[] = [];
+  filter: string;
+  displayName: string;
+  readonly columnsToDisplay: string[] = ['auditlogId', 'type', 'time', 'decision', 'resourceName'];
   readonly separatorCodes: number[] = [ENTER];
 
   constructor(private auditlogsService: AuditlogsService,
@@ -33,40 +35,43 @@ export class AuditlogsListComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute) { }
 
+  get logTypes() {
+    return LogTypes;
+  }
+
   ngOnInit() {
-    this.columnsToDisplay = ['auditlogId', 'type'];
-    if (this.route.snapshot.queryParams['userid']) {
-      this.userId = this.route.snapshot.queryParams['userid'];
-      const filters = encodeURIComponent(this.getFilters());
-      this.auditlogsService.getLogs(this.userId, this.pageSize, filters)
-      .subscribe(result => this.auditLogs$ = this.formatTableData(result['auditLogs']));
+    const queryParams = this.route.snapshot.queryParams;
+    if (Object.keys(queryParams).length) {
+      const { pageSize, filter, userid, displayName} = queryParams;
+      this.userId = userid;
+      this.filter = filter || '';
+      this.displayName = displayName;
+      this.pageSize.patchValue(pageSize || this.pageSize.value);
+      this.updateFilters(decodeURIComponent(filter));
     } else {
-      this.identityStore.state$.pipe(
-        map((identity: Identity) => {
-          if (!identity) {
-            return;
-          }
-          const { account } = identity;
-          this.account = account;
-          return account;
-        }),
-        mergeMap(account => {
-          this.userId = account['sub'];
-          const filters = encodeURIComponent(this.getFilters());
-          return this.auditlogsService.getLogs(this.userId, this.pageSize, filters);
-        })
-      ).subscribe(result => {
-        this.auditLogs$ = this.formatTableData(result['auditLogs']);
+      this.filter = encodeURIComponent(this.getFilters());
+    }
+
+    this.getDisplayName();
+    if (!this.userId || this.userId.length) {
+      this.identityStore.state$.subscribe((identity: Identity) => {
+        if (!identity) {
+          return;
+        }
+        const {account} = identity;
+        this.account = account;
+        this.userId = account['sub'];
+        this.getLogs();
       });
+    } else {
+      this.getLogs();
     }
   }
 
   getFilters(): string {
     let filter = '';
-    if (this.logType.length > 0) {
-      filter = `type="${this.logType}"`;
-    } else {
-      filter = '';
+    if (this.logType.value.length) {
+      filter = `type="${this.logType.value}"`;
     }
     if (this.searchTextValues.length > 0) {
       if (filter.length > 0) {
@@ -79,9 +84,22 @@ export class AuditlogsListComponent implements OnInit {
   }
 
   getLogs() {
-    const filters = encodeURIComponent(this.getFilters());
-    this.auditlogsService.getLogs(this.userId, this.pageSize, filters)
+    const pageSize = this.pageSize.value;
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: {pageSize, filter: this.filter },
+        queryParamsHandling: 'merge',
+      }
+    );
+    this.auditlogsService.getLogs(this.userId, pageSize, this.filter)
       .subscribe(result => this.auditLogs$ = this.formatTableData(result['auditLogs']));
+  }
+
+  searchLogs() {
+    this.filter = encodeURIComponent(this.getFilters());
+    this.getLogs();
   }
 
   formatTableData(logs: object[] = []): Observable<object[]> {
@@ -107,25 +125,45 @@ export class AuditlogsListComponent implements OnInit {
   }
 
   searchByText(event: MatChipInputEvent) {
-    this.searchTextList.push(`text:${event.value}`);
+    this.searchTextList.value.push(`text:${event.value}`);
+    this.searchTextList.updateValueAndValidity();
     if (event.input) {
       event.input.value = '';
     }
     this.searchTextValues.push(`"${event.value}"`);
-    this.getLogs();
+    this.searchLogs();
   }
 
   removeSearchText(searchText: string) {
     const searchTextValue = searchText.replace('text:', '');
-    const searchTextListIndex = this.searchTextList.indexOf(searchText);
+    const searchTextListIndex = this.searchTextList.value.indexOf(searchText);
     const searchTextValuesIndex =  this.searchTextValues.indexOf(`"${searchTextValue}"`);
     if (searchTextListIndex > -1) {
-      this.searchTextList.splice(searchTextListIndex, 1);
+      this.searchTextList.value.splice(searchTextListIndex, 1);
+      this.searchTextList.updateValueAndValidity();
     }
     if (searchTextValuesIndex > -1) {
       this.searchTextValues.splice(searchTextValuesIndex, 1);
     }
-    this.getLogs();
+    this.searchLogs();
   }
 
+  private updateFilters(filters: string) {
+    filters.split('AND').map(filter => {
+      if (filter.indexOf('type=') !== -1) {
+        this.logType.patchValue(filter.replace('type=', '')
+          .replace(/\s|["]/g, ''));
+        this.logType.updateValueAndValidity();
+      }
+      if (filter.trim().indexOf('text:') !== -1) {
+        this.searchTextList.value.push(filter.replace(/\s|["]/g, ''));
+        this.searchTextList.updateValueAndValidity();
+        this.searchTextValues.push(filter.trim().replace('text:', ''));
+      }
+    });
+  }
+
+  private getDisplayName() {
+    return this.displayName ? `Auditlogs of ${this.displayName}` : 'Auditlogs';
+  }
 }
