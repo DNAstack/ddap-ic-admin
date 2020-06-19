@@ -54,6 +54,7 @@
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef> Log Type </th>
       <td mat-cell *matCellDef="let log"
+          data-se="log-type-cell"
           class="table--link">
         {{log['type']}}
       </td>
