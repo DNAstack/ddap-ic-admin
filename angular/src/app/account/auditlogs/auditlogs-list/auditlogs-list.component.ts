@@ -18,6 +18,10 @@ import { LogTypes } from './log-type.enum';
 })
 export class AuditlogsListComponent implements OnInit {
 
+  get logTypes() {
+    return LogTypes;
+  }
+
   account;
   auditLogs$: Observable<object[]>;
   userId: string;
@@ -34,10 +38,6 @@ export class AuditlogsListComponent implements OnInit {
               private identityStore: IdentityStore,
               private router: Router,
               private route: ActivatedRoute) { }
-
-  get logTypes() {
-    return LogTypes;
-  }
 
   ngOnInit() {
     const queryParams = this.route.snapshot.queryParams;
@@ -148,6 +148,10 @@ export class AuditlogsListComponent implements OnInit {
     this.searchLogs();
   }
 
+  getDisplayName() {
+    return this.displayName ? `Auditlogs of ${this.displayName}` : 'Auditlogs';
+  }
+
   private updateFilters(filters: string) {
     filters.split('AND').map(filter => {
       if (filter.indexOf('type=') !== -1) {
@@ -161,9 +165,5 @@ export class AuditlogsListComponent implements OnInit {
         this.searchTextValues.push(filter.trim().replace('text:', ''));
       }
     });
-  }
-
-  private getDisplayName() {
-    return this.displayName ? `Auditlogs of ${this.displayName}` : 'Auditlogs';
   }
 }
