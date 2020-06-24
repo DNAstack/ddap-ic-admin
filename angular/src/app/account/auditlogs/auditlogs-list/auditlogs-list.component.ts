@@ -9,6 +9,7 @@ import { Identity } from '../../identity/identity.model';
 import { IdentityStore } from '../../identity/identity.store';
 import { AuditlogsService } from '../auditlogs.service';
 
+import { Decision } from './decision.enum';
 import { LogTypes } from './log-type.enum';
 
 @Component({
@@ -22,12 +23,17 @@ export class AuditlogsListComponent implements OnInit {
     return LogTypes;
   }
 
+  get decisionType() {
+    return Decision;
+  }
+
   account;
   auditLogs$: Observable<object[]>;
   userId: string;
   pageSize: FormControl = new FormControl('20');
   logType: FormControl = new FormControl(LogTypes.all);
   searchTextList: FormControl = new FormControl([]);
+  decision: FormControl = new FormControl(Decision.all);
   searchTextValues: string[] = [];
   filter: string;
   displayName: string;
@@ -81,10 +87,18 @@ export class AuditlogsListComponent implements OnInit {
         filter = `text:${this.searchTextValues.join(' OR ')}`;
       }
     }
+    if (this.decision.value.length > 0) {
+      if (filter.length > 0) {
+        filter = filter + ` AND decision="${this.decision.value}"`;
+      } else {
+        filter = `decision="${this.decision.value}"`;
+      }
+    }
     return filter;
   }
 
   getLogs() {
+    this.filter = encodeURIComponent(this.getFilters());
     const pageSize = this.pageSize.value;
     this.router.navigate(
       [],
@@ -167,6 +181,11 @@ export class AuditlogsListComponent implements OnInit {
         this.searchTextList.updateValueAndValidity();
         this.searchTextValues.push(filter.trim().replace('text:', ''));
         this.disableSearchText = true;
+      }
+      if (filter.indexOf('decision=') !== -1) {
+        this.decision.patchValue(filter.replace('decision=', '')
+          .replace(/\s|["]/g, ''));
+        this.decision.updateValueAndValidity();
       }
     });
   }
