@@ -13,7 +13,8 @@
         <input placeholder="Search by text"
                [matChipInputFor]="searchList"
                [matChipInputSeparatorKeyCodes]="separatorCodes"
-               (matChipInputTokenEnd)="searchByText($event)" />
+               (matChipInputTokenEnd)="searchByText($event)"
+               [disabled]="disableSearchText"/>
       </mat-chip-list>
     </mat-form-field>
   </div>

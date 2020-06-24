@@ -31,6 +31,7 @@ export class AuditlogsListComponent implements OnInit {
   searchTextValues: string[] = [];
   filter: string;
   displayName: string;
+  disableSearchText: boolean;
   readonly columnsToDisplay: string[] = ['auditlogId', 'type', 'time', 'decision', 'resourceName'];
   readonly separatorCodes: number[] = [ENTER];
 
@@ -131,6 +132,7 @@ export class AuditlogsListComponent implements OnInit {
       event.input.value = '';
     }
     this.searchTextValues.push(`"${event.value}"`);
+    this.disableSearchText = true;
     this.searchLogs();
   }
 
@@ -145,6 +147,7 @@ export class AuditlogsListComponent implements OnInit {
     if (searchTextValuesIndex > -1) {
       this.searchTextValues.splice(searchTextValuesIndex, 1);
     }
+    this.disableSearchText = false;
     this.searchLogs();
   }
 
@@ -163,6 +166,7 @@ export class AuditlogsListComponent implements OnInit {
         this.searchTextList.value.push(filter.replace(/\s|["]/g, ''));
         this.searchTextList.updateValueAndValidity();
         this.searchTextValues.push(filter.trim().replace('text:', ''));
+        this.disableSearchText = true;
       }
     });
   }
