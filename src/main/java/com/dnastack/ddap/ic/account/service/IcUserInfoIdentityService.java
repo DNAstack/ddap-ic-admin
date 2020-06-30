@@ -107,7 +107,7 @@ public class IcUserInfoIdentityService implements IdentityService {
                                     .collect(toList());
                             final boolean isPrimaryEmail = primaryEmail.filter(pe -> pe.equals(email)).isPresent();
                             final String provider = providerBySub.get(sub);
-                            final String loginHint = provider + ":" + email;
+                            final String loginHint = provider + ":" + sub;
 
                             return new Account(sub, provider, email, isPrimaryEmail, loginHint, primaryPhoto, visas);
                         })
