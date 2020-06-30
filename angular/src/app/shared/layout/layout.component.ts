@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
-import IUser = scim.v2.IUser;
-import IAttribute = scim.v2.IAttribute;
 import { RealmActionType, ViewControllerService } from 'ddap-common-lib';
 import { interval, Observable } from 'rxjs';
 import { repeatWhen } from 'rxjs/operators';
@@ -12,8 +10,11 @@ import { IdentityService } from '../../account/identity/identity.service';
 import { IdentityStore } from '../../account/identity/identity.store';
 import { AuthService } from '../../account/shared/auth/auth.service';
 import { UserAccess } from '../../account/shared/auth/user-access.model';
+import IUser = scim.v2.IUser;
+import IAttribute = scim.v2.IAttribute;
 import { AppConfigService } from '../app-config/app-config.service';
 import { scim } from '../proto/ic-service';
+import { RealmService } from '../realm/realm.service';
 import { UserService } from '../users/user.service';
 
 const refreshRepeatTimeoutInMs = 600000;
@@ -33,14 +34,18 @@ export class LayoutComponent implements OnInit {
 
   readonly RealmActionType = RealmActionType;
 
-  constructor(public loader: LoadingBarService,
-              private activatedRoute: ActivatedRoute,
-              private usersService: UserService,
-              private identityService: IdentityService,
-              private identityStore: IdentityStore,
-              private authService: AuthService,
-              public viewControllerService: ViewControllerService,
-              public appConfigService: AppConfigService) {
+  constructor(
+    public loader: LoadingBarService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private usersService: UserService,
+    private identityService: IdentityService,
+    private identityStore: IdentityStore,
+    private authService: AuthService,
+    public viewControllerService: ViewControllerService,
+    public realmService: RealmService,
+    public appConfigService: AppConfigService
+  ) {
   }
 
   ngOnInit() {
@@ -98,8 +103,9 @@ export class LayoutComponent implements OnInit {
   realmActionConfirmed(dialogData) {
     if (dialogData && dialogData.action === RealmActionType.edit) {
       this.changeRealmAndGoToLogin(dialogData.realm);
+    } else if (dialogData && dialogData.action === RealmActionType.delete) {
+      this.deleteRealm(dialogData.realm);
     }
-    // FIXME: DISCO-2893
   }
 
   private determineAdminAccessForIc() {
@@ -123,4 +129,14 @@ export class LayoutComponent implements OnInit {
         window.location.href = `/api/v1alpha/realm/${realm}/identity/login?loginHint=${loginHint}`;
       });
   }
+
+  private deleteRealm(realm) {
+    if (realm !== 'master') {
+      this.realmService.deleteRealm(realm).subscribe(() => {
+        this.router.navigate(['/master'])
+          .then(() => window.location.reload());
+      });
+    }
+  }
+
 }
