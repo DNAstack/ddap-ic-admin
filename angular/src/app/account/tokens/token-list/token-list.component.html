@@ -2,9 +2,10 @@
 </ddaplib-header>
 
 <ddaplib-main>
-  <ng-container *ngIf="(tokens$ | async) as tokensResponse">
+  <div *ngIf="(tokens$ | async) as tokensResponse"
+       class="table-container mat-elevation-z1">
     <table mat-table [dataSource]="tokensResponse.tokens"
-           class="table--base mat-elevation-z1">
+           class="table--base">
       <!-- Name Definition -->
       <ng-container matColumnDef="name" sticky>
         <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -77,5 +78,5 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-  </ng-container>
+  </div>
 </ddaplib-main>

@@ -7,13 +7,13 @@
     Configuration of the Identity Concentrator, such as the time before expiry of various tokens.
   </ddaplib-entity-description>
 
-  <ng-container *ngIf="options$ | async as options">
-    <!-- FIXME: find better place to display error -->
+  <div *ngIf="options$ | async as options"
+       class="table-container mat-elevation-z1">
     <p>
       <mat-error>{{ error }}</mat-error>
     </p>
     <table mat-table [dataSource]="options.descriptors | keyvalue"
-           class="table--base mat-elevation-z1">
+           class="table--base">
       <!-- Label Definition -->
       <ng-container matColumnDef="label" sticky>
         <th mat-header-cell *matHeaderCellDef>Label</th>
@@ -81,6 +81,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-  </ng-container>
+  </div>
 </ddaplib-main>
 
