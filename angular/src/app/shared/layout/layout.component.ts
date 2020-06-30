@@ -94,10 +94,12 @@ export class LayoutComponent implements OnInit {
     const primaryPhoto = photos.find((photo) => photo.primary);
     return primaryPhoto ? primaryPhoto.value : placeholderImage;
   }
-  onAcknowledge(dialogData) {
-    if (dialogData && dialogData.action === 'edit') {
+
+  realmActionConfirmed(dialogData) {
+    if (dialogData && dialogData.action === RealmActionType.edit) {
       this.changeRealmAndGoToLogin(dialogData.realm);
     }
+    // FIXME: DISCO-2893
   }
 
   private determineAdminAccessForIc() {
