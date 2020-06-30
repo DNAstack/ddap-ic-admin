@@ -135,18 +135,41 @@ public class NavBar {
     }
 
     public void setRealmAndCancel(String targetRealm) {
-        WebElement realmMenu = new WebDriverWait(driver, 5)
-                .until(ExpectedConditions.elementToBeClickable(driver.findElement(DdapBy.se("realm-menu"))));
-        WebPageScroller.scrollTo(driver, realmMenu);
-        realmMenu.click();
+        WebElement menuPanel = openRealmEditMenu();
         WebElement editRealmBtn = new WebDriverWait(driver, 5)
-                .until(ExpectedConditions.elementToBeClickable(driver.findElement(DdapBy.se("edit-realm"))));
-        WebPageScroller.scrollTo(driver, editRealmBtn);
+                .until(ExpectedConditions.elementToBeClickable(menuPanel.findElement(DdapBy.se("edit-realm"))));
         editRealmBtn.click();
         WebElement realmInput = getRealmInput();
         realmInput.clear();
         realmInput.sendKeys(targetRealm);
         driver.findElement(DdapBy.se("cancel-realm-change")).click();
+    }
+
+    public void changeRealm(String targetRealm) {
+        WebElement menuPanel = openRealmEditMenu();
+        WebElement editRealmBtn = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(menuPanel.findElement(DdapBy.se("edit-realm"))));
+        editRealmBtn.click();
+        WebElement realmInput = getRealmInput();
+        realmInput.clear();
+        realmInput.sendKeys(targetRealm);
+        driver.findElement(DdapBy.se("update-realm")).click();
+    }
+
+    public void deleteCurrentRealm() {
+        WebElement menuPanel = openRealmEditMenu();
+        WebElement deleteRealmBtn = new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(menuPanel.findElement(DdapBy.se("delete-realm"))));
+        deleteRealmBtn.click();
+        driver.findElement(DdapBy.se("accept-btn")).click();
+    }
+
+    private WebElement openRealmEditMenu() {
+        new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(driver.findElement(DdapBy.se("realm-menu"))))
+            .click();
+        return new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.elementToBeClickable(driver.findElement(By.className("mat-menu-panel"))));
     }
 
     public String getRealm() {
