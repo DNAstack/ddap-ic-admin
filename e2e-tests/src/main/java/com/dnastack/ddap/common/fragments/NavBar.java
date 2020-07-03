@@ -118,7 +118,8 @@ public class NavBar {
         parentElement.click();
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.elementToBeClickable(parentElement.findElement(navItem.getSelector())));
-
+        new WebDriverWait(driver, 10)
+                .until(ExpectedConditions.invisibilityOfElementLocated(By.className("cdk-overlay-backdrop")));
         return parentElement.findElement(navItem.getSelector());
     }
 
