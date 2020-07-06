@@ -32,7 +32,8 @@ export class AppConfigService {
         nonAdmin: false,
       });
 
-    this.viewControllerService.registerModule({
+    this.viewControllerService
+      .registerModule({
       key: 'identity-admin',
       name: 'My Identity',
       iconClasses: 'icon icon-identity',

@@ -60,7 +60,8 @@
   <h3>
     <span>Emails</span>
   </h3>
-  <mat-accordion multi displayMode="flat"
+  <mat-accordion *ngIf="emails.controls.length > 0; else noEmailsToDisplay"
+                 multi displayMode="flat"
                  formArrayName="emails">
     <mat-expansion-panel #emailExpansionPanel
                          *ngFor="let email of emails.controls; let i=index"
@@ -125,11 +126,15 @@
         </div>
     </mat-expansion-panel>
   </mat-accordion>
+  <ng-template #noEmailsToDisplay>
+    <p>No emails to display</p>
+  </ng-template>
 
-  <h3 >
+  <h3>
     <span>Photos</span>
   </h3>
-  <mat-accordion multi displayMode="flat"
+  <mat-accordion *ngIf="photos.controls.length > 0; else noPhotosToDisplay"
+                 multi displayMode="flat"
                  formArrayName="photos">
     <mat-expansion-panel #photoExpansionPanel
                          *ngFor="let photo of photos.controls; let i=index"
@@ -162,16 +167,10 @@
             </mat-form-field>
           </div>
         </ng-container>
-
-        <div class="footer">
-          <button mat-button
-                  type="button"
-                  color="warn"
-                  class="uppercase"
-                  (click)="removePhoto(i)">
-            Remove Photo
-          </button>
-        </div>
     </mat-expansion-panel>
   </mat-accordion>
+  <ng-template #noPhotosToDisplay>
+    <p>No photos to display</p>
+  </ng-template>
+
 </form>
