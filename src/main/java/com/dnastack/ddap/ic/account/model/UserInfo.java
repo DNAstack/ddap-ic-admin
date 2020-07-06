@@ -10,8 +10,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoDto {
+public class UserInfo {
+
     private String sub;
     private Users.User scim;
     private List<Account> connectedAccounts;
+
 }

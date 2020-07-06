@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import ListTokensResponse = tokens.v1.ListTokensResponse;
-import { flatMap, switchMap } from 'rxjs/operators';
+import { flatMap, switchMap, tap } from 'rxjs/operators';
 
 import { tokens } from '../../../shared/proto/ic-service';
 import { UserService } from '../../../shared/users/user.service';
@@ -14,7 +14,9 @@ import { TokensService } from '../tokens.service';
 })
 export class TokenListComponent implements OnInit {
 
-  readonly displayedColumns: string[] = ['name', 'subject', 'issuer', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions'];
+  displayedColumns: string[] = [
+    'name', 'resources', 'subject', 'issuer', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions',
+  ];
 
   tokens$: Observable<ListTokensResponse>;
 
@@ -31,7 +33,15 @@ export class TokenListComponent implements OnInit {
       .pipe(
         flatMap((user) => {
           return this.refreshTokens$.pipe(
-            switchMap(() => this.tokenService.getTokens(user.id))
+            switchMap(() => this.tokenService.getTokens(user.id)),
+            // NOTE: 'resources' column is experimental feature
+            // Hide 'resources' column if it is not provided in response
+            tap((tokensResponse: ListTokensResponse) => {
+              const hideResourcesColumn = tokensResponse.tokens.every((token) => !token.resources);
+              if (hideResourcesColumn) {
+                this.displayedColumns.splice(this.displayedColumns.indexOf('resources'), 1);
+              }
+            })
           );
         })
       );

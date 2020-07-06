@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
+
     private String sub;
     private String provider;
     private String email;
@@ -29,4 +30,5 @@ public class Account {
         private Integer asserted;
         private Integer exp;
     }
+
 }

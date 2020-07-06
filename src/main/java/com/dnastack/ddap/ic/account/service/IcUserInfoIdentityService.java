@@ -6,8 +6,8 @@ import com.dnastack.ddap.ic.account.client.IcUserInfo;
 import com.dnastack.ddap.ic.account.client.ReactiveIcAccountClient;
 import com.dnastack.ddap.ic.account.model.Account;
 import com.dnastack.ddap.ic.account.model.IdentityModel;
-import com.dnastack.ddap.ic.account.client.VisaJwt;
-import com.dnastack.ddap.ic.account.model.UserInfoDto;
+import com.dnastack.ddap.ic.account.model.VisaJwt;
+import com.dnastack.ddap.ic.account.model.UserInfo;
 import com.dnastack.ddap.ic.common.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -112,7 +112,7 @@ public class IcUserInfoIdentityService implements IdentityService {
                             return new Account(sub, provider, email, isPrimaryEmail, loginHint, primaryPhoto, visas);
                         })
                         .collect(toList());
-                final UserInfoDto userInfoDto = new UserInfoDto(subject.getSub(), scim, connectedAccounts);
+                final UserInfo userInfoDto = new UserInfo(subject.getSub(), scim, connectedAccounts);
 
                 return IdentityModel.builder()
                     .account(userInfoDto)

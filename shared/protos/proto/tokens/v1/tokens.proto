@@ -50,7 +50,7 @@ service Tokens {
 
 message Token {
   // Name of the token.
-  // Format: `tokens/{token_id}`.
+  // Format: `users/{user_id}/tokens/{token_id}`.
   string name = 1;
 
   string issuer = 2 [json_name = "iss"];
@@ -80,14 +80,19 @@ message Token {
   //   client_desc: description of the client.
   map<string, string> metadata = 12;
 
-  // type of the token, used to distinguish tokens from different platforms.
+  // Type of the token, used to distinguish tokens from different platforms.
   string type = 13;
+
+  // Resources of this token used to access.
+  repeated string resources = 14;
 }
 
 message Client {
   string id = 1;
   string name = 2;
   string description = 3;
+  // flexible struct for ui display.
+  map<string, string> ui = 4;
 }
 
 message GetTokenRequest {
