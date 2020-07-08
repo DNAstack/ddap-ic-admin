@@ -3,7 +3,7 @@
 </ddaplib-header>
 
 <ddaplib-main>
-  <div>
+  <div class="search-filter">
     <mat-form-field>
       <mat-chip-list #searchList
                      [formControl]="searchTextList">
@@ -19,6 +19,11 @@
                (matChipInputTokenEnd)="searchByText($event)"
                [disabled]="disableSearchText"/>
       </mat-chip-list>
+      <mat-icon matSuffix
+                matTooltip="Supports searching for text contained inside log message body.
+                Does not support dates, times, or numerical fields.">
+        help_outline
+      </mat-icon>
     </mat-form-field>
   </div>
   <div class="filters">
