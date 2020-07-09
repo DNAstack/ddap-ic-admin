@@ -1,5 +1,4 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { VisaPassportService } from 'ddap-common-lib';
 import _get from 'lodash.get';
 import { Observable, Subscription } from 'rxjs';
 import { share } from 'rxjs/operators';
@@ -13,6 +12,7 @@ import { IdentityService } from '../identity.service';
 import { IdentityStore } from '../identity.store';
 import { identityProviderMetadataExists, identityProviders } from '../providers.constants';
 import IUser = scim.v2.IUser;
+import { VisaPassportService } from '../visa-passports/visa-passport.service';
 
 @Component({
   selector: 'ddap-connected-accounts-section',

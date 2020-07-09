@@ -1,0 +1,29 @@
+<div>
+  <h3 class="flex vertical-center">
+    <mat-icon class="icon icon-claims"></mat-icon>
+    <span>{{ claimGroupLabel }}</span>
+  </h3>
+  <ng-container *ngIf="ga4ghPassports">
+    <ul class="timeline">
+      <li *ngFor="let passport of ga4ghPassports"
+          class="event" >
+        <div class="line"></div>
+        <h4>{{ passport.type }}</h4>
+        <p>
+          <span>Value:</span> {{ passport.value }}
+        </p>
+        <p>
+          <span>Source:</span> {{ passport.source }}
+        </p>
+        <p class="flex vertical-center">
+          <!-- Relevant only for my identity management -->
+          <mat-icon *ngIf="ga4ghPassports && ga4ghPassports.length > 0 && visaPassportService.isExpiring(passport)"
+                    class="icon icon-warning"
+                    matTooltip="Expiring claim">
+          </mat-icon>
+          <span class="expiry">{{ getFormattedExpiresTextFromPassport(passport) }}</span>
+        </p>
+      </li>
+    </ul>
+  </ng-container>
+</div>
