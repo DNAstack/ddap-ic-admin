@@ -4,10 +4,8 @@ import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.AdminOptionPage;
 import com.dnastack.ddap.common.page.ICLoginPage;
 import com.dnastack.ddap.common.util.DdapBy;
-import com.dnastack.ddap.common.util.WebPageScroller;
 import lombok.Value;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -72,7 +70,6 @@ public class NavBar {
     }
 
     public static NavLink usersLink() {
-
         return new NavLink("Users", DdapBy.se("nav-admin-users"), userAdministrationPanelSelectorLink());
     }
 
