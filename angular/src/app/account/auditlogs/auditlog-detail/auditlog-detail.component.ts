@@ -1,8 +1,10 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { JsonEditorOptions } from 'ang-jsoneditor';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { Subscription } from 'rxjs';
 
+import { JsonEditorDefaults } from '../../../shared/json-editor-defaults';
 import { IdentityStore } from '../../identity/identity.store';
 import { AuditlogsService } from '../auditlogs.service';
 
@@ -13,15 +15,21 @@ import { AuditlogsService } from '../auditlogs.service';
 })
 export class AuditlogDetailComponent implements OnInit, OnDestroy {
   auditLog: object;
+  editorOptions: JsonEditorOptions;
+  jsonData: JSON;
+
   constructor(private auditlogsService: AuditlogsService,
               private identityStore: IdentityStore,
               @Inject(LOCAL_STORAGE) private storage: StorageService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute) {
+    this.editorOptions = new JsonEditorDefaults();
+  }
 
   ngOnInit() {
     this.auditlogsService.currentAuditlog.subscribe(log => {
       if (Object.keys(log).length > 0) {
         this.auditLog = log;
+        this.toJSON();
         this.storage.set('auditlog', JSON.stringify(log));
       } else  {
         this.fetchDetailsFromStorage();
@@ -37,11 +45,29 @@ export class AuditlogDetailComponent implements OnInit, OnDestroy {
     this.storage.remove('auditlog');
   }
 
+  isJson(value: string): boolean {
+    try {
+      JSON.parse(value);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  toJSON() {
+    try {
+      this.jsonData = JSON.parse(this.auditLog['reason']);
+    } catch (e) {
+      console.error('String');
+    }
+  }
+
   private fetchDetailsFromStorage() {
     const auditlogId = this.route.snapshot.params.auditlogId;
     if (this.storage.get('auditlog')) {
       const logDetails = JSON.parse(this.storage.get('auditlog'));
       this.auditLog = (logDetails.auditlogId === auditlogId) ? logDetails : {};
+      this.toJSON();
     }
   }
 }
