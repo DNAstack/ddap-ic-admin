@@ -48,9 +48,9 @@ export class AuditlogsListComponent implements OnInit {
 
   ngOnInit() {
     const queryParams = this.route.snapshot.queryParams;
+    this.userId = this.route.snapshot.params.entityId;
     if (Object.keys(queryParams).length) {
-      const { pageSize, filter, userid, displayName} = queryParams;
-      this.userId = userid;
+      const { pageSize, filter, displayName} = queryParams;
       this.filter = filter || '';
       this.displayName = displayName;
       this.pageSize.patchValue(pageSize || this.pageSize.value);
@@ -60,7 +60,7 @@ export class AuditlogsListComponent implements OnInit {
     }
 
     this.getDisplayName();
-    if (!this.userId || this.userId.length) {
+    if (!this.userId || !this.userId.length) {
       this.identityStore.state$.subscribe((identity: Identity) => {
         if (!identity) {
           return;
