@@ -15,7 +15,7 @@ import { TokensService } from '../tokens.service';
 export class TokenListComponent implements OnInit {
 
   displayedColumns: string[] = [
-    'name', 'resources', 'issuer', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions',
+    'issuedAt', 'name', 'resources', 'issuer', 'scopes', 'expiresAt', 'client', 'moreActions',
   ];
 
   tokens$: Observable<ListTokensResponse>;
@@ -66,4 +66,10 @@ export class TokenListComponent implements OnInit {
     return name.substring(name.lastIndexOf('/') + 1);
   }
 
+  formatTime(timeString: string): string {
+    if (!isNaN(parseInt(timeString, 10))) {
+      return new Date(parseInt(timeString, 10) * 1000).toString();
+    }
+    return timeString;
+  }
 }
