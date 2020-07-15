@@ -13,6 +13,7 @@
                           [loginPath]="loginPath">
       <ng-container *ngIf="userInfo$ | async as userInfo">
         <button class="credentials-username"
+                (click)="logout()"
                 mat-menu-item
                 data-se="nav-account">
           <img [src]="getPrimaryPhoto(userInfo.photos)"
@@ -23,8 +24,7 @@
               {{ userInfo?.displayName || '&nbsp;' }}
             </span>
             <span class="account-info-sublabel"
-                  data-se="nav-logout"
-                  (click)="logout()">
+                  data-se="nav-logout">
               Log Out
             </span>
           </span>
