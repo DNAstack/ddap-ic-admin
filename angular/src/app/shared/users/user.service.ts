@@ -31,7 +31,10 @@ export class UserService {
   }
 
   patchLoggedInUser(patchModel: IPatch): Observable<IUser> {
-    return this.http.patch<IUser>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Me`, patchModel);
+    return this.http.patch<IUser>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Me`, patchModel)
+      .pipe(
+        this.errorHandler.notifyOnError(`Can't save personal information`)
+      );
   }
 
   getUsers(params = {}): Observable<IListUsersResponse> {

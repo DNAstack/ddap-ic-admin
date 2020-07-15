@@ -15,10 +15,11 @@ import { TokensService } from '../tokens.service';
 export class TokenListComponent implements OnInit {
 
   displayedColumns: string[] = [
-    'name', 'resources', 'subject', 'issuer', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions',
+    'name', 'resources', 'issuer', 'scopes', 'expiresAt', 'issuedAt', 'client', 'moreActions',
   ];
 
   tokens$: Observable<ListTokensResponse>;
+  subject: string;
 
   private readonly refreshTokens$ = new BehaviorSubject<ListTokensResponse>(undefined);
 
@@ -38,6 +39,7 @@ export class TokenListComponent implements OnInit {
             // Hide 'resources' column if it is not provided in response
             tap((tokensResponse: ListTokensResponse) => {
               const hideResourcesColumn = tokensResponse.tokens.every((token) => !token.resources);
+              this.subject = tokensResponse.tokens.length ? tokensResponse.tokens[0]['sub'] : '';
               if (hideResourcesColumn) {
                 this.displayedColumns.splice(this.displayedColumns.indexOf('resources'), 1);
               }
