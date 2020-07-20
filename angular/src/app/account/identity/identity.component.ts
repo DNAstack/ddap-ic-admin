@@ -22,7 +22,7 @@ import IUser = scim.v2.IUser;
 })
 export class IdentityComponent implements OnInit {
 
-  @ViewChild(PersonalInfoFormComponent, { static: false })
+  @ViewChild(PersonalInfoFormComponent)
   personalInfoForm: PersonalInfoFormComponent;
 
   realm: string;

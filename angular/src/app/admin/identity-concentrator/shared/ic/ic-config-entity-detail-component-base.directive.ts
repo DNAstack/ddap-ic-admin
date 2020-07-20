@@ -1,4 +1,4 @@
-import { OnDestroy, OnInit } from '@angular/core';
+import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
@@ -9,7 +9,8 @@ import { IcConfigEntityFormComponentBase } from './ic-config-entity-form-compone
 import { IcConfigEntityStore } from './ic-config-entity-store';
 import { IcConfigStore } from './ic-config.store';
 
-export class IcConfigEntityDetailComponentBase<T extends IcConfigEntityStore>
+@Directive()
+export class IcConfigEntityDetailComponentBaseDirective<T extends IcConfigEntityStore>
   extends IcConfigEntityFormComponentBase implements OnInit, OnDestroy {
 
   entity: EntityModel;

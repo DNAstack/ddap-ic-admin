@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
-import { IcConfigEntityDetailComponentBase } from '../../shared/ic/ic-config-entity-detail-component.base';
+import { IcConfigEntityDetailComponentBaseDirective } from '../../shared/ic/ic-config-entity-detail-component-base.directive';
 import { IcConfigStore } from '../../shared/ic/ic-config.store';
 import { IdentityProviderFormComponent } from '../identity-provider-form/identity-provider-form.component';
 import { IdentityProviderService } from '../identity-providers.service';
@@ -15,9 +15,9 @@ import { IdentityProvidersStore } from '../identity-providers.store';
   styleUrls: ['./identity-provider-detail.component.scss'],
   providers: [FormValidationService],
 })
-export class IdentityProviderDetailComponent extends IcConfigEntityDetailComponentBase<IdentityProvidersStore> implements OnInit {
+export class IdentityProviderDetailComponent extends IcConfigEntityDetailComponentBaseDirective<IdentityProvidersStore> implements OnInit {
 
-  @ViewChild('ddapForm', { static: false })
+  @ViewChild('ddapForm')
   identityProviderForm: IdentityProviderFormComponent;
 
   constructor(protected route: ActivatedRoute,

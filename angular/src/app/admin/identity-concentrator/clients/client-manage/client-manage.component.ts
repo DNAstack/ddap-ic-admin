@@ -15,7 +15,7 @@ import { ClientService } from '../clients.service';
 })
 export class ClientManageComponent extends IcConfigEntityFormComponentBase {
 
-  @ViewChild(ClientFormComponent, { static: false })
+  @ViewChild(ClientFormComponent)
   clientForm: ClientFormComponent;
 
   constructor(protected route: ActivatedRoute,

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
-import { IcConfigEntityDetailComponentBase } from '../../shared/ic/ic-config-entity-detail-component.base';
+import { IcConfigEntityDetailComponentBaseDirective } from '../../shared/ic/ic-config-entity-detail-component-base.directive';
 import { IcConfigStore } from '../../shared/ic/ic-config.store';
 import { ClientFormComponent } from '../client-form/client-form.component';
 import { ClientService } from '../clients.service';
@@ -15,9 +15,9 @@ import { ClientsStore } from '../clients.store';
   styleUrls: ['./client-detail.component.scss'],
   providers: [FormValidationService],
 })
-export class ClientDetailComponent extends IcConfigEntityDetailComponentBase<ClientsStore> implements OnInit {
+export class ClientDetailComponent extends IcConfigEntityDetailComponentBaseDirective<ClientsStore> implements OnInit {
 
-  @ViewChild(ClientFormComponent, { static: false })
+  @ViewChild(ClientFormComponent)
   clientForm: ClientFormComponent;
 
   constructor(protected route: ActivatedRoute,

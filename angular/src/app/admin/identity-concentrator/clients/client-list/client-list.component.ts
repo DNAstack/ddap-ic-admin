@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { IcConfigEntityListComponentBase } from '../../shared/ic/ic-config-entity-list-component.base';
+import { IcConfigEntityListComponentBaseDirective } from '../../shared/ic/ic-config-entity-list-component-base.directive';
 import { IcConfigStore } from '../../shared/ic/ic-config.store';
 import { ClientsStore } from '../clients.store';
 
@@ -10,7 +10,7 @@ import { ClientsStore } from '../clients.store';
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.scss'],
 })
-export class ClientListComponent extends IcConfigEntityListComponentBase<ClientsStore> implements OnInit {
+export class ClientListComponent extends IcConfigEntityListComponentBaseDirective<ClientsStore> implements OnInit {
 
   displayedColumns: string[] = [
     'label', 'description', 'clientId', 'scopes', 'redirectUris', 'grantTypes', 'responseTypes', 'moreActions',

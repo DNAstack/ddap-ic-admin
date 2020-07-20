@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { Directive, OnInit } from '@angular/core';
 import { EntityModel } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -7,7 +7,8 @@ import { IcConfigEntityComponentBase } from './ic-config-entity-component.base';
 import { IcConfigEntityStore } from './ic-config-entity-store';
 import { IcConfigStore } from './ic-config.store';
 
-export class IcConfigEntityListComponentBase<T extends IcConfigEntityStore> extends IcConfigEntityComponentBase implements OnInit {
+@Directive()
+export class IcConfigEntityListComponentBaseDirective<T extends IcConfigEntityStore> extends IcConfigEntityComponentBase implements OnInit {
 
   entities$: Observable<EntityModel[]>;
 

@@ -18,7 +18,7 @@ import { IdentityProviderService } from '../identity-providers.service';
 })
 export class IdentityProviderManageComponent extends IcConfigEntityFormComponentBase implements OnInit {
 
-  @ViewChild('identityProviderForm', { static: false })
+  @ViewChild('identityProviderForm')
   identityProviderForm: IdentityProviderFormComponent;
 
   identityProvider: IdentityProvider;
