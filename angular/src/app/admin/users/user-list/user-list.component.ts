@@ -4,8 +4,7 @@ import IUser = scim.v2.IUser;
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
-import { realmIdPlaceholder } from 'ddap-common-lib';
-import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import IListUsersResponse = scim.v2.IListUsersResponse;
 import { flatMap, switchMap } from 'rxjs/operators';
 
@@ -34,7 +33,7 @@ export class UserListComponent implements OnInit {
   users$: Observable<IListUsersResponse>;
   realm: string;
 
-  private readonly defaultPageSize = 25;
+  private readonly defaultPageSize = 10;
   private readonly refreshUsers$ = new BehaviorSubject<any>({ startIndex: 1, count: this.defaultPageSize });
 
   constructor(private userService: UserService,
@@ -102,7 +101,7 @@ export class UserListComponent implements OnInit {
                 return this.identityService.invalidateTokens();
               } else {
                 this.refreshUsers$.next({});
-                return EMPTY;
+                return of();
               }
             })
           )
