@@ -24,6 +24,8 @@ export class IdentityProviderFormComponent implements OnInit, OnDestroy, Form {
   }
 
   @Input()
+  internalNameEditable = false;
+  @Input()
   identityProvider?: EntityModel = new EntityModel('', IdentityProvider.create());
 
   form: FormGroup;
@@ -35,10 +37,12 @@ export class IdentityProviderFormComponent implements OnInit, OnDestroy, Form {
 
   ngOnInit(): void {
     this.form = this.identityProviderFormBuilder.buildForm(this.identityProvider);
-    this.subscriptions.push(this.form.get('ui.label').valueChanges
-      .subscribe((displayName) => {
-        this.form.get('id').setValue(generateInternalName(displayName));
-      }));
+    if (this.internalNameEditable) {
+      this.subscriptions.push(this.form.get('ui.label').valueChanges
+        .subscribe((displayName) => {
+          this.form.get('id').setValue(generateInternalName(displayName));
+        }));
+    }
   }
 
   ngOnDestroy(): void {

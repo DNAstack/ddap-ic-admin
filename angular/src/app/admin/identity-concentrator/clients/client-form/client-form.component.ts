@@ -29,6 +29,8 @@ export class ClientFormComponent implements Form, OnInit, OnDestroy {
   }
 
   @Input()
+  internalNameEditable = false;
+  @Input()
   client?: EntityModel = new EntityModel('', Client.create());
 
   form: FormGroup;
@@ -39,10 +41,12 @@ export class ClientFormComponent implements Form, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.clientFormBuilder.buildForm(this.client);
-    this.subscriptions.push(this.form.get('ui.label').valueChanges
-      .subscribe((displayName) => {
-        this.form.get('id').setValue(generateInternalName(displayName));
-      }));
+    if (this.internalNameEditable) {
+      this.subscriptions.push(this.form.get('ui.label').valueChanges
+        .subscribe((displayName) => {
+          this.form.get('id').setValue(generateInternalName(displayName));
+        }));
+    }
   }
 
   ngOnDestroy(): void {
