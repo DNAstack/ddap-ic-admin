@@ -1,9 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import Client = common.Client;
 import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
-import { EntityModel, Form, FormValidators, isExpanded } from 'ddap-common-lib';
+import { EntityModel, Form, FormValidators } from 'ddap-common-lib';
+import { Subscription } from 'rxjs';
 
 import { common } from '../../../../shared/proto/ic-service';
+import { generateInternalName } from '../../shared/internal-name.util';
 
 import { ClientFormBuilder } from './client-form-builder.service';
 
@@ -12,7 +14,7 @@ import { ClientFormBuilder } from './client-form-builder.service';
   templateUrl: './client-form.component.html',
   styleUrls: ['./client-form.component.scss'],
 })
-export class ClientFormComponent implements Form, OnInit {
+export class ClientFormComponent implements Form, OnInit, OnDestroy {
 
   get redirectUris() {
     return this.form.get('redirectUris') as FormArray;
@@ -30,13 +32,21 @@ export class ClientFormComponent implements Form, OnInit {
   client?: EntityModel = new EntityModel('', Client.create());
 
   form: FormGroup;
-  isExpanded: Function = isExpanded;
+  subscriptions: Subscription[] = [];
 
   constructor(private clientFormBuilder: ClientFormBuilder) {
   }
 
   ngOnInit(): void {
     this.form = this.clientFormBuilder.buildForm(this.client);
+    this.subscriptions.push(this.form.get('ui.label').valueChanges
+      .subscribe((displayName) => {
+        this.form.get('id').setValue(generateInternalName(displayName));
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   addRedirectUri(): void {

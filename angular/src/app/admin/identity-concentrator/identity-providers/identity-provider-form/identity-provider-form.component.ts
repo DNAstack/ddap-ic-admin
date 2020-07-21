@@ -1,14 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
-import { isExpanded } from 'ddap-common-lib';
 import { Form } from 'ddap-common-lib';
 import { EntityModel } from 'ddap-common-lib';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { common } from '../../../../shared/proto/ic-service';
+import { generateInternalName } from '../../shared/internal-name.util';
+
+import { IdentityProviderFormBuilder } from './identity-provider-form-builder.service';
 
 import IdentityProvider = common.IdentityProvider;
-import { IdentityProviderFormBuilder } from './identity-provider-form-builder.service';
 
 @Component({
   selector: 'ddap-identity-provider-form',
@@ -16,7 +17,7 @@ import { IdentityProviderFormBuilder } from './identity-provider-form-builder.se
   styleUrls: ['./identity-provider-form.component.scss'],
 
 })
-export class IdentityProviderFormComponent implements OnInit, Form {
+export class IdentityProviderFormComponent implements OnInit, OnDestroy, Form {
 
   get scopes() {
     return this.form.get('scopes') as FormArray;
@@ -26,7 +27,7 @@ export class IdentityProviderFormComponent implements OnInit, Form {
   identityProvider?: EntityModel = new EntityModel('', IdentityProvider.create());
 
   form: FormGroup;
-  isExpanded: Function = isExpanded;
+  subscriptions: Subscription[] = [];
   translators$: Observable<any>;
 
   constructor(private identityProviderFormBuilder: IdentityProviderFormBuilder) {
@@ -34,6 +35,14 @@ export class IdentityProviderFormComponent implements OnInit, Form {
 
   ngOnInit(): void {
     this.form = this.identityProviderFormBuilder.buildForm(this.identityProvider);
+    this.subscriptions.push(this.form.get('ui.label').valueChanges
+      .subscribe((displayName) => {
+        this.form.get('id').setValue(generateInternalName(displayName));
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   addScope() {

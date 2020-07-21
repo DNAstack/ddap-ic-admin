@@ -19,8 +19,8 @@ public class AdminIcIdentityProvidersE2eTest extends AbstractAdminFrontendE2eTes
 
         AdminManagePage adminManagePage = adminListPage.clickManage();
 
-        adminManagePage.fillField(DdapBy.se("inp-id"), "add-ip-id");
         adminManagePage.fillField(DdapBy.se("inp-label"), "add-ip-label");
+        adminManagePage.fillField(DdapBy.se("inp-id"), "add-ip-id");
         adminManagePage.fillField(DdapBy.se("inp-description"), "add-ip-desc");
 
         adminManagePage.fillField(DdapBy.se("inp-clientId"), "cd26716c-b170-41f7-912e-0f72749c3e9a");
