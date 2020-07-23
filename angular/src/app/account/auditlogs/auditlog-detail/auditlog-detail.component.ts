@@ -26,7 +26,7 @@ export class AuditlogDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.auditlogsService.currentAuditlog.subscribe(log => {
+    this.auditlogsService.currentAuditlog$.subscribe(log => {
       if (Object.keys(log).length > 0) {
         this.auditLog = log;
         this.toJSON();
