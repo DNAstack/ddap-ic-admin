@@ -12,16 +12,6 @@ import static org.hamcrest.Matchers.hasItem;
 public class AdminIcOptionsE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
-    public void submitBooleanOptionWronglyWithTypeError() {
-        AdminOptionPage adminListPage = ddapPage.getNavBar()
-                                                .goToAdminOptionPage(icOptionsLink());
-
-        assertThat(adminListPage.getOptionNames(), hasItem("Read Only Master Realm"));
-        adminListPage.submitOption("Read Only Master Realm", "readOnlyMasterRealm", "foobar");
-        adminListPage.assertError("Read Only Master Realm", 5, containsString("boolean"));
-    }
-
-    @Test
     public void submitBooleanOptionWithoutTypeError() {
         AdminOptionPage adminListPage = ddapPage.getNavBar()
                                                 .goToAdminOptionPage(icOptionsLink());
@@ -53,4 +43,5 @@ public class AdminIcOptionsE2eTest extends AbstractAdminFrontendE2eTest {
         adminListPage.submitOption("Default Passport Token TTL", "defaultPassportTokenTtl", oldValue);
         adminListPage.assertNoError("Default Passport Token TTL", 5);
     }
+
 }
