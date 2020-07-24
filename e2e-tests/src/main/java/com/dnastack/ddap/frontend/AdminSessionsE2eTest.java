@@ -8,7 +8,7 @@ import static com.dnastack.ddap.common.fragments.NavBar.tokensLink;
 
 @Slf4j
 @SuppressWarnings("Duplicates")
-public class AdminTokensE2eTest extends AbstractAdminFrontendE2eTest {
+public class AdminSessionsE2eTest extends AbstractAdminFrontendE2eTest {
 
     @Test
     public void shouldListTokens() {

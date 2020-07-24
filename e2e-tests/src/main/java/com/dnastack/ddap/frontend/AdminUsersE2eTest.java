@@ -104,7 +104,7 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         moreActionsButton.click();
 
         WebElement auditlogsButton = driver.findElement(By.className("mat-menu-panel"))
-                .findElement(DdapBy.se("btn-auditlog"));
+                .findElement(DdapBy.se("btn-auditlogs"));
         new WebDriverWait(driver, 5).until(d -> auditlogsButton.isDisplayed());
         auditlogsButton.click();
         adminListPage.waitForInflightRequests();
@@ -114,9 +114,68 @@ public class AdminUsersE2eTest extends AbstractAdminFrontendE2eTest {
         WebElement auditlogsTable = driver.findElement(DdapBy.se("auditlog-result"));
         WebElement auditlog = auditlogsTable.findElements(DdapBy.se("auditlog-id")).get(0);
         auditlog.click();
+
         adminListPage.waitForInflightRequests();
-        assertThat("Auditlogs detail page", driver.findElement(DdapBy.se("name")).getText(),
-                containsString(userId));
+        assertThat("Auditlogs detail page",
+            driver.findElement(DdapBy.se("name")).getText(),
+            containsString(userId)
+        );
+    }
+
+    @Test
+    public void viewUserSessions() {
+        ddapPage = doBrowserLogin(getRealm(), ADMINISTRATOR, AdminDdapPage::new);
+
+        UserAdminListPage adminListPage = ddapPage.getNavBar()
+            .goTo(usersLink(), UserAdminListPage::new);
+
+        String user = optionalEnv("E2E_ADMIN_USER_NAME", "Monica Valluri");
+        adminListPage.setActiveUsersOnly();
+
+        Optional<WebElement> activeUser = adminListPage.getFirstUserByNameAndActivity(user, true);
+
+        assertTrue("No active user present", activeUser.isPresent());
+
+        String userId = activeUser.get().findElement(DdapBy.se("user-id")).getText();
+        WebElement moreActionsButton = activeUser.get().findElement(DdapBy.se("btn-more-actions"));
+        new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
+        moreActionsButton.click();
+
+        WebElement sessionsBtn = driver.findElement(By.className("mat-menu-panel"))
+            .findElement(DdapBy.se("btn-sessions"));
+        sessionsBtn.click();
+        adminListPage.waitForInflightRequests();
+
+        assertThat(driver.findElement(DdapBy.se("page-title")).getText(), containsString("'s sessions"));
+        new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector(".mat-row"), 0));
+    }
+
+    @Test
+    public void viewUserConsents() {
+        ddapPage = doBrowserLogin(getRealm(), ADMINISTRATOR, AdminDdapPage::new);
+
+        UserAdminListPage adminListPage = ddapPage.getNavBar()
+            .goTo(usersLink(), UserAdminListPage::new);
+
+        String user = optionalEnv("E2E_ADMIN_USER_NAME", "Monica Valluri");
+        adminListPage.setActiveUsersOnly();
+
+        Optional<WebElement> activeUser = adminListPage.getFirstUserByNameAndActivity(user, true);
+
+        assertTrue("No active user present", activeUser.isPresent());
+
+        String userId = activeUser.get().findElement(DdapBy.se("user-id")).getText();
+        WebElement moreActionsButton = activeUser.get().findElement(DdapBy.se("btn-more-actions"));
+        new WebDriverWait(driver, 5).until(d -> moreActionsButton.isDisplayed());
+        moreActionsButton.click();
+
+        WebElement sessionsBtn = driver.findElement(By.className("mat-menu-panel"))
+            .findElement(DdapBy.se("btn-consents"));
+        sessionsBtn.click();
+        adminListPage.waitForInflightRequests();
+
+        assertThat(driver.findElement(DdapBy.se("page-title")).getText(), containsString("'s consents"));
     }
 
 }
