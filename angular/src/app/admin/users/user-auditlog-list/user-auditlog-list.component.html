@@ -1,0 +1,12 @@
+<ng-container *ngIf="userDisplayName">
+  <ddaplib-header [label]="userDisplayName + '\'s audit logs'"
+                  iconClass="icon icon-rules">
+  </ddaplib-header>
+</ng-container>
+
+<ddaplib-main>
+  <ng-container *ngIf="userId">
+    <ddap-auditlog-table [userId]="userId">
+    </ddap-auditlog-table>
+  </ng-container>
+</ddaplib-main>

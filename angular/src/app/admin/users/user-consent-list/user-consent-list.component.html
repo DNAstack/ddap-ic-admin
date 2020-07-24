@@ -1,4 +1,6 @@
-<ddaplib-header iconClass="icon icon-passport" label="Consents">
+<ddaplib-header *ngIf="userDisplayName"
+                [label]="userDisplayName + '\'s consents'"
+                iconClass="icon icon-passport">
 </ddaplib-header>
 
 <ddaplib-main>

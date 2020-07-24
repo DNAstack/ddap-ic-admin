@@ -4,8 +4,8 @@ import ListConsentsResponse = consents.v1.ListConsentsResponse;
 import { realmIdPlaceholder } from 'ddap-common-lib';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
-import { consents } from '../../shared/proto/ic-service';
+import { environment } from '../../../../environments/environment';
+import { consents } from '../../proto/ic-service';
 
 @Injectable({
   providedIn: 'root',

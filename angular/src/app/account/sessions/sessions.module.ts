@@ -4,20 +4,20 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 import { AdminSharedModule } from '../../admin/shared/shared.module';
 
-import { TokenListComponent } from './token-list/token-list.component';
-import { TokensRoutingModule } from './tokens-routing.module';
+import { SessionListComponent } from './session-list/session-list.component';
+import { SessionsRoutingModule } from './sessions-routing.module';
 
 @NgModule({
   declarations: [
-    TokenListComponent,
+    SessionListComponent,
   ],
   imports: [
     AdminSharedModule,
-    TokensRoutingModule,
+    SessionsRoutingModule,
     NgJsonEditorModule,
     MatTooltipModule,
   ],
 })
-export class TokensModule {
+export class SessionsModule {
 
 }

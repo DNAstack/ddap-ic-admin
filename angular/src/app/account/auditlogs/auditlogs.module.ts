@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MatChipsModule } from '@angular/material/chips';
-import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { DdapLayoutModule } from 'ddap-common-lib';
 
 import { AdminSharedModule } from '../../admin/shared/shared.module';
@@ -20,8 +18,6 @@ import { AuditlogsRoutingModule } from './auditlogs-routing.module';
     DdapLayoutModule,
     AdminSharedModule,
     AccountSharedModule,
-    MatChipsModule,
-    NgJsonEditorModule,
   ],
 })
 export class AuditlogsModule {
