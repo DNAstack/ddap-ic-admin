@@ -5,12 +5,12 @@ import { AdminSharedModule } from '../../admin/shared/shared.module';
 import { AccountSharedModule } from '../shared/shared.module';
 
 import { AuditlogDetailComponent } from './auditlog-detail/auditlog-detail.component';
-import { AuditlogsListComponent } from './auditlogs-list/auditlogs-list.component';
+import { AuditlogListComponent } from './auditlog-list/auditlog-list.component';
 import { AuditlogsRoutingModule } from './auditlogs-routing.module';
 
 @NgModule({
   declarations: [
-    AuditlogsListComponent,
+    AuditlogListComponent,
     AuditlogDetailComponent,
   ],
   imports: [

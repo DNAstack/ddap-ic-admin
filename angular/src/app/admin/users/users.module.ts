@@ -30,7 +30,6 @@ import { UsersRoutingModule } from './users-routing.module';
     DdapFormModule,
     MatRadioModule,
     MatDialogModule,
-    AuditlogsModule,
   ],
 })
 export class UsersModule {

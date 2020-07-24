@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AuditlogDetailComponent } from './auditlog-detail/auditlog-detail.component';
-import { AuditlogsListComponent } from './auditlogs-list/auditlogs-list.component';
+import { AuditlogListComponent } from './auditlog-list/auditlog-list.component';
 
 const routes = [
-  {path: '', component: AuditlogsListComponent},
+  {path: '', component: AuditlogListComponent},
   {path: ':auditlogId', component: AuditlogDetailComponent},
 ];
 @NgModule({

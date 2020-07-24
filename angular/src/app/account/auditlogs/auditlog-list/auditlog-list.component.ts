@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../shared/users/user.service';
 
 @Component({
-  selector: 'ddap-auditlogs-list',
-  templateUrl: './auditlogs-list.component.html',
-  styleUrls: ['./auditlogs-list.component.scss'],
+  selector: 'ddap-account-auditlog-list',
+  templateUrl: './auditlog-list.component.html',
+  styleUrls: ['./auditlog-list.component.scss'],
 })
-export class AuditlogsListComponent implements OnInit {
+export class AuditlogListComponent implements OnInit {
 
   userId: string;
 
