@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
@@ -20,13 +21,16 @@ export class ClientDetailComponent extends IcConfigEntityDetailComponentBaseDire
   @ViewChild(ClientFormComponent)
   clientForm: ClientFormComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              protected icConfigStore: IcConfigStore,
-              protected clientsStore: ClientsStore,
-              private clientService: ClientService) {
-    super(route, router, validationService, icConfigStore, clientsStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    protected icConfigStore: IcConfigStore,
+    protected clientsStore: ClientsStore,
+    protected dialog: MatDialog,
+    private clientService: ClientService
+  ) {
+    super(route, router, validationService, icConfigStore, clientsStore, dialog);
   }
 
   update() {
@@ -40,7 +44,7 @@ export class ClientDetailComponent extends IcConfigEntityDetailComponentBaseDire
       .subscribe(() => this.navigateUp('..'), this.showError);
   }
 
-  delete() {
+  protected delete() {
     this.clientService.remove(this.entity.name)
       .subscribe(() => this.navigateUp('..'), this.showError);
   }

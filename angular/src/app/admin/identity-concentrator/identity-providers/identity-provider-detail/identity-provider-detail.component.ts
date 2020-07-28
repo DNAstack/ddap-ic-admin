@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
@@ -20,13 +21,16 @@ export class IdentityProviderDetailComponent extends IcConfigEntityDetailCompone
   @ViewChild('ddapForm')
   identityProviderForm: IdentityProviderFormComponent;
 
-  constructor(protected route: ActivatedRoute,
-              protected router: Router,
-              protected validationService: FormValidationService,
-              protected icConfigStore: IcConfigStore,
-              protected identityProvidersStore: IdentityProvidersStore,
-              private identityProviderService: IdentityProviderService) {
-    super(route, router, validationService, icConfigStore, identityProvidersStore);
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected validationService: FormValidationService,
+    protected icConfigStore: IcConfigStore,
+    protected identityProvidersStore: IdentityProvidersStore,
+    protected dialog: MatDialog,
+    private identityProviderService: IdentityProviderService
+  ) {
+    super(route, router, validationService, icConfigStore, identityProvidersStore, dialog);
   }
 
   update() {
@@ -40,7 +44,7 @@ export class IdentityProviderDetailComponent extends IcConfigEntityDetailCompone
       .subscribe(() => this.navigateUp('..'), this.showError);
   }
 
-  delete() {
+  protected delete() {
     this.identityProviderService.remove(this.entity.name)
       .subscribe(() => this.navigateUp('..'), this.showError);
   }
