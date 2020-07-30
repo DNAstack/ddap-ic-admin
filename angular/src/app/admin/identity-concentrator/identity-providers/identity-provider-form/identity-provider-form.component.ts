@@ -59,9 +59,10 @@ export class IdentityProviderFormComponent implements OnInit, OnDestroy, Form {
   }
 
   getModel(): EntityModel {
-    const { id, ...rest } = this.form.value;
+    const { id, scopes, ...rest } = this.form.value;
 
     const identityProvider: IdentityProvider = IdentityProvider.create({
+      scopes: this.removeEmptyValues(scopes),
       ...rest,
     });
 
@@ -74,6 +75,10 @@ export class IdentityProviderFormComponent implements OnInit, OnDestroy, Form {
 
   isValid(): boolean {
     return this.form.valid;
+  }
+
+  removeEmptyValues(values: string[]) {
+    return values.filter(value => value.length > 0);
   }
 
   private getFirstControl(formControls: FormArray): AbstractControl {

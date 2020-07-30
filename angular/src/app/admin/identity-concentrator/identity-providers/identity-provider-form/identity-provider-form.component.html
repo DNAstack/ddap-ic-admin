@@ -93,21 +93,10 @@
     </mat-form-field>
   </div>
 
-  <h3>
-    <span>Scopes</span>
-    <div>
-      <button mat-button
-              color="primary"
-              class="uppercase"
-              type="button"
-              data-se="btn-add-scope"
-              (click)="addScope()">
-        Add Scope
-      </button>
-    </div>
-  </h3>
+  <h3>Scopes</h3>
   <ddaplib-form-inline-editable-table [form]="form"
-                                      [arrayFieldName]="'scopes'">
+                                      [arrayFieldName]="'scopes'"
+                                      [fieldTitle]="'Scope'">
   </ddaplib-form-inline-editable-table>
 
   <ng-content></ng-content>

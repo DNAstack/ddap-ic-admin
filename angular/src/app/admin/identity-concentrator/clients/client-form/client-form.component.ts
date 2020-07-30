@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import Client = common.Client;
 import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { EntityModel, Form, FormValidators } from 'ddap-common-lib';
-import { Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 
 import { common } from '../../../../shared/proto/ic-service';
 import { generateInternalName } from '../../shared/internal-name.util';
@@ -35,6 +35,8 @@ export class ClientFormComponent implements Form, OnInit, OnDestroy {
 
   form: FormGroup;
   subscriptions: Subscription[] = [];
+  grantTypeValues: Observable<string[]> = of(['authorization_code', 'refresh_token', 'client_credentials']);
+  responseTypeValues: Observable<string[]> = of(['code', 'token', 'id_token']);
 
   constructor(private clientFormBuilder: ClientFormBuilder) {
   }
@@ -81,8 +83,11 @@ export class ClientFormComponent implements Form, OnInit, OnDestroy {
   }
 
   getModel(): EntityModel {
-    const { id, ...rest } = this.form.value;
+    const { id, grantTypes, redirectUris, responseTypes, ...rest } = this.form.value;
     const clientApplication: Client = Client.create({
+      grantTypes: this.removeEmptyValues(grantTypes),
+      redirectUris: this.removeEmptyValues(redirectUris),
+      responseTypes: this.removeEmptyValues(responseTypes),
       ...rest,
     });
 
@@ -95,6 +100,10 @@ export class ClientFormComponent implements Form, OnInit, OnDestroy {
 
   isValid(): boolean {
     return this.form.valid;
+  }
+
+  removeEmptyValues(values: string[]) {
+    return values.filter(value => value.length > 0);
   }
 
   private getFirstControl(formControls: FormArray): AbstractControl {
