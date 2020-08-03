@@ -69,4 +69,18 @@ public class AdminIcIdentityProvidersE2eTest extends AbstractAdminFrontendE2eTes
 
         adminListPage.assertListItemDoNotExist("delete-ip-id");
     }
+
+    @Test
+    public void deleteFromListPolicy() {
+        AdminListPage adminListPage = ddapPage.getNavBar()
+            .goToAdmin(icIdentityProvidersLink());
+        String entityToBeDeleted = "delete-ip-list";
+
+        adminListPage.assertListItemExists(entityToBeDeleted);
+
+        adminListPage = adminListPage.clickDelete(entityToBeDeleted);
+
+        adminListPage.assertListItemDoNotExist(entityToBeDeleted);
+    }
+
 }

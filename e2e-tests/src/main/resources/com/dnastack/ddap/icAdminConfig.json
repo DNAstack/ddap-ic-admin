@@ -24,6 +24,17 @@
         "iconUrl": "/identity/static/google_identity.png",
         "description": "description"
       }
+    },
+    "delete-ip-list": {
+      "issuer": "https://test.com/oauth2/v4/token",
+      "authorizeUrl": "https://test.com/o/oauth2/v2/auth",
+      "tokenUrl": "https://test.com/oauth2/v4/token",
+      "clientId": "2978103516-cmpti2bi0c5rteimvoks1abubdvjrdik.apps.googleusercontent.com",
+      "ui": {
+        "label": "delete-ip-list",
+        "iconUrl": "/identity/static/google_identity.png",
+        "description": "description"
+      }
     }
   },
   "clients": {
