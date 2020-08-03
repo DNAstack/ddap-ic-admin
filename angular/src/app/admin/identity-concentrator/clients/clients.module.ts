@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { IdentityConcentratorSharedModule } from '../shared/shared.module';
 
@@ -18,6 +19,7 @@ import { ClientsRoutingModule } from './clients-routing.module';
   imports: [
     IdentityConcentratorSharedModule,
     ClientsRoutingModule,
+    MatCheckboxModule,
   ],
 })
 export class ClientsModule { }

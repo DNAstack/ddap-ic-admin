@@ -19,8 +19,9 @@ export class ClientService extends IcConfigService {
     super(IcConfigEntityType.clients, http, errorHandler);
   }
 
-  update(id: string, change: ConfigModificationModel): Observable<any> {
-    return this.http.patch(`${environment.idpApiUrl}/${realmIdPlaceholder}/config/${this.entityType}/${id}`,
+  update(id: string, change: ConfigModificationModel, rotateSecret?: boolean): Observable<any> {
+    return this.http.patch(
+      `${environment.idpApiUrl}/${realmIdPlaceholder}/config/${this.entityType}/${id}?rotate_secret=${rotateSecret}`,
       change
     ).pipe(
       this.errorHandler.notifyOnError(`Can't update ${id}.`)
