@@ -34,7 +34,7 @@ public class NavBar {
     }
 
     public static NavLink identityManagementPanelSelectorLink() {
-        return new NavLink("Identity Management", DdapBy.se("nav-group-identity-admin"), null);
+        return new NavLink("My Profile & Activity", DdapBy.se("nav-group-identity-admin"), null);
     }
 
     public static NavLink tokensLink() {
@@ -42,11 +42,11 @@ public class NavBar {
     }
 
     public static NavLink consentsLink() {
-        return new NavLink("Consents", DdapBy.se("nav-consents"), identityManagementPanelSelectorLink());
+        return new NavLink("Remembered Consents", DdapBy.se("nav-consents"), identityManagementPanelSelectorLink());
     }
 
     public static NavLink auditlogsLink() {
-        return new NavLink("Auditlogs", DdapBy.se("nav-auditlogs"), identityManagementPanelSelectorLink());
+        return new NavLink("Audit Logs", DdapBy.se("nav-auditlogs"), identityManagementPanelSelectorLink());
     }
 
     public static NavLink icPanelSelectorLink() {
@@ -58,7 +58,7 @@ public class NavBar {
     }
 
     public static NavLink icClientsLink() {
-        return new NavLink("Clients", DdapBy.se("nav-ic-admin-clients"), icPanelSelectorLink());
+        return new NavLink("Client Applications", DdapBy.se("nav-ic-admin-clients"), icPanelSelectorLink());
     }
 
     public static NavLink icOptionsLink() {

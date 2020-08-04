@@ -8,7 +8,7 @@ import { IcConfigStore } from '../shared/ic/ic-config.store';
 @Injectable({
   providedIn: 'root',
 })
-export class ClientsStore extends IcConfigEntityStore {
+export class ClientApplicationsStore extends IcConfigEntityStore {
 
   constructor(protected icConfigStore: IcConfigStore) {
     super(IcConfigEntityType.clients, icConfigStore);

@@ -11,7 +11,7 @@ import { IcConfigService } from '../shared/ic/ic-config.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ClientService extends IcConfigService {
+export class ClientApplicationService extends IcConfigService {
 
   constructor(protected http: HttpClient,
               protected route: ActivatedRoute,

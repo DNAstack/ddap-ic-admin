@@ -1,4 +1,5 @@
-<ddaplib-header [backLink]="['..']" label="Clients">
+<ddaplib-header [backLink]="['..']"
+                [label]="entity?.name">
 </ddaplib-header>
 
 <ddaplib-main>
@@ -8,9 +9,9 @@
   </mat-progress-bar>
 
   <div *ngIf="entity">
-    <ddap-client-form #clientForm
+    <ddap-client-application-form #clientForm
                       [client]="entity">
-    </ddap-client-form>
+    </ddap-client-application-form>
   </div>
 </ddaplib-main>
 

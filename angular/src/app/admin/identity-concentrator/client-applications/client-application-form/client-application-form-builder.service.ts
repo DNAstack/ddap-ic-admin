@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { EntityModel, FormValidators, nameConstraintPattern } from "ddap-common-lib";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { EntityModel, FormValidators, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ClientFormBuilder {
+export class ClientApplicationFormBuilder {
 
   constructor(private formBuilder: FormBuilder) {
   }

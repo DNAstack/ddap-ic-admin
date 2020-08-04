@@ -7,20 +7,22 @@ import { ConfigModificationModel, EntityModel } from 'ddap-common-lib';
 
 import { IcConfigEntityDetailComponentBaseDirective } from '../../shared/ic/ic-config-entity-detail-component-base.directive';
 import { IcConfigStore } from '../../shared/ic/ic-config.store';
-import { ClientFormComponent } from '../client-form/client-form.component';
-import { ClientService } from '../clients.service';
-import { ClientsStore } from '../clients.store';
+import { ClientApplicationFormComponent } from '../client-application-form/client-application-form.component';
+import { ClientApplicationService } from '../client-applications.service';
+import { ClientApplicationsStore } from '../client-applications.store';
 
 @Component({
-  selector: 'ddap-client-detail',
-  templateUrl: './client-detail.component.html',
-  styleUrls: ['./client-detail.component.scss'],
+  selector: 'ddap-client-application-detail',
+  templateUrl: './client-application-detail.component.html',
+  styleUrls: ['./client-application-detail.component.scss'],
   providers: [FormValidationService],
 })
-export class ClientDetailComponent extends IcConfigEntityDetailComponentBaseDirective<ClientsStore> implements OnInit {
+export class ClientApplicationDetailComponent
+  extends IcConfigEntityDetailComponentBaseDirective<ClientApplicationsStore>
+  implements OnInit {
 
-  @ViewChild(ClientFormComponent)
-  clientForm: ClientFormComponent;
+  @ViewChild(ClientApplicationFormComponent)
+  clientForm: ClientApplicationFormComponent;
   rotateSecret = false;
 
   constructor(
@@ -28,9 +30,9 @@ export class ClientDetailComponent extends IcConfigEntityDetailComponentBaseDire
     protected router: Router,
     protected validationService: FormValidationService,
     protected icConfigStore: IcConfigStore,
-    protected clientsStore: ClientsStore,
+    protected clientsStore: ClientApplicationsStore,
     protected dialog: MatDialog,
-    private clientService: ClientService
+    private clientService: ClientApplicationService
   ) {
     super(route, router, validationService, icConfigStore, clientsStore, dialog);
   }

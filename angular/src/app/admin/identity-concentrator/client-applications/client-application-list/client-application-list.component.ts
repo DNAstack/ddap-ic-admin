@@ -5,15 +5,17 @@ import { tap } from 'rxjs/operators';
 
 import { IcConfigEntityListComponentBaseDirective } from '../../shared/ic/ic-config-entity-list-component-base.directive';
 import { IcConfigStore } from '../../shared/ic/ic-config.store';
-import { ClientService } from '../clients.service';
-import { ClientsStore } from '../clients.store';
+import { ClientApplicationService } from '../client-applications.service';
+import { ClientApplicationsStore } from '../client-applications.store';
 
 @Component({
-  selector: 'ddap-client-list',
-  templateUrl: './client-list.component.html',
-  styleUrls: ['./client-list.component.scss'],
+  selector: 'ddap-client-application-list',
+  templateUrl: './client-application-list.component.html',
+  styleUrls: ['./client-application-list.component.scss'],
 })
-export class ClientListComponent extends IcConfigEntityListComponentBaseDirective<ClientsStore> implements OnInit {
+export class ClientApplicationListComponent
+  extends IcConfigEntityListComponentBaseDirective<ClientApplicationsStore>
+  implements OnInit {
 
   displayedColumns: string[] = [
     'label', 'description', 'clientId', 'scopes', 'redirectUris', 'grantTypes', 'responseTypes', 'moreActions',
@@ -22,9 +24,9 @@ export class ClientListComponent extends IcConfigEntityListComponentBaseDirectiv
   constructor(
     protected route: ActivatedRoute,
     protected icConfigStore: IcConfigStore,
-    protected clientsStore: ClientsStore,
+    protected clientsStore: ClientApplicationsStore,
     protected dialog: MatDialog,
-    private clientService: ClientService
+    private clientService: ClientApplicationService
   ) {
     super(icConfigStore, clientsStore, dialog);
   }

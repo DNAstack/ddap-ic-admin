@@ -5,26 +5,26 @@ import { FormValidationService } from 'ddap-common-lib';
 import { ConfigModificationModel, EntityModel, SecretGeneratedDialogComponent } from 'ddap-common-lib';
 
 import { IcConfigEntityFormComponentBase } from '../../shared/ic/ic-config-entity-form-component.base';
-import { ClientFormComponent } from '../client-form/client-form.component';
-import { ClientService } from '../clients.service';
+import { ClientApplicationFormComponent } from '../client-application-form/client-application-form.component';
+import { ClientApplicationService } from '../client-applications.service';
 
 @Component({
-  selector: 'ddap-client-manage',
-  templateUrl: './client-manage.component.html',
-  styleUrls: ['./client-manage.component.scss'],
+  selector: 'ddap-client-application-manage',
+  templateUrl: './client-application-manage.component.html',
+  styleUrls: ['./client-application-manage.component.scss'],
   providers: [FormValidationService],
 })
-export class ClientManageComponent extends IcConfigEntityFormComponentBase {
+export class ClientApplicationManageComponent extends IcConfigEntityFormComponentBase {
 
-  @ViewChild(ClientFormComponent)
-  clientForm: ClientFormComponent;
+  @ViewChild(ClientApplicationFormComponent)
+  clientForm: ClientApplicationFormComponent;
 
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
     protected validationService: FormValidationService,
     private dialog: MatDialog,
-    private clientService: ClientService
+    private clientService: ClientApplicationService
   ) {
     super(route, router, validationService);
   }

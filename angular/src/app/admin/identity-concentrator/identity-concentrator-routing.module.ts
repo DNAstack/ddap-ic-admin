@@ -5,9 +5,9 @@ export const routes: Routes = [
   { path: '',
     children: [
       {
-        path: 'clients',
-        loadChildren: () => import('./clients/clients.module')
-          .then(mod => mod.ClientsModule),
+        path: 'client-applications',
+        loadChildren: () => import('./client-applications/client-applications.module')
+          .then(mod => mod.ClientApplicationsModule),
       },
       {
         path: 'identity-providers',

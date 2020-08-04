@@ -12,7 +12,7 @@ export class AppConfigService {
   private registerModules() {
     this.viewControllerService.registerGroup({
       key: 'identity-admin',
-      name: 'Identity Management',
+      name: 'My Profile & Activity',
       collapsible: true,
       collapsibleByDefault: true,
       nonAdmin: true,
@@ -35,7 +35,7 @@ export class AppConfigService {
     this.viewControllerService
       .registerModule({
       key: 'identity-admin',
-      name: 'My Identity',
+      name: 'Profile',
       iconClasses: 'icon icon-identity',
       routerLink: 'account/identity',
       isApp: false,
@@ -53,7 +53,7 @@ export class AppConfigService {
       })
       .registerModule({
         key: 'consents',
-        name: 'Consents',
+        name: 'Remembered Consents',
         iconClasses: 'icon icon-passport',
         routerLink: 'account/consents',
         isApp: false,
@@ -62,7 +62,7 @@ export class AppConfigService {
       })
       .registerModule({
         key: 'auditlogs',
-        name: 'Auditlogs',
+        name: 'Audit Logs',
         iconClasses: 'icon icon-rules',
         routerLink: 'account/auditlogs',
         isApp: false,
@@ -89,9 +89,9 @@ export class AppConfigService {
       })
       .registerModule({
         key: 'ic-admin-clients',
-        name: 'Clients',
+        name: 'Client Applications',
         iconClasses: 'icon icon-apps',
-        routerLink: 'admin/identity-concentrator/clients',
+        routerLink: 'admin/identity-concentrator/client-applications',
         isApp: false,
         group: 'ic-admin',
         nonAdmin: false,

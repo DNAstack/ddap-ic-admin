@@ -7,14 +7,14 @@ import { Observable, of, Subscription } from 'rxjs';
 import { common } from '../../../../shared/proto/ic-service';
 import { generateInternalName } from '../../shared/internal-name.util';
 
-import { ClientFormBuilder } from './client-form-builder.service';
+import { ClientApplicationFormBuilder } from './client-application-form-builder.service';
 
 @Component({
-  selector: 'ddap-client-form',
-  templateUrl: './client-form.component.html',
-  styleUrls: ['./client-form.component.scss'],
+  selector: 'ddap-client-application-form',
+  templateUrl: './client-application-form.component.html',
+  styleUrls: ['./client-application-form.component.scss'],
 })
-export class ClientFormComponent implements Form, OnInit, OnDestroy {
+export class ClientApplicationFormComponent implements Form, OnInit, OnDestroy {
 
   get redirectUris() {
     return this.form.get('redirectUris') as FormArray;
@@ -38,7 +38,7 @@ export class ClientFormComponent implements Form, OnInit, OnDestroy {
   grantTypeValues: Observable<string[]> = of(['authorization_code', 'refresh_token', 'client_credentials']);
   responseTypeValues: Observable<string[]> = of(['code', 'token', 'id_token']);
 
-  constructor(private clientFormBuilder: ClientFormBuilder) {
+  constructor(private clientFormBuilder: ClientApplicationFormBuilder) {
   }
 
   ngOnInit(): void {
