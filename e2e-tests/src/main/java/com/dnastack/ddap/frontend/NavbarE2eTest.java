@@ -2,6 +2,7 @@ package com.dnastack.ddap.frontend;
 
 import com.dnastack.ddap.common.TestingPersona;
 import com.dnastack.ddap.common.page.AdminDdapPage;
+import com.dnastack.ddap.common.page.AdminListPage;
 import com.dnastack.ddap.common.page.ICLoginPage;
 import com.dnastack.ddap.common.util.DdapBy;
 import org.junit.BeforeClass;
@@ -15,8 +16,7 @@ import java.io.IOException;
 
 import static com.dnastack.ddap.common.TestingPersona.ADMINISTRATOR;
 import static com.dnastack.ddap.common.TestingPersona.USER_WITHOUT_ACCESS;
-import static com.dnastack.ddap.common.fragments.NavBar.icIdentityProvidersLink;
-import static com.dnastack.ddap.common.fragments.NavBar.identityManagementPanelSelectorLink;
+import static com.dnastack.ddap.common.fragments.NavBar.*;
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -92,6 +92,18 @@ public class NavbarE2eTest extends AbstractFrontendE2eTest {
          */
         final String firstLetter = displayedName.trim().substring(0, 1);
         assertEquals(format("Expected name [%s] to start with capital. Might not be a name?", displayedName), firstLetter.toUpperCase(), firstLetter);
+    }
+
+    @Test
+    public void testPanelExpandedAfterRefresh() {
+        ddapPage = doBrowserLogin(REALM, ADMINISTRATOR, AdminDdapPage::new);
+        AdminListPage adminListPage = ddapPage.getNavBar()
+                .goToAdmin(usersLink());
+        final String usersButtonSelector = "nav-admin-users";
+
+        adminListPage.assertElementVisible(usersButtonSelector);
+        driver.navigate().refresh();
+        adminListPage.assertElementVisible(usersButtonSelector);
     }
 
 }
