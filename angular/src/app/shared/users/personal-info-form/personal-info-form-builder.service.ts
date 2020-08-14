@@ -26,6 +26,7 @@ export class PersonalInfoFormBuilder {
         middleName: [_get(user, 'name.middleName')],
       }),
       locale: [_get(user, 'locale')],
+      preferredLanguage: [_get(user, 'preferredLanguage')],
       timezone: [_get(user, 'timezone')],
       active: new FormControl({ value: _get(user, 'active'), disabled: !adminMode }),
       emails: this.buildAttributeArrayForm(_get(user, 'emails'), [Validators.required]),

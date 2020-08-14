@@ -37,6 +37,7 @@ export class PersonalInfoFormComponent implements Form, OnInit {
   form: FormGroup;
   isExpanded: Function = isExpanded;
   filteredLocales$: Observable<LocaleModel[]>;
+  filteredPreferredLanguages$: Observable<LocaleModel[]>;
   filteredTimezones$: Observable<TimezoneModel[]>;
 
   constructor(
@@ -54,13 +55,11 @@ export class PersonalInfoFormComponent implements Form, OnInit {
         const timezones = this.mapToArray(localeMetadataResponse.timeZones);
 
         this.filteredLocales$ = this.form.get('locale').valueChanges
-          .pipe(
-            map((value) => this.filter<LocaleModel>(value, locales, 'ui.label'))
-          );
+          .pipe(map((value) => this.filter<LocaleModel>(value, locales, 'ui.label')));
+        this.filteredPreferredLanguages$ = this.form.get('preferredLanguage').valueChanges
+          .pipe(map((value) => this.filter<LocaleModel>(value, locales, 'ui.label')));
         this.filteredTimezones$ = this.form.get('timezone').valueChanges
-          .pipe(
-            map((value) => this.filter<TimezoneModel>(value, timezones, 'ui.label'))
-          );
+          .pipe(map((value) => this.filter<TimezoneModel>(value, timezones, 'ui.label')));
       });
   }
 
