@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as dayjs_ from 'dayjs';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -12,6 +13,8 @@ import { AuditlogsService } from '../auditlogs.service';
 import { Decision } from '../decision.enum';
 import { LogTypes } from '../log-type.enum';
 
+const dayjs = dayjs_;
+
 @Component({
   selector: 'ddap-auditlog-table',
   templateUrl: './auditlog-table.component.html',
@@ -20,6 +23,7 @@ import { LogTypes } from '../log-type.enum';
 export class AuditlogTableComponent implements OnInit {
 
   readonly columnsToDisplay: string[] = ['auditlogId', 'type', 'time', 'decision', 'resourceName'];
+  readonly dayjs = dayjs;
   readonly separatorCodes: number[] = [ENTER];
   readonly pageSize: FormControl = new FormControl('20');
   readonly logType: FormControl = new FormControl(LogTypes.all);
@@ -155,10 +159,6 @@ export class AuditlogTableComponent implements OnInit {
     }
     this.disableSearchText = false;
     this.searchLogs();
-  }
-
-  formatTime(timeString: string): Date {
-    return new Date(timeString);
   }
 
   private updateFilters(filters: string) {
