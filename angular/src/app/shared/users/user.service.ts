@@ -23,7 +23,7 @@ export class UserService {
   }
 
   getLoggedInUser(): Observable<IUser> {
-    return this.http.get<IUser>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Me`)
+    return this.http.get<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Me`)
       .pipe(
         this.errorHandler.notifyOnError(`Can't load User information.`),
         share()
@@ -31,32 +31,32 @@ export class UserService {
   }
 
   patchLoggedInUser(patchModel: IPatch): Observable<IUser> {
-    return this.http.patch<IUser>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Me`, patchModel)
+    return this.http.patch<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Me`, patchModel)
       .pipe(
         this.errorHandler.notifyOnError(`Can't save personal information`)
       );
   }
 
   getUsers(params = {}): Observable<IListUsersResponse> {
-    return this.http.get<IListUsersResponse>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users`, { params })
+    return this.http.get<IListUsersResponse>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users`, { params })
       .pipe(
         this.errorHandler.notifyOnError(`Can't load users.`)
       );
   }
 
   getUser(userId: string): Observable<IUser> {
-    return this.http.get<IUser>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`)
+    return this.http.get<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`)
       .pipe(
         this.errorHandler.notifyOnError(`Can't load user.`)
       );
   }
 
   patchUser(userId: string, patchModel: IPatch): Observable<IUser> {
-    return this.http.patch<IUser>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`, patchModel);
+    return this.http.patch<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`, patchModel);
   }
 
   deleteUser(userId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.idpBaseUrl}/identity/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
+    return this.http.delete<void>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
   }
 
 }
