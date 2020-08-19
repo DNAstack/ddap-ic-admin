@@ -30,8 +30,6 @@ public class AdminIcIdentityProvidersE2eTest extends AbstractAdminFrontendE2eTes
         // Temporarily remove as allowable values vary between staging and prod
 //        adminManagePage.fillFieldFromDropdown(DdapBy.se("inp-translateUsing"), "dbGaP Passport Translator");
 
-        adminManagePage.fillFieldFromTable(DdapBy.se("inp-scopes"), "profile");
-
         adminListPage = adminManagePage.saveEntity();
 
         adminListPage.assertListItemExists("add-ip-label");
