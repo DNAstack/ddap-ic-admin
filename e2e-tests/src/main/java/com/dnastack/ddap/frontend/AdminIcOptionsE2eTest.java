@@ -18,7 +18,7 @@ public class AdminIcOptionsE2eTest extends AbstractAdminFrontendE2eTest {
         assertThat(adminListPage.getOptionNames(), hasItem("Read Only Master Realm"));
         final String oldValue = adminListPage.getOptionValue("Read Only Master Realm");
         adminListPage.submitOption("Read Only Master Realm", "readOnlyMasterRealm", oldValue);
-        adminListPage.assertNoError("Read Only Master Realm", 5);
+        adminListPage.assertNoError(5);
     }
 
     @Test
@@ -29,7 +29,18 @@ public class AdminIcOptionsE2eTest extends AbstractAdminFrontendE2eTest {
         assertThat(adminListPage.getOptionNames(), hasItem("Claim TTL Cap"));
         final String oldValue = adminListPage.getOptionValue("Claim TTL Cap");
         adminListPage.submitOption("Claim TTL Cap", "claimTtlCap", oldValue);
-        adminListPage.assertNoError("Claim TTL Cap", 5);
+        adminListPage.assertNoError(5);
+    }
+
+    @Test
+    public void submitOptionWithError() {
+        AdminOptionPage adminListPage = ddapPage.getNavBar()
+            .goToAdminOptionPage(icOptionsLink());
+
+        assertThat(adminListPage.getOptionNames(), hasItem("Claim TTL Cap"));
+        final String oldValue = adminListPage.getOptionValue("Claim TTL Cap");
+        adminListPage.submitOption("Claim TTL Cap", "claimTtlCap", "invalid-value");
+        adminListPage.assertHasError(5);
     }
 
 }
