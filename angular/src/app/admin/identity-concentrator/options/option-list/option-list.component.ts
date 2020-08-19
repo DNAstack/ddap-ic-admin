@@ -12,7 +12,7 @@ import { OptionService } from '../options.service';
 })
 export class OptionListComponent implements OnInit {
 
-  displayedColumns: string[] = ['label', 'description', 'type', 'defaultValue', 'value', 'moreActions'];
+  displayedColumns: string[] = ['label', 'description', 'defaultValue', 'value', 'moreActions'];
 
   options$: Observable<any>;
   error: string;
@@ -34,6 +34,11 @@ export class OptionListComponent implements OnInit {
       );
   }
 
+  resetValue(options, optionKey) {
+    this.formControls[optionKey].reset(options[optionKey]);
+    this.currentlyEditing = null;
+  }
+
   updateOptionValue(options, optionKey, newValue) {
     this.error = null;
     const newOptions = this.cloneOptions(options);
@@ -48,7 +53,7 @@ export class OptionListComponent implements OnInit {
             options[optionKey] = convertedNewValue;
             this.currentlyEditing = null;
           },
-          ({error}) => this.error = error.substring(error.lastIndexOf(':') + 1)
+          ({ error }) => this.error = error?.message
         );
     } catch (e) {
       // The only type of error we expect here a syntax error.
