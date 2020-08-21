@@ -15,10 +15,15 @@ public class AdminIcOptionsE2eTest extends AbstractAdminFrontendE2eTest {
         AdminOptionPage adminListPage = ddapPage.getNavBar()
                                                 .goToAdminOptionPage(icOptionsLink());
 
-        assertThat(adminListPage.getOptionNames(), hasItem("Read Only Master Realm"));
-        final String oldValue = adminListPage.getOptionValue("Read Only Master Realm");
-        adminListPage.submitOption("Read Only Master Realm", "readOnlyMasterRealm", oldValue);
-        adminListPage.assertNoError(5);
+        String option = "Read Only Master Realm";
+
+        assertThat(adminListPage.getOptionNames(), hasItem(option));
+        final String oldValue = adminListPage.getOptionValue(option);
+
+        adminListPage.clickEdit(option);
+        adminListPage.fillInput(oldValue);
+
+        adminListPage.assertNoError( 5);
     }
 
     @Test
@@ -26,10 +31,15 @@ public class AdminIcOptionsE2eTest extends AbstractAdminFrontendE2eTest {
         AdminOptionPage adminListPage = ddapPage.getNavBar()
                                                 .goToAdminOptionPage(icOptionsLink());
 
-        assertThat(adminListPage.getOptionNames(), hasItem("Claim TTL Cap"));
-        final String oldValue = adminListPage.getOptionValue("Claim TTL Cap");
-        adminListPage.submitOption("Claim TTL Cap", "claimTtlCap", oldValue);
-        adminListPage.assertNoError(5);
+        String option = "Claim TTL Cap";
+
+        assertThat(adminListPage.getOptionNames(), hasItem(option));
+        final String oldValue = adminListPage.getOptionValue(option);
+
+        adminListPage.clickEdit(option);
+        adminListPage.fillInput(oldValue);
+
+        adminListPage.assertNoError( 5);
     }
 
     @Test
@@ -37,10 +47,14 @@ public class AdminIcOptionsE2eTest extends AbstractAdminFrontendE2eTest {
         AdminOptionPage adminListPage = ddapPage.getNavBar()
             .goToAdminOptionPage(icOptionsLink());
 
-        assertThat(adminListPage.getOptionNames(), hasItem("Claim TTL Cap"));
-        final String oldValue = adminListPage.getOptionValue("Claim TTL Cap");
-        adminListPage.submitOption("Claim TTL Cap", "claimTtlCap", "invalid-value");
-        adminListPage.assertHasError(5);
+        String option = "Claim TTL Cap";
+
+        assertThat(adminListPage.getOptionNames(), hasItem(option));
+
+        adminListPage.clickEdit(option);
+        adminListPage.fillInput("invalid-value");
+
+        adminListPage.assertHasError( 5);
     }
 
 }
