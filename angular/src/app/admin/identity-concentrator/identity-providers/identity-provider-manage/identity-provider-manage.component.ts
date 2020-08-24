@@ -35,12 +35,14 @@ export class IdentityProviderManageComponent extends IcConfigEntityFormComponent
   }
 
   save() {
+    this.identityProviderForm.validateClientCredentials();
     if (!this.validate(this.identityProviderForm)) {
       return;
     }
 
     const personaModel: EntityModel = this.identityProviderForm.getModel();
-    const change = new ConfigModificationModel(personaModel.dto, {});
+    const clientSecret = this.identityProviderForm.form.get('clientSecret').value;
+    const change = new ConfigModificationModel(personaModel.dto, {}, clientSecret);
     this.identityProviderService.save(personaModel.name, change)
       .subscribe(() => this.navigateUp('../..'), this.showError);
   }

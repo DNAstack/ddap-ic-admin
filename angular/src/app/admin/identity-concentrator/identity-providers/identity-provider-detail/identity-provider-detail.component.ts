@@ -34,12 +34,14 @@ export class IdentityProviderDetailComponent extends IcConfigEntityDetailCompone
   }
 
   update() {
+    this.identityProviderForm.validateClientCredentials();
     if (!this.validate(this.identityProviderForm)) {
       return;
     }
 
-    const clientApplication: EntityModel = this.identityProviderForm.getModel();
-    const change = new ConfigModificationModel(clientApplication.dto, {});
+    const identityProvider: EntityModel = this.identityProviderForm.getModel();
+    const clientSecret = this.identityProviderForm.form.get('clientSecret').value;
+    const change = new ConfigModificationModel(identityProvider.dto, {}, clientSecret);
     this.identityProviderService.update(this.entity.name, change)
       .subscribe(() => this.navigateUp('..'), this.showError);
   }

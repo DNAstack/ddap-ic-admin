@@ -23,6 +23,7 @@ public class AdminIcIdentityProvidersE2eTest extends AbstractAdminFrontendE2eTes
         adminManagePage.fillField(DdapBy.se("inp-description"), "add-ip-desc");
 
         adminManagePage.fillField(DdapBy.se("inp-clientId"), "cd26716c-b170-41f7-912e-0f72749c3e9a");
+        adminManagePage.fillField(DdapBy.se("inp-clientSecret"), "cd26716c-b170-41f7-912e-0f72749c3e9a");
         adminManagePage.fillField(DdapBy.se("inp-issuer"), "https://foo.bar.example.com/oidc");
         adminManagePage.fillField(DdapBy.se("inp-tokenUrl"), "https://foo.bar.example.com/oidc/token");
         adminManagePage.fillField(DdapBy.se("inp-authorizeUrl"), "https://foo.bar.example.com/oidc/authorize");
@@ -47,6 +48,8 @@ public class AdminIcIdentityProvidersE2eTest extends AbstractAdminFrontendE2eTes
 
         adminManagePage.clearField(DdapBy.se("inp-label"));
         adminManagePage.fillField(DdapBy.se("inp-label"), "edited-ip-id");
+        adminManagePage.fillField(DdapBy.se("inp-clientId"), "cd26716c-b170-41f7-912e-0f72749c3e9a");
+        adminManagePage.fillField(DdapBy.se("inp-clientSecret"), "cd26716c-b170-41f7-912e-0f72749c3e9a");
 
         adminListPage = adminManagePage.updateEntity();
 

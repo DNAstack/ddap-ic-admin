@@ -31,6 +31,7 @@ export class IdentityProviderFormComponent implements OnInit, OnDestroy, Form {
   form: FormGroup;
   subscriptions: Subscription[] = [];
   translators$: Observable<any>;
+  clientCredentialsSet = false;
 
   constructor(private identityProviderFormBuilder: IdentityProviderFormBuilder) {
   }
@@ -43,23 +44,15 @@ export class IdentityProviderFormComponent implements OnInit, OnDestroy, Form {
           this.form.get('id').setValue(generateInternalName(displayName));
         }));
     }
+    this.clientCredentialsSet = !!this.identityProvider?.dto?.clientId;
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  addScope() {
-    const firstControl = this.getFirstControl(this.scopes);
-    if (firstControl && !firstControl.value) {
-      // Skip if recently added was not touched
-      return;
-    }
-    this.scopes.insert(0, this.identityProviderFormBuilder.buildStringControl());
-  }
-
   getModel(): EntityModel {
-    const { id, scopes, ...rest } = this.form.value;
+    const { id, scopes, clientSecret, ...rest } = this.form.value;
 
     const identityProvider: IdentityProvider = IdentityProvider.create({
       scopes: this.removeEmptyValues(scopes),
@@ -81,9 +74,26 @@ export class IdentityProviderFormComponent implements OnInit, OnDestroy, Form {
     return values.filter(value => value.length > 0);
   }
 
+  validateClientCredentials(): void {
+    const clientId: string = this.form.get('clientId').value;
+    const clientSecret: string = this.form.get('clientSecret').value;
+
+    const clientIdInputIsEmpty = !clientId || !clientId.trim();
+    const clientSecretInputIsEmpty = !clientSecret || !clientSecret.trim();
+
+    if (this.clientCredentialsSet && clientIdInputIsEmpty) {
+      this.form.get('clientId').setErrors({ empty: true });
+    }
+    if (!this.clientCredentialsSet && !clientIdInputIsEmpty && clientSecretInputIsEmpty) {
+      this.form.get('clientSecret').setErrors({ empty: true });
+    }
+    if (!this.clientCredentialsSet && clientIdInputIsEmpty) {
+      this.form.get('clientSecret').reset();
+    }
+  }
+
   private getFirstControl(formControls: FormArray): AbstractControl {
     return formControls.at(0);
   }
-
 
 }

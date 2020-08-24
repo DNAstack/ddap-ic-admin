@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { EntityModel, FormValidators, nameConstraintPattern } from "ddap-common-lib";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { EntityModel, FormValidators, nameConstraintPattern } from 'ddap-common-lib';
 import _get from 'lodash.get';
 
 @Injectable({
@@ -22,6 +22,7 @@ export class IdentityProviderFormBuilder {
       tokenUrl: [_get(identityProvider, 'dto.tokenUrl'), [FormValidators.url]],
       authorizeUrl: [_get(identityProvider, 'dto.authorizeUrl'), [FormValidators.url]],
       clientId: [_get(identityProvider, 'dto.clientId'), []],
+      clientSecret: [],
       responseType: [_get(identityProvider, 'dto.responseType'), []],
       translateUsing: [_get(identityProvider, 'dto.translateUsing'), []],
       scopes: this.buildArrayForm(_get(identityProvider, 'dto.scopes')),
