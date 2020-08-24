@@ -54,7 +54,7 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
     }
 
     public String scimUserInfo() {
-        return format("/identity/scim/v2/%s/Me", REALM);
+        return format("/proxy/scim/v2/%s/Me", REALM);
     }
 
     @Test
