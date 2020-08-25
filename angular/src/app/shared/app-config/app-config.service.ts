@@ -36,7 +36,7 @@ export class AppConfigService {
       .registerModule({
       key: 'identity-admin',
       name: 'Profile',
-      iconClasses: 'icon icon-identity',
+      iconClasses: 'icon icon-profile',
       routerLink: 'account/identity',
       isApp: false,
       group: 'identity-admin',
@@ -45,7 +45,7 @@ export class AppConfigService {
       .registerModule({
         key: 'sessions',
         name: 'Sessions',
-        iconClasses: 'icon icon-clients',
+        iconClasses: 'icon icon-session',
         routerLink: 'account/sessions',
         isApp: false,
         group: 'identity-admin',
@@ -54,7 +54,7 @@ export class AppConfigService {
       .registerModule({
         key: 'consents',
         name: 'Remembered Consents',
-        iconClasses: 'icon icon-passport',
+        iconClasses: 'icon icon-consent',
         routerLink: 'account/consents',
         isApp: false,
         group: 'identity-admin',
@@ -63,7 +63,7 @@ export class AppConfigService {
       .registerModule({
         key: 'auditlogs',
         name: 'Audit Logs',
-        iconClasses: 'icon icon-rules',
+        iconClasses: 'icon icon-audit',
         routerLink: 'account/auditlogs',
         isApp: false,
         group: 'identity-admin',
@@ -72,7 +72,7 @@ export class AppConfigService {
       .registerModule({
         key: 'admin-users',
         name: 'Users',
-        iconClasses: 'icon icon-identities',
+        iconClasses: 'icon icon-users',
         routerLink: 'admin/users',
         isApp: false,
         group: 'user-admin',
@@ -81,7 +81,7 @@ export class AppConfigService {
       .registerModule({
         key: 'ic-admin-identity-providers',
         name: 'Identity Providers',
-        iconClasses: 'icon icon-identities',
+        iconClasses: 'icon icon-id-providers',
         routerLink: 'admin/identity-concentrator/identity-providers',
         isApp: false,
         group: 'ic-admin',

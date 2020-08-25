@@ -18,8 +18,8 @@
         </mat-card>
         <div class="invalid-warning"
              *ngIf="hasExpiringClaims(account)">
-          <mat-icon class="icon icon-warning"
-                    matTooltip="Some claims are expired or about to expire">
+          <mat-icon matTooltip="Some claims are expired or about to expire">
+            warning
           </mat-icon>
         </div>
       </mat-expansion-panel-header>
@@ -51,7 +51,7 @@
   <h2>Connect Another Account</h2>
   <div *ngIf="displayScopeWarning">
     <p class="warning-section">
-      <mat-icon class="icon icon-warning"></mat-icon>
+      <mat-icon>warning</mat-icon>
       <span>To connect accounts, click the button to authorize account administration</span>
       <button mat-stroked-button
               color="primary"
@@ -70,7 +70,7 @@
       <mat-card-title class="margin-bottom--0">
         <span>{{ accountLink.label }}</span>
       </mat-card-title>
-      <mat-icon class="icon icon-plus"></mat-icon>
+      <mat-icon>add</mat-icon>
     </mat-card-header>
   </mat-card>
 </mat-accordion>

@@ -1,6 +1,5 @@
 <div>
   <h3 class="flex vertical-center">
-    <mat-icon class="icon icon-claims"></mat-icon>
     <span>{{ claimGroupLabel }}</span>
   </h3>
   <ng-container *ngIf="ga4ghPassports">
@@ -18,8 +17,8 @@
         <p class="flex vertical-center">
           <!-- Relevant only for my identity management -->
           <mat-icon *ngIf="ga4ghPassports && ga4ghPassports.length > 0 && visaPassportService.isExpiring(passport)"
-                    class="icon icon-warning"
-                    matTooltip="Expiring claim">
+                   matTooltip="Expiring claim">
+            warning
           </mat-icon>
           <span class="expiry">{{ getFormattedExpiresTextFromPassport(passport) }}</span>
         </p>
