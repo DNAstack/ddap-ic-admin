@@ -20,7 +20,8 @@ export abstract class IcConfigService {
       {params}
     ).pipe(
       pluck(this.entityType),
-      map(EntityModel.objectToMap)
+      map(EntityModel.objectToMap),
+      this.errorHandler.notifyOnError(`Unable to proceed with the action. Please try again.`, true)
     );
   }
 
@@ -28,7 +29,7 @@ export abstract class IcConfigService {
     return this.http.post(`${environment.idpApiUrl}/${realmIdPlaceholder}/config/${this.entityType}/${id}`,
       change
     ).pipe(
-      this.errorHandler.notifyOnError(`Can't save ${id}.`)
+      this.errorHandler.notifyOnError(`Can't save ${id}.`, true)
     );
   }
 
@@ -36,14 +37,14 @@ export abstract class IcConfigService {
     return this.http.put(`${environment.idpApiUrl}/${realmIdPlaceholder}/config/${this.entityType}/${id}`,
       change
     ).pipe(
-      this.errorHandler.notifyOnError(`Can't update ${id}.`)
+      this.errorHandler.notifyOnError(`Can't update ${id}.`, true)
     );
   }
 
   remove(id: string): Observable<any> {
     return this.http.delete(`${environment.idpApiUrl}/${realmIdPlaceholder}/config/${this.entityType}/${id}`)
       .pipe(
-        this.errorHandler.notifyOnError(`Can't delete ${id}.`)
+        this.errorHandler.notifyOnError(`Can't delete ${id}.`, true)
       );
   }
 }

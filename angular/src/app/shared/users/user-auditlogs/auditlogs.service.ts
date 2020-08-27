@@ -22,7 +22,7 @@ export class AuditlogsService {
       + `?page_size=${pageSize}&page_token=${nextPageToken || ''}&filter=${filter || ''}`
       )
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load audit logs for user ${user}.`)
+        this.errorHandler.notifyOnError(`Can't load audit logs for user ${user}.`, true)
       );
   }
 

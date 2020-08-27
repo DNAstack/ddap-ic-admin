@@ -14,7 +14,7 @@ export abstract class AbstractConfigOptionService {
     return this.http.get<any>(`${targetApi}/${realmIdPlaceholder}/config`,
       {params}
     ).pipe(
-      this.errorHandler.notifyOnError(`Can't load settings.`),
+      this.errorHandler.notifyOnError(`Can't load settings.`, true),
       pluck('options')
     );
   }
@@ -23,7 +23,7 @@ export abstract class AbstractConfigOptionService {
     return this.http.put(`${targetApi}/${realmIdPlaceholder}/config/options`,
       {item: newOptions}
     ).pipe(
-      this.errorHandler.notifyOnError(`Can't update settings.`)
+      this.errorHandler.notifyOnError(`Can't update settings.`, true)
     );
   }
 

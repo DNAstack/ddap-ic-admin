@@ -24,7 +24,7 @@ export class ClientApplicationService extends IcConfigService {
       `${environment.idpApiUrl}/${realmIdPlaceholder}/config/${this.entityType}/${id}?rotate_secret=${rotateSecret}`,
       change
     ).pipe(
-      this.errorHandler.notifyOnError(`Can't update ${id}.`)
+      this.errorHandler.notifyOnError(`Can't update ${id}.`, true)
     );
   }
 }

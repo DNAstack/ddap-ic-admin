@@ -20,7 +20,7 @@ export class LocaleMetadataService {
   getLocales(): Observable<LocaleMetadataModel> {
     return this.http.get<LocaleMetadataModel>(`${environment.idpBaseUrl}/identity/v1alpha/${realmIdPlaceholder}/localeMetadata`)
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load locale metadata.`),
+        this.errorHandler.notifyOnError(`Can't load locale metadata.`, true),
         share()
       );
   }

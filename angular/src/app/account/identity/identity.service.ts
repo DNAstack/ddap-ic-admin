@@ -24,14 +24,14 @@ export class IdentityService {
   getIdentity(params = {}): Observable<Identity> {
     return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity`, {params})
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load account's information.`)
+        this.errorHandler.notifyOnError(`Can't load account's information.`, true)
       );
   }
 
   getIdentityProviders(params = {}): Observable<any> {
     return this.http.get<any>(`${environment.idpApiUrl}/${realmIdPlaceholder}/identityProviders`, {params})
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load identity providers' information.`),
+        this.errorHandler.notifyOnError(`Can't load identity providers' information.`, true),
         pluck('identityProviders')
       );
   }
@@ -49,7 +49,10 @@ export class IdentityService {
   }
 
   refreshTokens(params?) {
-    return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/refresh`, {params});
+    return this.http.get<any>(`${environment.ddapApiUrl}/realm/${realmIdPlaceholder}/identity/refresh`, {params})
+      .pipe(
+        this.errorHandler.notifyOnError(`Unable to proceed with the action. Please try again.`, true)
+      );
   }
 
   invalidateTokens(params?) {

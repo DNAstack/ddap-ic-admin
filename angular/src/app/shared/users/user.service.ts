@@ -25,7 +25,7 @@ export class UserService {
   getLoggedInUser(): Observable<IUser> {
     return this.http.get<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Me`)
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load User information.`),
+        this.errorHandler.notifyOnError(`Can't load User information.`, true),
         share()
       );
   }
@@ -33,30 +33,36 @@ export class UserService {
   patchLoggedInUser(patchModel: IPatch): Observable<IUser> {
     return this.http.patch<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Me`, patchModel)
       .pipe(
-        this.errorHandler.notifyOnError(`Can't save personal information`)
+        this.errorHandler.notifyOnError(`Can't save personal information`, true)
       );
   }
 
   getUsers(params = {}): Observable<IListUsersResponse> {
     return this.http.get<IListUsersResponse>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users`, { params })
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load users.`)
+        this.errorHandler.notifyOnError(`Can't load users.`, true)
       );
   }
 
   getUser(userId: string): Observable<IUser> {
     return this.http.get<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`)
       .pipe(
-        this.errorHandler.notifyOnError(`Can't load user.`)
+        this.errorHandler.notifyOnError(`Can't load user.`, true)
       );
   }
 
   patchUser(userId: string, patchModel: IPatch): Observable<IUser> {
-    return this.http.patch<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`, patchModel);
+    return this.http.patch<IUser>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`, patchModel)
+      .pipe(
+        this.errorHandler.notifyOnError(`Unable to proceed with the action. Please try again.`, true)
+      );
   }
 
   deleteUser(userId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`);
+    return this.http.delete<void>(`${environment.idpBaseUrl}/scim/v2/${realmIdPlaceholder}/Users/${userId}`)
+      .pipe(
+        this.errorHandler.notifyOnError(`Unable to proceed with the action. Please try again.`, true)
+      );
   }
 
 }
