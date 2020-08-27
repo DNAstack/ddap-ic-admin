@@ -43,11 +43,26 @@ public class AdminIcOptionsE2eTest extends AbstractAdminFrontendE2eTest {
     }
 
     @Test
-    public void submitOptionWithError() {
+    public void submitStringOptionWithError() {
         AdminOptionPage adminListPage = ddapPage.getNavBar()
             .goToAdminOptionPage(icOptionsLink());
 
         String option = "Claim TTL Cap";
+
+        assertThat(adminListPage.getOptionNames(), hasItem(option));
+
+        adminListPage.clickEdit(option);
+        adminListPage.fillInput("invalid-value");
+
+        adminListPage.assertHasError( 5);
+    }
+
+    @Test
+    public void submitBoolOptionWithError() {
+        AdminOptionPage adminListPage = ddapPage.getNavBar()
+            .goToAdminOptionPage(icOptionsLink());
+
+        String option = "Read Only Master Realm";
 
         assertThat(adminListPage.getOptionNames(), hasItem(option));
 
