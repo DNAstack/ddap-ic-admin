@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import org.apache.http.cookie.Cookie;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
@@ -55,29 +54,6 @@ public class UserTokenCookieTest extends AbstractBaseE2eTest {
 
     public String scimUserInfo() {
         return format("/proxy/scim/v2/%s/Me", REALM);
-    }
-
-    @Test
-    @Ignore
-    // TODO: DISCO-2702
-    public void shouldIncludeInvalidAuthStatusInResponseHeader() throws Exception {
-        Cookie session = DdapLoginUtil.loginToDdap(DDAP_USERNAME, DDAP_PASSWORD);
-        String expiredUserTokenCookie = fakeUserToken(Instant.now().minusSeconds(10));
-
-        // @formatter:off
-        getRequestSpecification()
-            .log().method()
-            .log().cookies()
-            .log().uri()
-            .cookie(SESSION_COOKIE_NAME, session.getValue())
-            .cookie("ic_access", expiredUserTokenCookie)
-        .when()
-            .get(scimUserInfo())
-        .then()
-            .log().body()
-            .log().ifValidationFails()
-            .header("X-DDAP-Authenticated", "false");
-        // @formatter:on
     }
 
     @Test
